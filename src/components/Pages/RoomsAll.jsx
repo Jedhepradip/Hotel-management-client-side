@@ -77,9 +77,10 @@ const RoomsAll = () => {
           </div>
         </div>
       </div>
-      <div className='flex justify-around items-center flex-wrap font-serif'>
+
+      <div className='flex justify-around items-center flex-wrap font-serif md:p-0 p-5'>
         {images.map((val, index) => (
-          <div key={index} className='w-[50%] bg-white border border-gray-200 rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-2xl dark:bg-gray-800 dark:border-gray-700 p-0 mb-[30px] mt-5'>
+          <div key={index} className='md:w-[50%] w-full bg-white border border-gray-200 rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-2xl dark:bg-gray-800 dark:border-gray-700 p-0 mb-[30px] mt-5'>
             <div className='p-5'>
               <a href='#'>
                 <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white font-sans'>
@@ -99,7 +100,7 @@ const RoomsAll = () => {
               </span>
               <br />
 
-              <div onClick={() => handeltocheecktoken(val._id)} >
+              <div onClick={() => handleCheckToken(val._id)} >
                 {val.Booked ?
                   <>
                     <a
