@@ -69,6 +69,7 @@ const NavigationBar = () => {
       };
       fetchUserData();
     }
+    return;
   }, [token, CardInfo, Dispatch]);
 
 
