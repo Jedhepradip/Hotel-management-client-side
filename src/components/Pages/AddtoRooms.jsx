@@ -45,7 +45,7 @@ const AddtoRooms = () => {
 
     const handelRoomsId = async (removeroomsId) => {
         try {
-            const response = await fetch(`http://localhost:3000/Rooms/Removeto/AddtoCard/${removeroomsId}`, {
+            const response = await fetch(`https://hotel-management-server-5drh.onrender.com/Rooms/Removeto/AddtoCard/${removeroomsId}`, {
                 method: "PUT",
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("Token")}`

@@ -46,7 +46,7 @@ const NavigationBar = () => {
     if (token) {
       const fetchUserData = async () => {
         try {
-          const response = await fetch("http://localhost:3000/Profile/User/Data", {
+          const response = await fetch("https://hotel-management-server-5drh.onrender.com/Profile/User/Data", {
             method: "GET",
             headers: {
               authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -75,7 +75,7 @@ const NavigationBar = () => {
   useEffect(() => {
     const fetchRoomsData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/Product/data', {
+        const response = await fetch('https://hotel-management-server-5drh.onrender.com/Product/data', {
           method: 'GET',
         });
         const data = await response.json();

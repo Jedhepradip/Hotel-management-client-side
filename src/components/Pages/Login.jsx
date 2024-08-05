@@ -21,7 +21,7 @@ const Login = () => {
     const onSubmit = async (data) => {
         console.log("login user", data);
         try {
-            const response = await fetch("http://localhost:3000/User/Login", {
+            const response = await fetch("https://hotel-management-server-5drh.onrender.com/User/Login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

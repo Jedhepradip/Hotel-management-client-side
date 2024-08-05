@@ -19,11 +19,12 @@ const RoomsLocationShow = () => {
     useEffect(() => {
         const fetchRoomsData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/Product/data', {
+                const response = await fetch('https://hotel-management-server-5drh.onrender.com/Product/data', {
                     method: 'GET',
                 });
                 const data = await response.json();
                 Dispatch(CardInformation(data.Product))
+                
                 setCardInfo(data.Product)
                 console.log(data.Product);
                 sessionStorage.setItem("Roomsdata", JSON.stringify(data.Product))

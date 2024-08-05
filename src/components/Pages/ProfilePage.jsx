@@ -49,7 +49,7 @@ const ProfilePage = () => {
         console.log("File:", file);
 
         try {
-            const response = await fetch("http://localhost:3000/Eidit/User/Profile", {
+            const response = await fetch("https://hotel-management-server-5drh.onrender.com/Eidit/User/Profile", {
                 method: "PUT",
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("Token")}`,

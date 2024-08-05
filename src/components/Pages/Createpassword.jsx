@@ -16,7 +16,7 @@ const Createpassword = () => {
         // if (data.Password === data.CPassword) {
             console.log(data);
             try {
-                const response = await fetch(`http://localhost:3000/Createpassword/${Id}`, {
+                const response = await fetch(`https://hotel-management-server-5drh.onrender.com/Createpassword/${Id}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
