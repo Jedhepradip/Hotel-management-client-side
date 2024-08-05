@@ -69,6 +69,7 @@ const SignIn = () => {
       formData.append("Phone", phoneNumber);
 
       const response = await fetch("https://hotel-management-server-5drh.onrender.com/User/Registration", {
+      // const response = await fetch("http://localhost:3000/User/Registration", {
         method: "POST",
         body: formData
       });

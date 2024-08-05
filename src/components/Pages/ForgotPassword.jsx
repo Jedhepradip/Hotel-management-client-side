@@ -62,6 +62,7 @@ const ForgotPassword = () => {
 
       console.log("phoneNumber :", phoneNumber);
       const response = await fetch(`https://hotel-management-server-5drh.onrender.com/User/ForgotPassword/${phoneNumber}`, {
+        // const response = await fetch(`http://localhost:3000/User/ForgotPassword/${phoneNumber}`, {
         method: "POST",
 
         body: JSON.stringify(phoneNumber)

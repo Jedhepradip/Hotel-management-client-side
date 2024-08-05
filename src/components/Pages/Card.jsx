@@ -53,7 +53,8 @@ const Card = () => {
 
     const handellike = async (RoomsId) => {
         try {
-            const response = await fetch(`https://hotel-management-server-5drh.onrender.com/Rooms/User/Like/${RoomsId}`, {
+            // const response = await fetch(`https://hotel-management-server-5drh.onrender.com/Rooms/User/Like/${RoomsId}`, {
+                const response = await fetch(`https://localhost:3000/Rooms/User/Like/${RoomsId}`, {
                 method: "GET",
                 headers: {
                     authorization: `Bearer ${token}`,

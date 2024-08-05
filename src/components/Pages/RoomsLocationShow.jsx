@@ -20,6 +20,7 @@ const RoomsLocationShow = () => {
         const fetchRoomsData = async () => {
             try {
                 const response = await fetch('https://hotel-management-server-5drh.onrender.com/Product/data', {
+                // const response = await fetch('http://localhost:3000//Product/data', {
                     method: 'GET',
                 });
                 const data = await response.json();

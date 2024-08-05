@@ -22,6 +22,7 @@ const Login = () => {
         console.log("login user", data);
         try {
             const response = await fetch("https://hotel-management-server-5drh.onrender.com/User/Login", {
+            // const response = await fetch("http://localhost:3000/User/Login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -44,6 +45,7 @@ const Login = () => {
             }
         } catch (error) {
             console.log(error);
+            toast.error("Something went wrong!")
         }
     }
 

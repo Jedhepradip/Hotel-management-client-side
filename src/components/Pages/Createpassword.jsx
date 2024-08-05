@@ -17,6 +17,7 @@ const Createpassword = () => {
             console.log(data);
             try {
                 const response = await fetch(`https://hotel-management-server-5drh.onrender.com/Createpassword/${Id}`, {
+                // const response = await fetch(`http://loclahost:3000/Createpassword/${Id}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
