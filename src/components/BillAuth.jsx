@@ -30,7 +30,8 @@ function BillAuth() {
     const onsubmit = async (data) => {
         let token = localStorage.getItem("Token")
         try {
-            const response = await fetch(`http://localhost:3000/User/Rooms/Payments/${id}`, {
+            const response = await fetch(`https://hotel-management-server-5drh.onrender.com/User/Rooms/Payments/${id}`, {
+                // const response = await fetch(`http://localhost:3000/User/Rooms/Payments/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -75,8 +76,7 @@ function BillAuth() {
 
     return (
         <>
-            <div className='flex bg-white justify-around items-center '>
-           
+            <div className='flex bg-white justify-around items-center '>           
                 <div className='flex  items-center flex-wrap '>
                     {card.map((val, index) => (
                         <div key={index} className='max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-2xl dark:bg-gray-800 dark:border-gray-700 p-0 mb-[30px] mt-5'
