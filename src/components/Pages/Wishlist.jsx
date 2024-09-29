@@ -16,19 +16,19 @@ console.log("user :",user);
   useEffect(() => {
     if (CardInfo.length) {
       wishlist(CardInfo[0].text, user[0].text.user)
-      setrefresh(user[0].text.RoomstobookingUser.length)
+      // setrefresh(user[0].text.RoomstobookingUser.length)
     }
     else {
       let roomsdata = JSON.parse(sessionStorage.getItem("Roomsdata"))
       let userdata = JSON.parse(sessionStorage.getItem("Userdata"))
-      setrefresh(userdata.RoomstobookingUser.length)
+      // setrefresh(userdata.RoomstobookingUser.length)
       wishlist(roomsdata, userdata.user)
     }
   }, [])
 
-  useEffect(() => {
+  // useEffect(() => {
   
-  }, [idtorefresh])
+  // }, [idtorefresh])
   
   let wishlistarr = []
 

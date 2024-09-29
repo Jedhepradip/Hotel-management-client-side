@@ -58,7 +58,6 @@ const NavigationBar = () => {
           const userdata = await response.json();
           sessionStorage.setItem("Userdata", JSON.stringify(userdata));
           Dispatch(UserInfromation(userdata));
-          console.log("userdata.user.ProfilImg :",userdata.user.ProfilImg);
           setProfilimg(userdata.user.ProfilImg);
           setUserData(userdata)
           let shoppingLen = userdata.RoomstobookingUser.length;
@@ -73,22 +72,22 @@ const NavigationBar = () => {
   }, [token, CardInfo, Dispatch]);
 
 
-  useEffect(() => {
-    const fetchRoomsData = async () => {
-      try {
-        const response = await fetch('https://hotel-management-server-5drh.onrender.com/Product/data', {
-          method: 'GET',
-        });
-        const data = await response.json();
-        Dispatch(CardInformation(data.Product))
-        setCardData(data)
-        sessionStorage.setItem("Roomsdata", JSON.stringify(data.Product))
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchRoomsData();
-  }, [Dispatch]);
+  // useEffect(() => {
+  //   const fetchRoomsData = async () => {
+  //     try {
+  //       const response = await fetch('https://hotel-management-server-5drh.onrender.com/Product/data', {
+  //         method: 'GET',
+  //       });
+  //       const data = await response.json();
+  //       Dispatch(CardInformation(data.Product))
+  //       setCardData(data)
+  //       sessionStorage.setItem("Roomsdata", JSON.stringify(data.Product))
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchRoomsData();
+  // }, [Dispatch]);
 
   useEffect(() => {
     if (user.length && CardInfo.length) {
@@ -110,7 +109,6 @@ const NavigationBar = () => {
     } else {
       let Card = JSON.parse(sessionStorage.getItem("Roomsdata"));
       let User = JSON.parse(sessionStorage.getItem("Userdata"));
-      console.log("User ", User);
       if (!User == "null") {
         let lwishlistuserlength = 0;
         Card.map((e) => {
