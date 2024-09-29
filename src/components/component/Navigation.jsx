@@ -71,24 +71,6 @@ const NavigationBar = () => {
     return;
   }, [token, CardInfo, Dispatch]);
 
-
-  // useEffect(() => {
-  //   const fetchRoomsData = async () => {
-  //     try {
-  //       const response = await fetch('https://hotel-management-server-5drh.onrender.com/Product/data', {
-  //         method: 'GET',
-  //       });
-  //       const data = await response.json();
-  //       Dispatch(CardInformation(data.Product))
-  //       setCardData(data)
-  //       sessionStorage.setItem("Roomsdata", JSON.stringify(data.Product))
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchRoomsData();
-  // }, [Dispatch]);
-
   useEffect(() => {
     if (user.length && CardInfo.length) {
       let data = CardInfo[0].text || Card.Product
@@ -125,7 +107,7 @@ const NavigationBar = () => {
 
   return (
     <>
-      <nav className="bg-gray-800 nav border-gray-200 dark:bg-gray-900 fixed w-[100%]  z-50 font-serif text-[18px]">
+      <nav className="bg-white nav border-gray-200 dark:bg-gray-900 fixed w-[100%]  z-50 font-serif text-[18px]">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a href="https://flowbite.com/" className="flex items-center space-x-3 rtl:space-x-reverse">
             {/* <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" /> */}
