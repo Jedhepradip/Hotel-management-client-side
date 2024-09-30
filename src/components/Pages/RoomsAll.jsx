@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaRegHeart } from 'react-icons/fa';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useSelector } from 'react-redux';

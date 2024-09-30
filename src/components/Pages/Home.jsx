@@ -16,8 +16,8 @@ const Home = () => {
   return (
     <>
       <div className="w-full h-auto relative bg-white">
-        <div id="default-carousel" className="relative w-full" data-carousel="slide">
-          <div className="relative h-56 overflow-hidden md:h-96">
+        {/* <div id="default-carousel" className="relative w-full" data-carousel="slide"> */}
+          {/* <div className="relative h-56 overflow-hidden md:h-96">
             <div className=" duration-700 ease-in-out" data-carousel-item>
               <img src="https://images.unsplash.com/photo-1680012590952-df33ea34a855?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjJ8fHZpbGxhfGVufDB8fDB8fHww" alt="Slide 1" className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />              
               <div className='w-full h-full py-5 px-5 relative text-white font-serif'>
@@ -91,9 +91,9 @@ const Home = () => {
               <span className="sr-only">Next</span>
             </span>
           </button>
-        </div>
+        </div> */}
 
-        <RoomsLocationShow />
+        {/* <RoomsLocationShow /> */}
         <About/>
       </div>
     </>

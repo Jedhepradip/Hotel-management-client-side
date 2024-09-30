@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { CardInformation } from '../CardSlice/CardDate';
 
 const RoomsLocationShow = () => {
     const [CardInf, setCardInfo] = useState([]);
@@ -12,37 +11,37 @@ const RoomsLocationShow = () => {
     const user = useSelector(state => state.UserData.UserData);    
 
     if(user.length){
-        let updata = user[0].text.RoomstobookingUser.length
-        console.log("updata :",updata);        
+        // let updata = user[0].text.RoomstobookingUser.length
+        // console.log("updata :",updata);        
     }
 
-    useEffect(() => {
-        const fetchRoomsData = async () => {
-            try {
-                // const response = await fetch('https://hotel-management-server-5drh.onrender.com/Product/data', {
-                const response = await fetch('http://localhost:3000/Product/data', {
-                    method: 'GET',
-                });
-                const data = await response.json();
-                Dispatch(CardInformation(data.Product))
+    // useEffect(() => {
+    //     const fetchRoomsData = async () => {
+    //         try {
+    //             // const response = await fetch('https://hotel-management-server-5drh.onrender.com/Product/data', {
+    //             const response = await fetch('http://localhost:3000/Product/data', {
+    //                 method: 'GET',
+    //             });
+    //             const data = await response.json();
+    //             Dispatch(CardInformation(data.Product))
                 
-                setCardInfo(data.Product)
-                console.log(data.Product);
-                sessionStorage.setItem("Roomsdata", JSON.stringify(data.Product))
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchRoomsData();
-    }, [CardInf.length]);
+    //             setCardInfo(data.Product)
+    //             console.log(data.Product);
+    //             sessionStorage.setItem("Roomsdata", JSON.stringify(data.Product))
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
+    //     fetchRoomsData();
+    // }, [CardInf.length]);
 
-    useEffect(() => {
-        for (let index = 0; index < Search.length; index++) {
-            let SearchProd = Search[index].text
-            setSearchreltiveProduc(SearchProd)
-            SearchProd = " "
-        }
-    }, [Search.length,CardInf])
+    // useEffect(() => {
+    //     for (let index = 0; index < Search.length; index++) {
+    //         let SearchProd = Search[index].text
+    //         setSearchreltiveProduc(SearchProd)
+    //         SearchProd = " "
+    //     }
+    // }, [Search.length,CardInf])
 
     let locationarr = []
 

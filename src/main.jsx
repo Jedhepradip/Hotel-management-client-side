@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { Provider } from 'react-redux'
-import { store } from './components/Store/store'
+import { store } from './App/store.js'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Layout from './components/Layout/Layout.jsx'
 import Home from './components/Pages/Home.jsx'
@@ -19,7 +19,6 @@ import Login from './components/Pages/Login.jsx'
 import ForgotPassword from './components/Pages/ForgotPassword.jsx'
 import PageNotFound from './components/Pages/PageNotFound.jsx'
 import Createpassword from './components/Pages/Createpassword.jsx'
-import Tostify from './components/Pages/Tostify.jsx'
 import Wishlist from './components/Pages/Wishlist.jsx'
 
 const router = createBrowserRouter([
@@ -36,7 +35,7 @@ const router = createBrowserRouter([
         element: <About />
       },
       {
-        path: '/Card/:id',
+        path: '/Card',
         element: <Card />
       },
       {
@@ -82,7 +81,7 @@ const router = createBrowserRouter([
       {
         path: "/Wishlist",
         element: <Wishlist />
-      },      
+      },
       {
         path: "*",
         element: <PageNotFound />,
