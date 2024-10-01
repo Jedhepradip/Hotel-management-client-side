@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCardData } from '../../App/CardSlice';
 import { FaRegHeart } from "react-icons/fa";
+import { IoLocationOutline } from "react-icons/io5";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,6 +16,10 @@ const Card = () => {
     useEffect(() => {
         dispatch(fetchCardData());
     }, [dispatch]);
+
+    useEffect(() => {
+        setshow(cardifData)
+    }, [cardifData])
 
     useEffect(() => {
         if (cardifData) {
@@ -45,27 +50,24 @@ const Card = () => {
     //     }
     // };
 
-    // const handellike = async (RoomsId) => {
-    //     console.log(RoomsId);
-    //     try {
-    //         const response = await fetch(`https://hotel-management-server-5drh.onrender.com/Rooms/User/Like/${RoomsId}`, {
-    //             method: "GET",
-    //             headers: {
-    //                 authorization: `Bearer ${token}`,
-    //             }
-    //         });
-    //         await response.json();
-    //         if (!response.ok) {
-    //             console.log(response.status);
-    //         }
-    //         if (response.ok) {
-    //             setupdate(CardInformation);
-    //             fetchRoomsData(dispatch)
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    const handellike = async (RoomsId) => {
+        console.log(RoomsId);
+        try {
+            // const response = await fetch(`https://hotel-management-server-5drh.onrender.com/Rooms/User/Like/${RoomsId}`, {
+            const response = await fetch(`http://localhost:3000/Rooms/User/Like/${RoomsId}`, {
+                method: "GET",
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem("Token")}`,
+                }
+            });
+            await response.json();
+            if (!response.ok) {
+                console.log(response.status);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     // const searchbyIndustry = (na) => {
     //     console.log(na);
@@ -116,24 +118,6 @@ const Card = () => {
     };
 
     console.log(cardifData);
-
-
-    // useEffect(() => {
-    //     const fetchRoomsData = async () => {
-    //         try {
-    //             // const response = await fetch('https://hotel-management-server-5drh.onrender.com/Product/data', {
-    //             const response = await fetch('http://localhost:3000/Product/data', {
-    //                 method: 'GET',
-    //             });
-    //             const data = await response.json();
-    //             setcardlocation(data.Product)
-    //             sessionStorage.setItem("Roomsdata", JSON.stringify(data.Product))
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     };
-    //     fetchRoomsData();
-    // }, []);
 
     return (
         // <div className='bg-gray-50'>
@@ -216,57 +200,57 @@ const Card = () => {
                     <h1 className='font-bold text-center text-[25px] cursor-pointer'>Filter Jobs</h1>
                     <hr />
 
-                    <h2 className='text-xl font-medium mb-4 px-2 cursor-pointer font-serif mt-4 ml-10'>County</h2>
+                    <h2 className='text-xl font-medium mb-4 px-2 cursor-pointer font-serif mt-4'>County</h2>
                     {Country?.map((val, index) => (
                         <>
-                            <div className='px-3 ml-9' key={index}>
+                            <div className='px-3' key={index}>
                                 <input type="radio" id={val} name='Location-Filter-Jobs' className='mr-2' onClick={() => filterbyConuty(val)} />
-                                <label htmlFor={val} className='font-medium cursor-pointer'>{val}</label>
+                                <label htmlFor={val} className='font-medium cursor-pointer font-serif'>{val}</label>
                             </div>
                         </>
                     ))}
 
-                    <h2 className='text-xl font-medium mb-4 px-2 cursor-pointer font-serif mt-4 ml-10'>Location</h2>
+                    <h2 className='text-xl font-medium mb-4 px-2 cursor-pointer font-serif mt-4'>Location</h2>
                     {location?.map((val, index) => (
                         <>
-                            <div className='px-3 ml-9' key={index}>
+                            <div className='px-3' key={index}>
                                 <input type="radio" id={val} name='Location-Filter-Jobs' className='mr-2' onClick={() => filterlocation(val)} />
-                                <label htmlFor={val} className='font-medium cursor-pointer'>{val}</label>
+                                <label htmlFor={val} className='font-medium cursor-pointer font-serif'>{val}</label>
                             </div>
                         </>
                     ))}
 
-                    <h2 className='text-xl font-medium mb-0 px-2 mt-4 font-serif ml-10'>Price</h2>
+                    <h2 className='text-xl font-medium mb-0 px-2 mt-4 font-serif'>Price</h2>
 
-                    <div className='px-3 font-serif ml-9'>
+                    <div className='px-3 font-serif ml-0'>
                         <input type="radio" id="salary1" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("2000")} />
                         <label htmlFor="salary1" className='font-medium cursor-pointer'>1k to 2k</label>
-                    </div>                    
-                    <div className='px-3 font-serif ml-9'>
+                    </div>
+                    <div className='px-3 font-serif ml-0'>
                         <input type="radio" id="salary2" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("3000")} />
                         <label htmlFor="salary2" className='font-medium cursor-pointer'>2k to 3k</label>
                     </div>
-                    <div className='px-3 font-serif ml-9'>
+                    <div className='px-3 font-serif ml-0'>
                         <input type="radio" id="salary3" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("4000")}
                         />
                         <label htmlFor="salary3" className='font-medium cursor-pointer'>3k to 4k</label>
                     </div>
-                    <div className='px-3 font-serif ml-9'>
+                    <div className='px-3 font-serif ml-0'>
                         <input type="radio" id="salary4" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("5000")}
                         />
                         <label htmlFor="salary4" className='font-medium cursor-pointer'>4k to 5k</label>
                     </div>
-                    <div className='px-3 font-serif ml-9'>
+                    <div className='px-3 font-serif ml-0'>
                         <input type="radio" id="salary5" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("6000")}
                         />
                         <label htmlFor="salary5" className='font-medium cursor-pointer'>5k to 6k</label>
                     </div>
-                    <div className='px-3 font-serif ml-9'>
+                    <div className='px-3 font-serif ml-0'>
                         <input type="radio" id="salary6" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("7000")}
                         />
                         <label htmlFor="salary6" className='font-medium cursor-pointer'>6k to 7k</label>
                     </div>
-                    <div className='px-3 font-serif ml-9'>
+                    <div className='px-3 font-serif ml-0'>
                         <input type="radio" id="salary7" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("8000")}
                         />
                         <label htmlFor="salary7" className='font-medium cursor-pointer'>7k to 8k</label>
@@ -277,9 +261,12 @@ const Card = () => {
                 <div className='md:col-span-9 col-span-12 bg-white shadow-gray-300 p-5 rounded-lg'>
                     <div className='grid grid-cols-12'>
                         <div className='col-span-12 grid md:grid-cols-3 gap-5 cursor-pointer'>
+
+                            {/* {show?.length &&
+                                <> */}
                             {show?.map((val, index) => (
                                 <>
-                                    <div key={index} className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 mx-auto my-6">
+                                    <div key={index} className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto my-6">
                                         {/* Image */}
                                         <img
                                             className="w-full h-48 object-cover"
@@ -304,16 +291,22 @@ const Card = () => {
                                             <p className="mt-2 text-gray-600 font-medium font-serif">
                                                 {val.description}
                                             </p>
-
                                             {/* Icon and Button */}
                                             <div className="flex items-center justify-between mt-4">
-                                                <FaRegHeart className='text-[22px]' />
-
+                                                <span>
+                                                    <FaRegHeart className="text-[22px] text-gray-900 hover:text-gray-500 cursor-pointer transition-colors duration-300" onClick={() => handellike(val._id)} />
+                                                    <h1 className='ml-[6px] font-serif text-[20px]'>{val?.likes?.length}</h1>
+                                                </span>
+                                                <span className='flex font-serif'>
+                                                    <IoLocationOutline className='text-[22px]' />
+                                                    {val.location}
+                                                </span>
                                                 {/* Add to Cart Button */}
-                                                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                                                <button className="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors duration-300">
                                                     Add to Cart
                                                 </button>
                                             </div>
+
                                         </div>
                                     </div>
                                 </>
@@ -362,7 +355,7 @@ const Card = () => {
                                     </div>
                                 </>
                             )} */}
-                        </div>
+                        </div >
                     </div>
                 </div>
             </div>
