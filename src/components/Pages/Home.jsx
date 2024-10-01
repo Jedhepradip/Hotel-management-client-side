@@ -6,11 +6,11 @@ import About from "./About"
 
 const Home = () => {
 
-  const user = useSelector(state => state.UserData.UserData);
+  // const user = useSelector(state => state.UserData.UserData);
 
-  useEffect(() => {
+  // useEffect(() => {
   
-  }, [user])
+  // }, [user])
   
 
   return (

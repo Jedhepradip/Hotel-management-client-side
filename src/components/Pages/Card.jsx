@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCardData } from '../../App/CardSlice';
+import { FaRegHeart } from "react-icons/fa";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -85,14 +86,37 @@ const Card = () => {
     }
 
     const setPrice = (priceRange) => {
-   const price = parseFloat(priceRange)
-   const setpricerange = []
-   if(price >= 1000 && price <= 2000){
-    setpricerange
-   }
+        const price = parseFloat(priceRange); // Parse the price range
+        let setpricerange = [];  // Use 'let' instead of 'const' to allow reassignment
+
+        if (price >= 1000 && price <= 2000) {
+            setpricerange = cardifData.filter((e) => e.price >= 1000 && e.price <= 2000); // Compare as numbers
+        }
+        else if (price >= 2000 && price <= 3000) {
+            setpricerange = cardifData.filter((e) => e.price >= 2000 && e.price <= 3000);
+        }
+        else if (price >= 3000 && price <= 4000) {
+            setpricerange = cardifData.filter((e) => e.price >= 3000 && e.price <= 4000);
+        }
+        else if (price >= 4000 && price <= 5000) {
+            setpricerange = cardifData.filter((e) => e.price >= 4000 && e.price <= 5000);
+        }
+        else if (price >= 5000 && price <= 6000) {
+            setpricerange = cardifData.filter((e) => e.price >= 5000 && e.price <= 6000);
+        }
+        else if (price >= 6000 && price <= 7000) {
+            setpricerange = cardifData.filter((e) => e.price >= 6000 && e.price <= 7000);
+        }
+        else if (price >= 7000 && price <= 8000) {
+            setpricerange = cardifData.filter((e) => e.price >= 7000 && e.price <= 8000);
+        }
+
+        console.log(setpricerange);  // Log the filtered price range data
+        setshow(setpricerange);  // Assuming 'setshow' updates the UI with the filtered results
     };
 
-    console.log(show);
+    console.log(cardifData);
+
 
     // useEffect(() => {
     //     const fetchRoomsData = async () => {
@@ -213,10 +237,11 @@ const Card = () => {
                     ))}
 
                     <h2 className='text-xl font-medium mb-0 px-2 mt-4 font-serif ml-10'>Price</h2>
+
                     <div className='px-3 font-serif ml-9'>
                         <input type="radio" id="salary1" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("2000")} />
                         <label htmlFor="salary1" className='font-medium cursor-pointer'>1k to 2k</label>
-                    </div>
+                    </div>                    
                     <div className='px-3 font-serif ml-9'>
                         <input type="radio" id="salary2" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("3000")} />
                         <label htmlFor="salary2" className='font-medium cursor-pointer'>2k to 3k</label>
@@ -226,35 +251,73 @@ const Card = () => {
                         />
                         <label htmlFor="salary3" className='font-medium cursor-pointer'>3k to 4k</label>
                     </div>
-
                     <div className='px-3 font-serif ml-9'>
                         <input type="radio" id="salary4" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("5000")}
                         />
                         <label htmlFor="salary4" className='font-medium cursor-pointer'>4k to 5k</label>
                     </div>
-
                     <div className='px-3 font-serif ml-9'>
                         <input type="radio" id="salary5" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("6000")}
                         />
                         <label htmlFor="salary5" className='font-medium cursor-pointer'>5k to 6k</label>
                     </div>
-
                     <div className='px-3 font-serif ml-9'>
                         <input type="radio" id="salary6" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("7000")}
                         />
                         <label htmlFor="salary6" className='font-medium cursor-pointer'>6k to 7k</label>
                     </div>
-
                     <div className='px-3 font-serif ml-9'>
                         <input type="radio" id="salary7" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("8000")}
                         />
                         <label htmlFor="salary7" className='font-medium cursor-pointer'>7k to 8k</label>
                     </div>
+
                 </div>
 
                 <div className='md:col-span-9 col-span-12 bg-white shadow-gray-300 p-5 rounded-lg'>
                     <div className='grid grid-cols-12'>
                         <div className='col-span-12 grid md:grid-cols-3 gap-5 cursor-pointer'>
+                            {show?.map((val, index) => (
+                                <>
+                                    <div key={index} className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 mx-auto my-6">
+                                        {/* Image */}
+                                        <img
+                                            className="w-full h-48 object-cover"
+                                            src={`http://localhost:3000/${val.thumbnail}`}
+                                            alt="Product Image"
+                                        />
+
+                                        {/* Card Content */}
+                                        <div className="p-4">
+                                            {/* Price Section */}
+                                            <div className="flex items-center justify-between">
+                                                <div className="text-xl font-semibold text-gray-900">${val.discountPrice}</div>
+                                                <div className="text-sm text-gray-500 line-through">${val.price}</div>
+                                            </div>
+
+                                            {/* Discount Badge */}
+                                            <div className="mt-2 text-green-600 text-sm font-bold">
+                                                % {val.discountPercentage}
+                                            </div>
+
+                                            {/* Description */}
+                                            <p className="mt-2 text-gray-600 font-medium font-serif">
+                                                {val.description}
+                                            </p>
+
+                                            {/* Icon and Button */}
+                                            <div className="flex items-center justify-between mt-4">
+                                                <FaRegHeart className='text-[22px]' />
+
+                                                {/* Add to Cart Button */}
+                                                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                                                    Add to Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ))}
 
                             {/* {Jobsdefualt.length ? (
                                 <>
