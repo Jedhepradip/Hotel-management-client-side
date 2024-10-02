@@ -1,114 +1,91 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import { useForm, SubmitHandler, FieldError } from 'react-hook-form'
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios'
+import axios from 'axios';
+import "../component/SigIn.css"
 
 const SignIn = () => {
-  const [file, setFile] = useState < File | null > (null);
-  const [OTPShow, SetOtpShow] = useState(false)
-  const [loadingOTP, setLoadingOTP] = useState(false); // For Send OTP button
-  const [verifyotp, setOtpVerify] = useState(false); // For Send OTP button
-  const [UserEmail, SetEmail] = useState("")
-  const [UserNumber, SetNumber] = useState("")
-  const [UserOTP, SetOTP] = useState("")
+  const [file, setFile] = useState(String);
+  const [OTPShow, SetOtpShow] = useState(false);
+  const [loadingOTP, setLoadingOTP] = useState(false);
+  const [verifyotp, setOtpVerify] = useState(false);
+  const [UserEmail, SetEmail] = useState('');
+  const [UserNumber, SetNumber] = useState('');
+  const [UserOTP, SetOTP] = useState('');
   const Navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const SendOtpForEmail = async () => {
-    setLoadingOTP(true)
-    const Fordata = new FormData()
-    Fordata.append("email", UserEmail)
-    Fordata.append("number", UserNumber)
+    setLoadingOTP(true);
+    const Fordata = new FormData();
+    Fordata.append('email', UserEmail.toString());
+    Fordata.append('number', UserNumber.toString());
     if (!UserEmail) {
-      toast.error("Email Is Required...")
+      toast.error('Email Is Required...');
+      setLoadingOTP(false);
+      return;
     }
-    try {
-      const response = await axios.post("http://localhost:8000/UserSendOtp", Fordata, {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      const OTP = response.data;
-      console.log(OTP);
-      toast.success(<div className='font-serif text-[15px] text-black'>{OTP.message}</div>);
-      SetOTP(OTP?.otp)
-      SetOtpShow(true)
-    } catch (error) {
-      if (error.response) {
-        const errorMessage = error.response.data.message;
+    console.log();
 
-        if (error.response.status === 409 || errorMessage === "User already exists") {
-          console.log("Error: User already exists.");
-          toast.error(<div className='font-serif text-[15px] text-black'>{errorMessage}</div>);
-        } else {
-          toast.error(<div className='font-serif text-[15px] text-black'>{errorMessage}</div>);
-          console.log("Error: ", errorMessage || "Unexpected error occurred.");
-        }
-      } else {
-        console.log("Error: Network issue or server not responding", error);
-      }
+    try {
+      const response = await axios.post('http://localhost:3000/UserSendOtp', Fordata, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const OTP = response.data;
+      toast.success(<div className="font-serif text-[15px] text-black">{OTP.message}</div>);
+      SetOTP(OTP?.otp);
+      SetOtpShow(true);
+    } catch (error) {
+      toast.error('Unexpected error occurred.');
+    } finally {
+      setLoadingOTP(false);
     }
-    setLoadingOTP(false)
-  }
+  };
 
   const onSubmit = async (data) => {
-    setOtpVerify(true)
+    setOtpVerify(true);
     if (UserOTP == data.OTP) {
       if (!file) {
         toast.error('Please select a logo file');
         return;
       }
       const formData = new FormData();
-      formData.append("ProfileImg", file); // Ensure file is not null
-      formData.append("name", data.name);
-      formData.append("email", data.email);
-      formData.append("mobile", data.mobile.toString());
-      formData.append("password", data.password);
+      formData.append('ProfileImg', file);
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('mobile', data.mobile.toString());
+      formData.append('password', data.password);
 
       try {
-        const response = await axios.post("http://localhost:8000/User/Registration", formData);
+        const response = await axios.post('http://localhost:3000/User/Registration', formData);
         const UserResponse = response.data;
-        if (response.status === 200) {
-          toast.success(<div className='font-serif text-[15px] text-black'>{UserResponse.message}</div>);
-          setTimeout(() => {
-            Navigate("/");
-            setOtpVerify(false)
-            const Token = UserResponse.token;
-            localStorage.setItem("Token", Token);
-          }, 1600);
-        }
-      } catch (error) {
+        toast.success(<div className="font-serif text-[15px] text-black">{UserResponse.message}</div>);
         setTimeout(() => {
-          setOtpVerify(false)
-        }, 2000);
-        if (error.response) {
-          const errorMessage = error.response.data.message;
-
-          if (error.response.status === 409 || errorMessage === "User already exists") {
-            console.log("Error: User already exists.");
-            toast.error(<div className='font-serif text-[15px] text-black'>{errorMessage}</div>);
-          } else {
-            toast.error(<div className='font-serif text-[15px] text-black'>{errorMessage}</div>);
-            console.log("Error: ", errorMessage || "Unexpected error occurred.");
-          }
-        } else {
-          console.log("Error: Network issue or server not responding", error);
-        }
+          Navigate('/');
+          setOtpVerify(false);
+          const Token = UserResponse.token;
+          localStorage.setItem('Token', Token);
+        }, 1600);
+      } catch (error) {
+        toast.error('Unexpected error occurred.');
+        setOtpVerify(false);
       }
     } else {
-      toast.error("OTP doesn't match, please try again.")
+      toast.error("OTP doesn't match, please try again.");
     }
   };
 
   return (
     <>
       <ToastContainer />
-      <div className='grid grid-cols-1 place-items-center'>
-        <div className='px-5 py-0 shadow-lg shadow-gray-300 rounded-lg '>
-          <h1 className='text-center font-medium font-serif text-[30px]'>SignIn</h1>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-bg-gradient fixed inset-0 z-50">
+        <div className="px-3 bg-white shadow-lg rounded-lg max-w-lg">
+          <h1 className="text-center font-medium font-serif text-[30px]">SignIn</h1>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className='space-y-1'>
               <div>
@@ -119,8 +96,8 @@ const SignIn = () => {
                   })}
                   type="file"
                   name='ProfileImg'
-                  className='w-full px-4 py-1.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent'
-                  onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} />
+                  className='w-full px-4 py-0 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent'
+                  onChange={(event) => setFile(event.target.files ? event.target.files[0] : null)} />
                 {errors.ProfileImg && (
                   <div className="text-red-500 text-lg font-serif mt-0 text-center">
                     {errors.ProfileImg.message}
@@ -184,7 +161,6 @@ const SignIn = () => {
                   type="number"
                   name='mobile'
                   placeholder='8459844605'
-                  value={UserNumber}
                   className='w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none' onChange={(e) => SetNumber(e.target.value)}
                 />
                 {errors.mobile && (
@@ -272,7 +248,7 @@ const SignIn = () => {
                   />
                   {errors.OTP && ( // Fixing the error check to match "OTP"
                     <div className="text-red-500 text-lg font-serif mt-0 text-center">
-                      {(errors.OTP).message} // Make sure "OTP" matches in the message
+                      {(errors.OTP).message}
                     </div>
                   )}
                 </div>
@@ -320,7 +296,8 @@ const SignIn = () => {
           </form>
         </div>
       </div>
-    </>  
-}
+    </>
+  );
+};
 
-export default SignIn
+export default SignIn;

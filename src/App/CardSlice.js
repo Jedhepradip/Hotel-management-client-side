@@ -14,6 +14,7 @@ export const fetchCardData = () => async (dispatch) => {
             method: 'GET',
         });
         const data = await response.json();
+        
         dispatch(CardInformation(data)); 
     } catch (error) {
         console.error("Fetch error:", error);

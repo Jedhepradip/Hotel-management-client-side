@@ -1,38 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { FaUserEdit } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 import { RxCross2 } from 'react-icons/rx';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FetchingUserData } from '../../App/UserSlice';
+import { fetchCardData } from '../../App/CardSlice';
 
 const ProfilePage = () => {
     const [userInfo, setUserInfo] = useState({});
     const [file, setFile] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [BookingId, setBookingId] = useState([])
+    const dispatch = useDispatch()
+
     const navigate = useNavigate();
+    const User = useSelector((state) => state.Userdata.UserInfo)
+    const cardifData = useSelector((state) => state.cardData.Cardif);
 
-    const user = useSelector(state => state.UserData.UserData);
-    const CardInfo = useSelector(state => state.Cardif.Cardif)
-
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    console.log("CardInfo :", cardifData);
+    console.log("User :", User);
 
     useEffect(() => {
-        if (user.length) {
-            setUserInfo(user[0].text.user);
-            let Rooms =  user[0].text.user.Orders.Rooms
-            setBookingId(Rooms)   
-            console.log("Redux :", user[0].text.user);
-        }
-        // else {
-        //     const storedUser = sessionStorage.getItem("Userdata");
-        //     console.log("storedUser :", storedUser);
-        //     setUserInfo(storedUser)
-        // }
+        dispatch(fetchCardData());
+        dispatch(FetchingUserData())
+    }, [dispatch]);
 
-    }, [user,BookingId.length]);
+    const { register, handleSubmit, reset } = useForm();
+
+    // useEffect(() => {
+    // if (user.length) {
+    //     setUserInfo(user[0].text.user);
+    //     let Rooms = user[0].text.user.Orders.Rooms
+    //     setBookingId(Rooms)
+    //     console.log("Redux :", user[0].text.user);
+    // }
+    // else {
+    //     const storedUser = sessionStorage.getItem("Userdata");
+    //     console.log("storedUser :", storedUser);
+    //     setUserInfo(storedUser)
+    // }
+
+    // }, [user, BookingId.length]);
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
@@ -50,7 +61,7 @@ const ProfilePage = () => {
 
         try {
             // const response = await fetch("https://hotel-management-server-5drh.onrender.com/Eidit/User/Profile", {
-                const response = await fetch("http://localhost:3000/Eidit/User/Profile", {
+            const response = await fetch("http://localhost:3000/Eidit/User/Profile", {
                 method: "PUT",
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -81,7 +92,7 @@ const ProfilePage = () => {
         localStorage.removeItem("Token")
         navigate("/SignIn")
     }
-   
+
     return (
         <div className="relative bg-slate-200 dark:bg-gray-800 flex flex-wrap items-center justify-center font-serif">
             <ToastContainer />
@@ -125,7 +136,7 @@ const ProfilePage = () => {
                         <h3 className="text-xl font-semibold text-gray-700">Booking History</h3>
                         <div className="mt-4">
                             {BookingId.map((val, index) => (
-                                <div className="bg-gray-50 p-4 rounded-lg shadow-md mb-4">
+                                <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-md mb-4">
                                     <h4 className="font-semibold text-gray-700">Booking Rooms Id :{val.roomsid}</h4>
                                     <p className="text-gray-600">Owenr Name : {val.CARDHOLDERNAME}</p>
                                     <p className="text-gray-600">Card Number : {val.CardNumber}</p>
