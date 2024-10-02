@@ -80,6 +80,8 @@ const SignIn = () => {
     }
   };
 
+  console.log("OTP", UserOTP);
+
   return (
     <>
       <ToastContainer />

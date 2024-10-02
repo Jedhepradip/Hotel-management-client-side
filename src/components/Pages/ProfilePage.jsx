@@ -17,11 +17,12 @@ const ProfilePage = () => {
     const dispatch = useDispatch()
 
     const navigate = useNavigate();
-    const User = useSelector((state) => state.Userdata.UserInfo)
-    const cardifData = useSelector((state) => state.cardData.Cardif);
+    const User = useSelector((state) => state?.Userdata.User)
+    const cardifData = useSelector((state) => state?.cardData?.Cardif);
 
-    console.log("CardInfo :", cardifData);
-    console.log("User :", User);
+    console.log(cardifData);
+    console.log(User);
+
 
     useEffect(() => {
         dispatch(fetchCardData());
@@ -30,21 +31,16 @@ const ProfilePage = () => {
 
     const { register, handleSubmit, reset } = useForm();
 
-    // useEffect(() => {
-    // if (user.length) {
-    //     setUserInfo(user[0].text.user);
-    //     let Rooms = user[0].text.user.Orders.Rooms
-    //     setBookingId(Rooms)
-    //     console.log("Redux :", user[0].text.user);
-    // }
-    // else {
-    //     const storedUser = sessionStorage.getItem("Userdata");
-    //     console.log("storedUser :", storedUser);
-    //     setUserInfo(storedUser)
-    // }
+    useEffect(() => {
+        if (User) {
+            setUserInfo(User?.user);
+            let Rooms = User?.Orders?.Rooms
+            setBookingId(Rooms)
+        }
+    }, [User]);
 
-    // }, [user, BookingId.length]);
-
+    console.log(userInfo);
+    
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
@@ -75,7 +71,7 @@ const ProfilePage = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             if (response.ok) {
-                const responseData = await response.json();
+                await response.json();
                 reset();
                 toggleModal();
                 toast.success(`Profile Update Successfull..`)
@@ -105,7 +101,7 @@ const ProfilePage = () => {
                             className="w-24 h-24 rounded-full border-2 border-black"
                         />
                         <div>
-                            <h2 className="text-2xl font-semibold text-gray-800">{userInfo.Name}</h2>
+                            <h2 className="text-2xl font-semibold text-gray-800">{userInfo.name}</h2>
                             {/* <p className="text-gray-600">email</p> */}
                         </div>
                     </div>
@@ -115,15 +111,15 @@ const ProfilePage = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
                                 <h4 className="font-semibold text-gray-700">Name</h4>
-                                <p className="text-gray-600">{userInfo.Name}</p>
+                                <p className="text-gray-600">{userInfo.name}</p>
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
                                 <h4 className="font-semibold text-gray-700">Email</h4>
-                                <p className="text-gray-600">No</p>
+                                <p className="text-gray-600">{userInfo.email}</p>
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
                                 <h4 className="font-semibold text-gray-700">Phone</h4>
-                                <p className="text-gray-600">91+ {userInfo.Phone}</p>
+                                <p className="text-gray-600">91+ {userInfo.mobile}</p>
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
                                 <h4 className="font-semibold text-gray-700">Address</h4>
@@ -135,7 +131,7 @@ const ProfilePage = () => {
                     <div className="mt-6">
                         <h3 className="text-xl font-semibold text-gray-700">Booking History</h3>
                         <div className="mt-4">
-                            {BookingId.map((val, index) => (
+                            {BookingId?.map((val, index) => (
                                 <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-md mb-4">
                                     <h4 className="font-semibold text-gray-700">Booking Rooms Id :{val.roomsid}</h4>
                                     <p className="text-gray-600">Owenr Name : {val.CARDHOLDERNAME}</p>
