@@ -1,192 +1,120 @@
-import React, { useState, useEffect } from 'react'
-import { BsThreeDotsVertical } from 'react-icons/bs'
-import { FaStar, FaStarHalfAlt } from 'react-icons/fa'
-import { IoLocationOutline } from 'react-icons/io5'
-import { useSelector } from 'react-redux'
-import { json, NavLink } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FetchingUserData } from '../../App/UserSlice';
+import { fetchCardData } from '../../App/CardSlice';
 
 const AddtoRooms = () => {
-    const [roomsId, setRoomsId] = useState([{}])
-    const [RoomsID, Setrooms] = useState(null)
-    const [show, setIsOpen] = useState(false)
-    const [Totle, settotlePrice] = useState([])
+    const [roomsId, SetAddToCardRooms] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const Navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const Navigate = useNavigate()
-
-    const handelshow = (RoomsId) => {
-        console.log(RoomsID);
-        Setrooms(RoomsId)
-        setIsOpen(true)
-    }
-
-    const user = useSelector(state => state.UserData.UserData);    
-    const CardInfo = useSelector(state => state.Cardif.Cardif)    
+    const user = useSelector((state) => state?.Userdata?.User);
+    const CardInfo = useSelector((state) => state?.cardData?.Cardif);
 
     useEffect(() => {
-        if (user.length > 0) {
-            let Roomsdata = user[0].text.RoomstobookingUser
-            console.log("Roomsdata :",Roomsdata);
-            let total = 0
-            Roomsdata.map(e => {
-                total += e.discountPrice
-            })
-            settotlePrice(total)
-            setRoomsId(Roomsdata)
+        if (user?.user) {
+            const AddToCard = CardInfo?.filter((room) =>
+                user?.user?.AddToCardRooms.includes(room._id)
+            );
+            SetAddToCardRooms(AddToCard);
+
+            const total = AddToCard?.reduce((acc, room) => acc + room.discountPrice, 0);
+            setTotalPrice(total);
         }
-        else {
-            let userdata = sessionStorage.getItem("Userdata")
-            let data = JSON.parse(userdata)
-            setRoomsId(data.RoomstobookingUser)
-        }
-    }, [user,CardInfo])
+    }, [user, CardInfo]);
+
+    useEffect(() => {
+        dispatch(FetchingUserData());
+        dispatch(fetchCardData());
+    }, [dispatch]);
 
     const handelRoomsId = async (removeroomsId) => {
         try {
-            const response = await fetch(`https://hotel-management-server-5drh.onrender.com/Rooms/Removeto/AddtoCard/${removeroomsId}`, {
-            // const response = await fetch(`https://loclahost:3000/Rooms/Removeto/AddtoCard/${removeroomsId}`, {
+            const response = await fetch(`http://localhost:3000/Rooms/Removeto/AddtoCard/${removeroomsId}`, {
                 method: "PUT",
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("Token")}`
                 }
-            })
+            });
             if (!response.ok) {
                 console.log(response.status);
             }
             if (response.ok) {
-                let RemoveRooms = await response.json()
-                toast.success(`Rooms Remove Successfull...`)
+                await response.json();
+                toast.success(`Room Removed Successfully...`);
                 setTimeout(() => {
-                    Navigate("/")
-                }, 800)
+                    Navigate("/");
+                }, 800);
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     return (
         <>
-            <div className='flex relative justify-around items-center flex-wrap font-serif bg-white cursor-pointer md:w-full w-[100%] p-1'>
-                <div>
-                    <div>
-                <ToastContainer/>
-                        {roomsId.length ?
-                            <>
-                                <h1 className='mt-5 font-bold font-serif text-[40px] text-center'>Booking Rooms</h1>
-                            </>
-                            :
-                            <>
-                                <div>
-                                    <h1 className='mt-5 font-bold font-serif text-[30px]'>Not Booking Rooms To Add The Rooms</h1>
-                                    <NavLink to={"/"}>
-                                        <p className='font-serif float-right font-bold text-blue-700 mb-1'>Click Here</p>
-                                    </NavLink>
-                                </div>
-                            </>
-                        }
-                    </div>
+            <ToastContainer />
+            <h1 className='text-5xl font-extrabold text-center mt-5 text-gray-800'>Booking Rooms</h1>
+            <div className='mt-6 flex justify-between items-center bg-gray-50 p-6 rounded-lg shadow-md'>
+                <h2 className='text-2xl font-semibold text-gray-700'>Total Price: <span className='text-green-600'>₹{totalPrice}</span></h2>
+            </div>
 
-                    {roomsId.length ?
-                        <>
-                            <div className='h-20 w-38 mt-4 rounded-lg  border border-black border-solid flex justify-center items-center'>
-                                <div>
-                                    <h1 className='text-center p-2 font-bold font-serif text-[20px]'>Amount</h1>
-                                    <h1 className='font-serif py-1 px-1 text-[20px] font-bold'>Total : {Totle}</h1>
-                                </div>
-                            </div>
-                        </>
-                        :
-                        null
-                    }
-                </div>
-
-                {roomsId.map((val, index) => (
-
-                    <div key={index}
-                        className='flex mt-10 mb-5 justify-center w-full'
-                        onClick={() => {
-                            {
-                                show ?
-                                    setIsOpen(false)
-                                    :
-                                    null
-                            }
-                        }}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8 bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg shadow-xl">
+                {roomsId.map((room) => (
+                    <div
+                        key={room.id}
+                        className="bg-white border-2 border-gray-300 rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl duration-300"
                     >
-                        <div className='flex border border-black border-solid border-10 overflow-hidden  md:w-[65%]  rounded-[10px]  md:h-[100%] '>
-
-                            <div className='overflow-hidden md:w-[60%] md:h-[204px] w-full h-full'>
-                                <NavLink to={`/RoomsAll/${val._id}`}>
-                                    <img src={val.thumbnail} alt="" className='h-[100%] w-[100%] p-0 object-cover rounded-lg transition-transform ease-in-out duration-300 overflow-hidden hover:scale-110'
-                                    />
-                                </NavLink>
-                            </div>
-
-                            <div className='flex-col md:w-full w-[100%] relative  cursor-default'>
-                                <h1 className='float-right py-0 px-5 text-[19px] cursor-pointer mt-2'
-                                    onClick={() => handelshow(val._id)}>
-                                    <BsThreeDotsVertical onClick={() => handelshow(val._id)} />
-                                </h1>
-
-                                {val._id == RoomsID ?
-                                    <>
-                                        {show ?
-                                            <>
-                                                <div className='absolute bg-red-600 text-white border border-1 border-black md:ml-[380px] ml-[147px] md:mt-1 mt-9 flex justify-center items-center rounded-lg' onClick={() => handelRoomsId(val._id)}>
-                                                    <h1 className='text-[20px] p-2 font-serif'>Remove</h1>
-                                                </div>
-                                            </>
-                                            :
-                                            null
-                                        }
-                                    </>
-                                    :
-                                    null
-                                }
-
-                                <h1 className='ml-5 py-1 font-bold font-serif text-[25px]'>{val.title}</h1>
-                                <p className='ml-5 text-[18px] py-1 font-thin'>{val.description}</p>
-                                <div className='flex'>
-                                    <FaStar className='ml-5 text-orange-500' />
-                                    <FaStar className='text-orange-500' />
-                                    <FaStar className='text-orange-500' />
-                                    <FaStarHalfAlt className='text-orange-500' />
+                        <img
+                            src={room.thumbnail}
+                            alt={room.title}
+                            className="w-full h-56 object-cover rounded-t-xl transition-opacity duration-500 hover:opacity-90"
+                        />
+                        <div className="p-6">
+                            <h2 className="text-2xl  mb-3 text-indigo-700 hover:text-indigo-900 transition-colors duration-300 font-serif font-medium">
+                                {room.title}
+                            </h2>
+                            <p className="text-gray-600 mb-4 font-serif font-medium">{room.description}</p>
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <span className="text-xl font-bold text-red-600">
+                                        ${room.discountPrice}
+                                    </span>
+                                    <span className="text-sm text-gray-400 line-through ml-2">
+                                        ${room.price}
+                                    </span>
                                 </div>
-
-                                <span className='mt-2 ml-5 inline-block text-gray-800 bg-white p-0 rounded font-bold'>
-                                    <IoLocationOutline className='inline-block text-black mr-0 text-[22px]' />
-                                    <span>{val.location}</span>
+                                <span className="bg-green-100 text-green-600 text-sm font-semibold px-2 py-1 rounded-full">
+                                    {room.discountPercentage}% off
                                 </span>
-
-                                <div className='ml-5'>
-                                    <div className='inline-block text-gray-800 bg-white p-2 rounded '>
-                                        <span className='text-black text-[15px] font-bold'>
-                                            {val.discountPercentage}% Off
-                                        </span>
-                                    </div>
-                                    <div className='inline-block text-gray-800 bg-white p-2 rounded '>
-                                        <p className='text-black text-[20px] font-bold'>
-                                            ₹{val.discountPrice}
-                                        </p>
-                                    </div>
-                                    <div className='inline-block text-gray-800 bg-white p-2 rounded'>
-                                        <del className='text-black text-lg font-bold'>
-                                            ₹{val.price}
-                                        </del>
-                                    </div>
-                                </div>
+                            </div>
+                            <p className="mt-3 text-sm text-gray-500 flex items-center">
+                                <svg className="w-4 h-4 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 2a8 8 0 00-8 8c0 4.418 3.582 8 8 8s8-3.582 8-8a8 8 0 00-8-8zm0 14a6 6 0 110-12 6 6 0 010 12z" />
+                                </svg>
+                                {room.location}
+                            </p>
+                            <div className="flex justify-between items-center mt-5">
+                                <span className="flex items-center text-yellow-500">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.943a1 1 0 00.95.69h4.15c.97 0 1.371 1.24.588 1.81l-3.364 2.448a1 1 0 00-.364 1.118l1.286 3.943c.3.922-.755 1.688-1.539 1.118l-3.364-2.448a1 1 0 00-1.175 0l-3.364 2.448c-.783.57-1.838-.196-1.538-1.118l1.286-3.943a1 1 0 00-.364-1.118L2.784 9.37c-.783-.57-.382-1.81.588-1.81h4.15a1 1 0 00.95-.69l1.286-3.943z" />
+                                    </svg>
+                                    <span className="ml-1">{1} Likes</span>
+                                </span>
+                                <button className="bg-red-500 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-red-600 hover:shadow-xl transition duration-300 font-serif" onClick={() => handelRoomsId(room._id)}>
+                                    Remove from Cart
+                                </button>
                             </div>
                         </div>
                     </div>
-
                 ))}
-
             </div>
         </>
-    )
-}
+    );
+};
 
-export default AddtoRooms
+export default AddtoRooms;

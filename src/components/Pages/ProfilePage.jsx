@@ -40,7 +40,7 @@ const ProfilePage = () => {
     }, [User]);
 
     console.log(userInfo);
-    
+
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
@@ -88,7 +88,7 @@ const ProfilePage = () => {
         localStorage.removeItem("Token")
         navigate("/SignIn")
     }
-
+    
     return (
         <div className="relative bg-slate-200 dark:bg-gray-800 flex flex-wrap items-center justify-center font-serif">
             <ToastContainer />
@@ -96,7 +96,7 @@ const ProfilePage = () => {
                 <div className="container mx-auto bg-white p-6 rounded-lg shadow-md">
                     <div className="flex items-center space-x-4">
                         <img
-                            src={`http://localhost:3000/${userInfo.ProfilImg}`}
+                            src={`http://localhost:3000/${userInfo?.ProfileImg}`}
                             alt="Profile"
                             className="w-24 h-24 rounded-full border-2 border-black"
                         />

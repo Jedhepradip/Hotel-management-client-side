@@ -4,8 +4,9 @@ import { fetchCardData } from '../../App/CardSlice';
 import { FaRegHeart } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const Card = () => {
     const [location, setLocation] = useState()
@@ -38,14 +39,6 @@ const Card = () => {
 
     let token = localStorage.getItem("Token");
 
-    // const handeltocheecktoken = (Roomsid) => {
-    //     if (!token) {
-    //         navigate("/SignIn");
-    //     } else {
-    //         navigate(`/BillAuth/${Roomsid}`);
-    //     }
-    // };
-
     const handellike = async (RoomsId) => {
         if (!token) {
             Navigate("/Login")
@@ -64,10 +57,12 @@ const Card = () => {
             if (!response.ok) {
                 console.log(response.status);
             }
+            window.location.reload();
         } catch (error) {
             console.log(error);
         }
     };
+
 
     const filterbyConuty = (country) => {
         if (cardifData) {
@@ -108,10 +103,36 @@ const Card = () => {
         else if (price >= 7000 && price <= 8000) {
             setpricerange = cardifData.filter((e) => e.price >= 7000 && e.price <= 8000);
         }
-
-        console.log(setpricerange);  // Log the filtered price range data
-        setshow(setpricerange);  // Assuming 'setshow' updates the UI with the filtered results
+        setshow(setpricerange);
     };
+
+    const AddToCard = async (RoomsId) => {
+        if (!token) {
+            Navigate("/Login");
+            return;
+        }
+        try {
+            const response = await axios.put(`http://localhost:3000/User/AddToCard/${RoomsId}`, {}, {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                }
+            });
+
+            if (response.status === 200) {
+                toast.success("Item added to cart successfully!", {
+                    position: toast.POSITION.TOP_RIGHT,
+                    autoClose: 3000,
+                });
+            }
+        } catch (error) {
+            toast.error("Failed to add item to cart. Please try again.", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+            });
+            console.log(error);
+        }
+    };
+
 
     return (
 
@@ -192,7 +213,7 @@ const Card = () => {
                                                 {/* Image */}
                                                 <img
                                                     className="w-full h-48 object-cover"
-                                                    src={`http://localhost:3000/${val.thumbnail}`}
+                                                    src={`http://localhost:3000/${val?.thumbnail}`}
                                                     alt="Product Image"
                                                 />
 
@@ -217,14 +238,16 @@ const Card = () => {
                                                     <div className="flex items-center justify-between mt-4">
                                                         <span>
                                                             <FaRegHeart className="text-[22px] text-gray-900 hover:text-gray-500 cursor-pointer transition-colors duration-300" onClick={() => handellike(val._id)} />
-                                                            <h1 className='ml-[6px] font-serif text-[20px]'>{val?.likes?.length}</h1>
+                                                            <h1 className='ml-[6px] font-serif text-[20px]'>
+                                                                {val?.likes?.length}
+                                                            </h1>
                                                         </span>
                                                         <span className='flex font-serif'>
                                                             <IoLocationOutline className='text-[22px]' />
                                                             {val.location}
                                                         </span>
                                                         {/* Add to Cart Button */}
-                                                        <button className="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors duration-300">
+                                                        <button className="bg-blue-700 text-white px-4 py-1.5 rounded-lg hover:bg-blue-500 transition-colors duration-300 font-serif font-medium" onClick={() => AddToCard(val._id)}>
                                                             Add to Cart
                                                         </button>
                                                     </div>

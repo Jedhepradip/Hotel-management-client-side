@@ -215,8 +215,9 @@ const NavigationBar = () => {
   const [userData, setUserdata] = useState()
   const Dispatch = useDispatch();
   let token = localStorage.getItem("Token");
+
   const User = useSelector((state) => state?.Userdata.User)
-  const cardifData = useSelector((state) => state?.cardData?.Cardif);
+  useSelector((state) => state?.cardData?.Cardif);
 
   useEffect(() => {
     Dispatch(FetchingUserData())
@@ -322,11 +323,18 @@ const NavigationBar = () => {
                     </NavLink>
                   </li>
 
-                  <li>
+                  <li className="relative">
                     <NavLink to="/AddtoRooms">
-                      <FaShoppingCart className="text-[30px]" />
+                      <FaShoppingCart className="text-[30px] text-gray-700 hover:text-red-600 transition-colors duration-300" />
+                      {/* Conditionally render the badge only if there are rooms */}
+                      {userData?.user?.Rooms?.length > 0 && (
+                        <div className="absolute -top-2 -right-3 flex items-center justify-center h-6 w-6 bg-red-600 text-white text-sm rounded-full">
+                          {userData.user?.AddToCardRooms?.length}
+                        </div>
+                      )}
                     </NavLink>
                   </li>
+
                   <li>
                     <NavLink to="/ProfilePage">
                       <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center">
