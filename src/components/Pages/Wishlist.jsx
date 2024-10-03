@@ -1,198 +1,85 @@
 import React, { useEffect, useState } from 'react'
 import { FaRegHeart, FaStar, FaStarHalfAlt } from 'react-icons/fa'
 import { IoLocationOutline } from 'react-icons/io5'
+import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { FetchingUserData } from '../../App/UserSlice'
+import { fetchCardData } from '../../App/CardSlice'
+
 const Wishlist = () => {
+  const [CardlikesShow, setLikesUser] = useState()
+  const dispatch = useDispatch()
+  const cardifData = useSelector((state) => state?.cardData?.Cardif);
+  const User = useSelector((state) => state?.Userdata.User)
 
-  const [roomsId, setroomslike] = useState([])
-  const [idtorefresh,setrefresh] = useState([])
-  const CardInfo = useSelector(state => state.Cardif.Cardif)    
-
-  const user = useSelector(state => state.UserData.UserData);
-
-console.log("user :",user);
 
   useEffect(() => {
-    if (CardInfo.length) {
-      wishlist(CardInfo[0].text, user[0].text.user)
-      // setrefresh(user[0].text.RoomstobookingUser.length)
-    }
-    else {
-      let roomsdata = JSON.parse(sessionStorage.getItem("Roomsdata"))
-      let userdata = JSON.parse(sessionStorage.getItem("Userdata"))
-      // setrefresh(userdata.RoomstobookingUser.length)
-      wishlist(roomsdata, userdata.user)
-    }
-  }, [])
+    dispatch(FetchingUserData())
+    dispatch(fetchCardData())
+  }, [dispatch,User?.user?.rooms?.length])
 
-  // useEffect(() => {
   
-  // }, [idtorefresh])
-  
-  let wishlistarr = []
 
-  const wishlist = (data, Userdata) => {
-    // data.map((e) => {
-    //   if (e.likes.length > 0) {
-    //     if (e.likes[0].like == Userdata._id) {
-    //       // if (e.likes[0].like) {
-    //       // wishlistarr.push(e)
-    //     }
-    //   }
-    // })
-
-    data.map((e) => {
-      if (e.likes.length > 0) {
-        e.likes.map((val) => {
-          if (val.like == Userdata._id) {
-            wishlistarr.push(e)
-          }
-        })
-      }
-    });
-
-    setroomslike(wishlistarr)
-  }
-
-console.log("room :",roomsId);
+  useEffect(() => {
+    if (User?.user?.Rooms) {
+      const likeRooms = cardifData?.filter((room) =>
+        User.user.Rooms.includes(room._id)
+      );
+      setLikesUser(likeRooms)
+    }
+  }, [User, cardifData]);
 
   return (
-    <div className='bg-white'>
-       <h1 className='mt-5 font-bold font-serif text-[40px] text-center'>Wishlist Rooms</h1>
-      {roomsId.map((val, index) => (        
-        <div key={index}
-          className='flex mt-10 mb-5 justify-center w-full bg-white'>
-          <div className='flex border border-black border-solid border-10 overflow-hidden  md:w-[65%]  rounded-[10px]  md:h-[100%] '>
-            <div className='overflow-hidden md:w-[60%] md:h-[220px] hover:rounded-lg w-full h-full'>
-              <NavLink to={`/RoomsAll/${val._id}`}>
-                <img src={val.thumbnail} alt="" className='h-[100%] w-[100%] p-0 object-cover rounded-lg transition-transform ease-in-out duration-300 overflow-hidden hover:scale-110'
-                />
-              </NavLink>
-            </div>
-            <div className='flex-col md:w-full w-[100%] relative  cursor-default'>
-              <h1 className='ml-5 py-1 font-bold font-serif text-[25px]'>{val.title}</h1>
-              <p className='ml-5 text-[18px] py-1 font-thin'>{val.description}</p>
-              <div className='flex'>
-                <FaStar className='ml-5 text-orange-500' />
-                <FaStar className='text-orange-500' />
-                <FaStar className='text-orange-500' />
-                <FaStarHalfAlt className='text-orange-500' />
+    <div className='bg-gradient-to-b from-blue-50 via-white to-blue-100 animate-bgAnimation min-h-screen'>
+      <h1 className='mt-5 font-bold font-serif text-[40px] text-center text-gray-900'>Wishlist Rooms</h1>
+      <div className='flex flex-wrap justify-center gap-10 p-5'>
+        {CardlikesShow?.map((val, index) => (
+          <div
+            key={index}
+            className='flex flex-col border border-gray-300 shadow-lg rounded-[10px] hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden w-full md:w-[30%]'
+          >
+            <NavLink to={`/RoomsAll/${val._id}`} className='overflow-hidden w-full h-[220px]'>
+              <img
+                src={val.thumbnail}
+                alt=""
+                className='h-[100%] w-[100%] object-cover transition-transform ease-in-out duration-300 hover:scale-110'
+              />
+            </NavLink>
+            <div className='p-4'>
+              <h1 className='font-bold font-serif text-[25px] text-gray-800'>{val.title}</h1>
+              <p className='text-[18px] py-1 font-light text-gray-700'>{val.description}</p>
+              <div className='flex items-center py-2'>
+                <FaStar className='text-yellow-500' />
+                <FaStar className='text-yellow-500' />
+                <FaStar className='text-yellow-500' />
+                <FaStarHalfAlt className='text-yellow-500' />
               </div>
-              <span className='mt-2 ml-5 flex text-gray-800 bg-white p-0 rounded font-bold'>
-                <IoLocationOutline className='inline-block text-black mr-0 text-[22px]' />
-
-                <span>{val.location}</span>
-                <span className='ml-5 text-[20px]'><FaRegHeart/>
-                <h1 className='text-[15px] ml-1'>{val.likes.length}</h1>
-                </span>
-
-              </span>
-              <div className='ml-5'>
-                <div className='inline-block text-gray-800 bg-white p-2 rounded '>
-                  <span className='text-black text-[15px] font-bold'>
-                    {val.discountPercentage}% Off
-                  </span>
+              <div className='flex items-center mt-2'>
+                <IoLocationOutline className='text-gray-800 text-[22px] mr-1' />
+                <span className='text-gray-700'>{val.location}</span>
+                <div className='flex ml-5 items-center'>
+                  <FaRegHeart className='text-red-500 text-[22px]' />
+                  <span className='ml-2 text-[16px]'>{val.likes.length}</span>
                 </div>
-                <div className='inline-block text-gray-800 bg-white p-2 rounded '>
-                  <p className='text-black text-[20px] font-bold'>
-                    ₹{val.discountPrice}
-                  </p>
+              </div>
+              <div className='mt-4'>
+                <div className='inline-block bg-green-100 text-green-800 px-3 py-1 rounded-md font-bold text-[15px]'>
+                  {val.discountPercentage}% Off
                 </div>
-                <div className='inline-block text-gray-800 bg-white p-2 rounded'>
-                  <del className='text-black text-lg font-bold'>
-                    ₹{val.price}
-                  </del>
+                <div className='inline-block ml-4 bg-blue-100 text-blue-800 px-3 py-1 rounded-md font-bold text-[20px]'>
+                  ₹{val.discountPrice}
+                </div>
+                <div className='inline-block ml-4 text-gray-500 line-through font-bold text-lg'>
+                  ₹{val.price}
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }
 
 export default Wishlist
-
-
-
-// import React, { useEffect, useState } from 'react';
-// import { FaRegHeart, FaStar, FaStarHalfAlt } from 'react-icons/fa';
-// import { IoLocationOutline } from 'react-icons/io5';
-// import { useSelector } from 'react-redux';
-// import { NavLink } from 'react-router-dom';
-
-// const Wishlist = () => {
-//   const [roomsId, setRoomsId] = useState([]);
-
-//   const Card = useSelector((state) => state.Cardif.Cardif);
-//   const user = useSelector((state) => state.UserData.UserData);
-
-//   useEffect(() => {
-//     const roomsData = JSON.parse(sessionStorage.getItem('Roomsdata')) || [];
-//     const userData = JSON.parse(sessionStorage.getItem('Userdata')) || {};
-
-//     if (Card.length) {
-//       wishlist(Card[0].text, user[0].text.user);
-//     } else {
-//       wishlist(roomsData, userData);
-//     }
-//   }, [Card, user]);
-
-//   const wishlist = (data, userData) => {
-//     const wishlistArr = data.filter((e) => e.likes.some((like) => like.like === userData._id));
-//     setRoomsId(wishlistArr);
-//   };
-
-//   return (
-//     <div className="bg-white">
-//       {roomsId.map((val, index) => (
-//         <div key={index} className="flex mt-10 mb-5 justify-center w-full bg-white">
-//           <div className="flex border border-black border-solid border-10 overflow-hidden md:w-[65%] rounded-[10px] md:h-[100%]">
-//             <div className="overflow-hidden md:w-[60%] md:h-[220px] hover:rounded-lg w-full h-full">
-//               <NavLink to={`/RoomsAll/${val._id}`}>
-//                 <img
-//                   src={val.thumbnail}
-//                   alt=""
-//                   className="h-[100%] w-[100%] p-0 object-cover rounded-lg transition-transform ease-in-out duration-300 overflow-hidden hover:scale-110"
-//                 />
-//               </NavLink>
-//             </div>
-//             <div className="flex-col md:w-full w-[100%] relative cursor-default">
-//               <h1 className="ml-5 py-1 font-bold font-serif text-[25px]">{val.title}</h1>
-//               <p className="ml-5 text-[18px] py-1 font-thin">{val.description}</p>
-//               <div className="flex">
-//                 <FaStar className="ml-5 text-orange-500" />
-//                 <FaStar className="text-orange-500" />
-//                 <FaStar className="text-orange-500" />
-//                 <FaStarHalfAlt className="text-orange-500" />
-//               </div>
-//               <span className="mt-2 ml-5 flex text-gray-800 bg-white p-0 rounded font-bold">
-//                 <IoLocationOutline className="inline-block text-black mr-0 text-[22px]" />
-//                 <span>{val.location}</span>
-//                 <span className="ml-5 text-[20px]">
-//                   <FaRegHeart />
-//                   <h1 className="text-[15px] ml-1">{val.likes.length}</h1>
-//                 </span>
-//               </span>
-//               <div className="ml-5">
-//                 <div className="inline-block text-gray-800 bg-white p-2 rounded">
-//                   <span className="text-black text-[15px] font-bold">{val.discountPercentage}% Off</span>
-//                 </div>
-//                 <div className="inline-block text-gray-800 bg-white p-2 rounded">
-//                   <p className="text-black text-[20px] font-bold">₹{val.discountPrice}</p>
-//                 </div>
-//                 <div className="inline-block text-gray-800 bg-white p-2 rounded">
-//                   <del className="text-black text-lg font-bold">₹{val.price}</del>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default Wishlist;

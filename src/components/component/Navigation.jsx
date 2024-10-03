@@ -202,28 +202,35 @@
 // export default NavigationBar;
 
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaRegHeart, FaShoppingCart } from 'react-icons/fa';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-// import { UserInfromation, setsearchlocation } from '../../assets/CardSlice/CardDate.js';
+import { FetchingUserData } from '../../App/UserSlice';
 import { IoIosSearch } from 'react-icons/io';
 import "./SigIn.css";
 
 const NavigationBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [Search, setSearchShow] = useState([]);
-  // const [likes, setLikes] = useState(0);
-  // const [Shoping, setShopping] = useState(0);
-  const [profilimg, setProfilimg] = useState(null);
+  const [userData, setUserdata] = useState()
   const Dispatch = useDispatch();
   let token = localStorage.getItem("Token");
+  const User = useSelector((state) => state?.Userdata.User)
+  const cardifData = useSelector((state) => state?.cardData?.Cardif);
 
-  // const CardInfo = useSelector(state => state.Cardif.Cardif);
-  // const user = useSelector(state => state.UserData.UserData);
+  useEffect(() => {
+    Dispatch(FetchingUserData())
+  }, [Dispatch])
+
+  useEffect(() => {
+    if (User) {
+      setUserdata(User)
+    }
+  }, [User])
 
   // Handle Search Functionality
   const handleSearch = (city) => {
+    console.log(city);
     // if (!city) return setSearchShow([])
     // let filteredLocations = CardInfo[0].text
     //   .filter(e => e.location.toUpperCase().includes(city.toUpperCase()))
@@ -238,29 +245,6 @@ const NavigationBar = () => {
   //   Dispatch(setsearchlocation(filteredLocations));
   //   setSearchShow([]);
   // };
-
-  // Fetch User Data
-  useEffect(() => {
-    if (token) {
-      const fetchUserData = async () => {
-        try {
-          // const response = await fetch("https://hotel-management-server-5drh.onrender.com/Profile/User/Data", {
-          const response = await fetch("http://localhost:3000/Profile/User/Data", {
-            method: "GET",
-            headers: { authorization: `Bearer ${token}` },
-          });
-          const userdata = await response.json();
-          sessionStorage.setItem("Userdata", JSON.stringify(userdata));
-          // Dispatch(UserInfromation(userdata));
-          // setProfilimg(userdata.user.ProfilImg);
-          // setShopping(userdata.RoomstobookingUser.length);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchUserData();
-    }
-  }, [token, Dispatch]);
 
   // Update Likes and Shopping Cart Length
   // useEffect(() => {
@@ -277,6 +261,7 @@ const NavigationBar = () => {
   //     }
   //   }
   // }, [user, CardInfo]);
+
 
   return (
     <>
@@ -328,12 +313,24 @@ const NavigationBar = () => {
               </li>
               {token ? (
                 <>
-                  <li><NavLink to="/Wishlist"><FaRegHeart className="text-[30px]" /></NavLink></li>
-                  <li><NavLink to="/AddtoRooms"><FaShoppingCart className="text-[30px]" /></NavLink></li>
+                  <li className="relative">
+                    <NavLink to="/Wishlist" className="flex items-center space-x-1">
+                      <FaRegHeart className="text-[30px] text-gray-700 hover:text-red-600 transition-colors duration-300" />
+                      <div className="absolute -top-2 -right-3 flex items-center justify-center h-6 w-6 bg-red-600 text-white text-sm rounded-full">
+                        {userData?.user?.Rooms?.length}
+                      </div>
+                    </NavLink>
+                  </li>
+
+                  <li>
+                    <NavLink to="/AddtoRooms">
+                      <FaShoppingCart className="text-[30px]" />
+                    </NavLink>
+                  </li>
                   <li>
                     <NavLink to="/ProfilePage">
                       <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center">
-                        {profilimg ? <img src={profilimg} alt="Profile" className="h-full w-full rounded-full object-cover" /> : "P"}
+                        <img src={`http://localhost:3000/${userData?.user?.ProfileImg}`} alt="Profile" className="h-full w-full rounded-full object-cover" />
                       </div>
                     </NavLink>
                   </li>

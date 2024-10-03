@@ -72,7 +72,7 @@ const SignIn = () => {
           localStorage.setItem('Token', Token);
         }, 1600);
       } catch (error) {
-        toast.error('Unexpected error occurred.');
+        toast.error(error.message);
         setOtpVerify(false);
       }
     } else {
