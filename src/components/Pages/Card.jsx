@@ -119,16 +119,12 @@ const Card = () => {
             });
 
             if (response.status === 200) {
-                toast.success("Item added to cart successfully!", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 3000,
-                });
+                toast.success(<div className='font-serif font-medium text-black'>Item added to cart successfully!</div>)
             }
+
         } catch (error) {
-            toast.error("Failed to add item to cart. Please try again.", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 3000,
-            });
+            const errorMessage = error.response?.data?.message
+            toast.error(<div className='font-serif font-medium text-red-600'>{errorMessage}</div>)
             console.log(error);
         }
     };
@@ -141,7 +137,7 @@ const Card = () => {
             <div className='grid grid-cols-12 gap-4 p-4'>
                 {/* Filter Section */}
                 <div className='md:col-span-3 col-span-12 bg-white p-6 rounded-lg'>
-                    <h1 className='font-bold text-center text-[25px] cursor-pointer'>Filter Jobs</h1>
+                    <h1 className='font-bold text-center text-[25px] cursor-pointer'>Filter Rooms</h1>
                     <hr />
 
                     <h2 className='text-xl font-medium mb-4 px-2 cursor-pointer font-serif mt-4'>County</h2>
@@ -213,7 +209,7 @@ const Card = () => {
                                                 {/* Image */}
                                                 <img
                                                     className="w-full h-48 object-cover"
-                                                    src={`http://localhost:3000/${val?.thumbnail}`}
+                                                    src={val?.thumbnail}
                                                     alt="Product Image"
                                                 />
 

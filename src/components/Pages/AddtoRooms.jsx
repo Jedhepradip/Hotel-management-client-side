@@ -63,7 +63,7 @@ const AddtoRooms = () => {
                 <h2 className='text-2xl font-semibold text-gray-700'>Total Price: <span className='text-green-600'>₹{totalPrice}</span></h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8 bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg shadow-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pl-20 pr-20 pb-2 pt-4 bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg shadow-xl">
                 {roomsId.map((room) => (
                     <div
                         key={room.id}
