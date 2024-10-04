@@ -86,7 +86,7 @@ const SignIn = () => {
     <>
       <ToastContainer />
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-bg-gradient fixed inset-0 z-50">
-        <div className="px-3 bg-white shadow-lg rounded-lg max-w-lg">
+        <div className="px-6 bg-white shadow-lg rounded-lg max-w-lg">
           <h1 className="text-center font-medium font-serif text-[30px]">SignIn</h1>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className='space-y-1'>
@@ -132,25 +132,25 @@ const SignIn = () => {
                 <input
                   {...register("email", {
                     required: { value: true, message: "Email is required" },
-                    minLength: { value: 4, message: "Min length is 4" },
-                    maxLength: { value: 30, message: "Max length is 30" },
                     pattern: {
-                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                       message: "Invalid email address",
                     },
                   })}
-                  type="text"
-                  name='email'
+                  type="email"
+                  name="email"
                   value={UserEmail}
                   placeholder="PradipJedhe@gmail.com"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none" onChange={(e) => SetEmail(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+                  onChange={(e) => SetEmail(e.target.value)}
                 />
                 {errors.email && (
-                  <div className="text-red-500 text-lg font-serif mt-0 text-center">
+                  <div className="text-red-500 text-lg font-serif mt-1 text-center">
                     {errors.email.message}
                   </div>
                 )}
               </div>
+
 
               <div>
                 <label className='block text-lg font-serif text-gray-700 mb-1'>Phone</label>

@@ -1,16 +1,12 @@
 import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
-import Swal from 'sweetalert2'
 const Login = () => {
-
-    // const notify = () =>  toast.success("Login Successfully...");
-
-    const Naviget = useNavigate()
+    const Navigate = useNavigate()
     const {
         register,
         handleSubmit,
@@ -19,82 +15,107 @@ const Login = () => {
     } = useForm()
 
     const onSubmit = async (data) => {
-        console.log("login user", data);
+        const formdata = new FormData();
+        formdata.append("email", data.email);
+        formdata.append("password", data.password);
+
         try {
-            const response = await fetch("https://hotel-management-server-5drh.onrender.com/User/Login", {
-            // const response = await fetch("http://localhost:3000/User/Login", {
-                method: "POST",
+            const response = await axios.post("http://localhost:3000/User/Login", formdata, {
                 headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data)
-            })
-            const UserLogin = await response.json()
-            if (!response.ok) {
-                toast.error(`${UserLogin.Message}`)
-            }
-            if (response.ok) {                               
-                let token = UserLogin.token
-                localStorage.setItem("Token", token)
-                reset()
-                toast.success(" Login Successfully...")
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const UserLogin = response.data;
+            console.log(UserLogin);
+
+            if (response.status !== 200) {
+                toast.error(`${UserLogin.Message}`);
+            } else {
+                localStorage.setItem("Token", UserLogin.token);
+                reset();
+                toast.success(<div className='font-serif text-black'>{UserLogin.message}</div>);
                 setTimeout(() => {
-                    Naviget("/")
-                },800)
-                
+                    Navigate("/");
+                }, 1500);
             }
         } catch (error) {
-            console.log(error);
-            toast.error("Something went wrong!")
+            console.error("Error during login:", error);
+            if (error.response) {
+                console.error("Server Response:", error.response.data);
+                toast.error(<div className='font-serif text-black'>{error.response.data.message || "Something went wrong!"}</div>);
+            } else {
+                toast.error("Something went wrong! Please try again.");
+            }
         }
-    }
+    };
+
 
     return (
         <>
-            <div className="h-screen py-20 p-4 md:p-20 lg:p-10 bg-gray-200  z-50 fixed inset-0 flex items-center justify-center">
+            <div className="h-screen py-20 p-4 md:p-20 lg:p-10 bg-gradient-to-r from-purple-400 to-red-500 z-50 fixed inset-0 flex items-center justify-center">
                 <ToastContainer />
-                <div className="max-w-sm bg-white rounded-lg overflow-hidden shadow-lg mx-auto">
-                    <div className=" bg-white">
+                <div className="max-w-sm bg-white rounded-lg overflow-hidden shadow-xl mx-auto transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <div className="bg-white">
                         <div className="max-w-sm rounded-lg overflow-hidden shadow-lg mx-auto p-1">
-                            <div className="py-5 px-10 ">
-                                <h2 className="text-2xl font-bold text-gray-800 mb-3">Welcome Back!</h2>
+                            <div className="py-8 px-10">
+                                <h2 className="text-3xl font-extrabold text-gray-800 mb-5 text-center">
+                                    Welcome Back!
+                                </h2>
                                 <form onSubmit={handleSubmit(onSubmit)}>
-
                                     <div className="mb-1">
-                                        <label className="block text-gray-700 font-bold mb-2" htmlFor="Phone">
-                                            Phone
-                                        </label>
-                                        <input {...register("Phone", {
-                                            required: { value: true, message: "This Field Is Required " },
-                                            minLength: { value: 10, message: "Min Length Is 10" },
-                                            maxLength: { value: 10, message: "Max Length Is 10" }
-                                        })} className="shadow appearance-none border rounded w-full py-3 px-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="Number" placeholder="Phone" />
-                                        {errors.Phone && <div className='block mb-2 font-bold  text-center text-red-500'>{errors.Phone.message}</div>}
+                                        <label className="block text-lg font-serif text-gray-700">Email</label>
+                                        <input
+                                            {...register("email", {
+                                                required: { value: true, message: "Email is required" },
+                                                pattern: {
+                                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                                    message: "Invalid email address",
+                                                },
+                                            })}
+                                            type="email"
+                                            name="email"
+                                            placeholder="PradipJedhe@gmail.com"
+                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-4 focus:ring-purple-400 focus:border-transparent outline-none transition-shadow duration-200 ease-in-out"
+                                        />
+                                        {errors.email && (
+                                            <div className="text-red-500 text-lg font-serif mt-1 text-center">
+                                                {errors.email.message}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="mb-1">
-                                        <label className="block text-gray-700 font-bold mb-2" htmlFor="Password">
-                                            Password
-                                        </label>
-                                        <input {...register("Password", {
-                                            required: { value: true, message: "This Filed Is Required" },
-                                        })} className="shadow appearance-none border rounded w-full py-3 px-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password" />
-                                        {errors.Password && <div className='block mb-2 font-bold text-center text-red-500'>
-                                            {errors.Password.message}</div>}
+                                        <label className="block text-lg font-serif text-gray-700 mb-1">Password</label>
+                                        <input
+                                            {...register("password", {
+                                                required: { value: true, message: "Password is required" },
+                                            })}
+                                            type="password"
+                                            placeholder="@$!%*?&#^"
+                                            name="password"
+                                            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-4 focus:ring-purple-400 focus:border-transparent outline-none transition-shadow duration-200 ease-in-out"
+                                        />
+                                        {errors.password && (
+                                            <div className="text-red-500 text-lg font-serif mt-1 text-center">
+                                                {errors.password.message}
+                                            </div>
+                                        )}
                                     </div>
 
-                                    <div className="flex items-center justify-between">
-                                        <button type='submit' className="bg-blue-500 mt-1 w-full border hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline">
+                                    <div className="flex items-center justify-between mb-6 mt-3">
+                                        <button type="submit" className="w-full bg-gradient-to-r from-purple-500 to-red-400 hover:from-purple-600 hover:to-red-600 text-white font-medium py-2.5 font-serif  px-4 rounded-lg shadow-lg transition-colors duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500">
                                             Login
                                         </button>
                                     </div>
 
-                                    <div class="flex items-center justify-between mt-3">
+                                    <div className="flex items-center justify-between mt-3">
                                         <NavLink to="/SignIn">
-                                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                                            <button className="bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-500" type="button">
                                                 Sign In
-                                            </button></NavLink>
-                                        <NavLink to="/ForgotPassword" class="inline-block align-baseline font-bold text-sm text-blue-500 font-serif">
+                                            </button>
+                                        </NavLink>
+                                        <NavLink to="/ForgotPassword" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-700 transition-colors duration-200 ease-in-out">
                                             Forgot Password?
                                         </NavLink>
                                     </div>
@@ -103,7 +124,7 @@ const Login = () => {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     )
 }

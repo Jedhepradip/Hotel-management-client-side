@@ -16,7 +16,7 @@ import ProfilePage from './components/Pages/ProfilePage.jsx'
 import BillAuth from './components/BillAuth.jsx'
 import AddtoRooms from './components/Pages/AddtoRooms.jsx'
 import Login from './components/Pages/Login.jsx'
-import ForgotPassword from './components/Pages/ForgotPassword.jsx'
+import ForgetPassword from './components/Pages/ForgetPassword.jsx'
 import PageNotFound from './components/Pages/PageNotFound.jsx'
 import Createpassword from './components/Pages/Createpassword.jsx'
 import Wishlist from './components/Pages/Wishlist.jsx'
@@ -72,8 +72,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/ForgotPassword",
-        element: <ForgotPassword />
-      },
+        element: <ForgetPassword />
+      },  
       {
         path: "/Createpassword/:Id",
         element: <Createpassword />
