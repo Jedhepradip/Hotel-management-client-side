@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchCardData } from '../../App/CardSlice';
 import { FaRegHeart } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -14,6 +14,7 @@ const Card = () => {
     const [show, setshow] = useState()
     const Navigate = useNavigate()
     const dispatch = useDispatch();
+    
     const cardifData = useSelector((state) => state.cardData.Cardif);
 
     useEffect(() => {
@@ -207,11 +208,13 @@ const Card = () => {
                                         <>
                                             <div key={index} className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto my-6">
                                                 {/* Image */}
-                                                <img
-                                                    className="w-full h-48 object-cover"
-                                                    src={val?.thumbnail}
-                                                    alt="Product Image"
-                                                />
+                                                <NavLink to={`/RoomsAll/${val._id}`}>
+                                                    <img
+                                                        className="w-full h-48 object-cover"
+                                                        src={val?.thumbnail}
+                                                        alt="Product Image"
+                                                    />
+                                                </NavLink>
 
                                                 {/* Card Content */}
                                                 <div className="p-4">

@@ -20,15 +20,6 @@ const ProfilePage = () => {
     const User = useSelector((state) => state?.Userdata.User)
     const cardifData = useSelector((state) => state?.cardData?.Cardif);
 
-    console.log(cardifData);
-    console.log(User);
-
-
-    useEffect(() => {
-        dispatch(fetchCardData());
-        dispatch(FetchingUserData())
-    }, [dispatch]);
-
     const { register, handleSubmit, reset } = useForm();
 
     useEffect(() => {
@@ -48,12 +39,10 @@ const ProfilePage = () => {
     // Updata User Profile 
     const onSubmit = async (formData) => {
         const data = new FormData();
-        data.append("Img", file);
-        data.append("Name", formData.Name);
-        data.append("Phone", formData.Phone);
-        data.append("Password", formData.Password);
-        console.log("FormData:", formData);
-        console.log("File:", file);
+        data.append("file", file)
+        data.append("name", formData.name)
+        data.append("email", formData.email)
+        data.append("mobile", formData.mobile)
 
         try {
             // const response = await fetch("https://hotel-management-server-5drh.onrender.com/Eidit/User/Profile", {
@@ -76,8 +65,9 @@ const ProfilePage = () => {
                 toggleModal();
                 toast.success(`Profile Update Successfull..`)
                 setTimeout(() => {
-                    navigate("/")
-                }, 800)
+                    // navigate("/")
+                    setIsModalOpen(false)
+                }, 2000)
             }
         } catch (error) {
             console.error("Error:", error);
@@ -88,9 +78,14 @@ const ProfilePage = () => {
         localStorage.removeItem("Token")
         navigate("/SignIn")
     }
-    
+
+    useEffect(() => {
+        dispatch(fetchCardData());
+        dispatch(FetchingUserData())
+    }, [dispatch, isModalOpen]);
+
     return (
-        <div className="relative bg-slate-200 dark:bg-gray-800 flex flex-wrap items-center justify-center font-serif">
+        <div className="relative bg-white dark:bg-gray-800 flex flex-wrap items-center justify-center font-serif">
             <ToastContainer />
             {!isModalOpen && <div className="min-h-screen p-8">
                 <div className="container mx-auto bg-white p-6 rounded-lg shadow-md">
@@ -101,7 +96,7 @@ const ProfilePage = () => {
                             className="w-24 h-24 rounded-full border-2 border-black"
                         />
                         <div>
-                            <h2 className="text-2xl font-semibold text-gray-800">{userInfo.name}</h2>
+                            <h2 className="text-2xl font-semibold text-gray-800">{userInfo?.name}</h2>
                             {/* <p className="text-gray-600">email</p> */}
                         </div>
                     </div>
@@ -111,15 +106,15 @@ const ProfilePage = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
                                 <h4 className="font-semibold text-gray-700">Name</h4>
-                                <p className="text-gray-600">{userInfo.name}</p>
+                                <p className="text-gray-600">{userInfo?.name}</p>
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
                                 <h4 className="font-semibold text-gray-700">Email</h4>
-                                <p className="text-gray-600">{userInfo.email}</p>
+                                <p className="text-gray-600">{userInfo?.email}</p>
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
                                 <h4 className="font-semibold text-gray-700">Phone</h4>
-                                <p className="text-gray-600">91+ {userInfo.mobile}</p>
+                                <p className="text-gray-600">91+ {userInfo?.mobile}</p>
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
                                 <h4 className="font-semibold text-gray-700">Address</h4>
@@ -158,79 +153,83 @@ const ProfilePage = () => {
             </div>
             }
 
+
             {isModalOpen && (
                 <div
                     id="timeline-modal"
-                    className="h-screen z-50 fixed inset-0 flex items-center justify-center bg-opacity-50"
+                    className="
+                    z-50 fixed inset-0 flex items-center justify-center bg-opacity-50 mb-10"
                 >
                     <div className="bg-white">
-                        <div className="max-w-sm rounded-lg overflow-hidden shadow-lg mx-auto p-1">
+                        <div className="max-w-sm rounded-lg overflow-hidden shadow-lg mx-auto">
                             <RxCross2
                                 onClick={toggleModal}
                                 className="float-right text-2xl ml-5 text-red-500 font-extrabold"
                             />
                             <div className="py-5 px-10">
-                                <h2 className="text-2xl font-bold text-gray-800 mb-3">Welcome to Edit Profile</h2>
+                                <h2 className="text-[30px] font-serif font-medium text-gray-800 text-center mb-5">Edit Profile</h2>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-1">
-                                        <label className="block text-gray-700 font-bold mb-2" htmlFor="Img">
+                                        <label className="block text-gray-700 text-[18px] mb-2 " htmlFor="ProfileImg">
                                             Upload Profile Picture
                                         </label>
                                         <input
-                                            {...register("Img")}
+                                            {...register("ProfileImg")}
                                             type="file"
-                                            id="Img"
-                                            name="Img"
-                                            className="shadow appearance-none border rounded w-full py-1 px-10 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+                                            id="ProfileImg"
+                                            name="ProfileImg"
+                                            className="shadow appearance-none border rounded w-full  text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
                                             onChange={(e) => setFile(e.target.files[0])}
                                         />
                                     </div>
 
                                     <div className="mb-1">
-                                        <label className="block text-gray-700 font-bold mb-2" htmlFor="username">
+                                        <label className="block text-gray-700 text-[18px] mb-1" htmlFor="name">
                                             Username
                                         </label>
                                         <input
-                                            {...register("Name")}
-                                            className="shadow appearance-none border rounded w-full py-3 px-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            id="username"
-                                            defaultValue={userInfo.Name}
+                                            {...register("name")}
+                                            className="shadow appearance-none border rounded w-full py-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                            id="name"
+                                            defaultValue={userInfo?.name}
                                             type="text"
-                                            name="Name"
+                                            name="name"
                                             placeholder="Username"
                                         />
                                     </div>
 
                                     <div className="mb-1">
-                                        <label className="block text-gray-700 font-bold mb-2" htmlFor="Phone">
+                                        <label className="block text-gray-700 text-[18px] mb-1" htmlFor="mobile">
                                             Phone
                                         </label>
                                         <input
-                                            {...register("Phone")}
-                                            className="shadow appearance-none border rounded w-full py-3 px-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            name="Phone"
-                                            defaultValue={userInfo.Phone}
+                                            {...register("mobile")}
+                                            className="shadow appearance-none border rounded w-full py-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                            name="mobile"
+                                            defaultValue={userInfo?.mobile}
                                             type="number"
-                                            placeholder="Phone"
+                                            placeholder="mobile"
                                         />
                                     </div>
 
                                     <div className="mb-1">
-                                        <label className="block mb-2 font-bold text-gray-600">Create New Password</label>
+                                        <label className="block text-gray-700 text-[18px] mb-1" htmlFor="email">
+                                            Email
+                                        </label>
                                         <input
-                                            {...register("Password")}
-                                            type="password"
-                                            id="password"
-                                            placeholder="Password"
-                                            name="Password"
-                                            className="border border-gray-300 shadow p-3 w-full rounded mb-1"
+                                            {...register("email")}
+                                            className="shadow appearance-none border rounded w-full py-3  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                            name="email"
+                                            defaultValue={userInfo?.email}
+                                            type="email"
+                                            placeholder="email"
                                         />
                                     </div>
 
                                     <div className="flex items-center justify-between">
                                         <button
                                             type="submit"
-                                            className="bg-blue-500 mt-1 w-full border hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
+                                            className="bg-blue-700 mt-1 w-full border hover:bg-blue-700 text-white text-[20px] py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                         >
                                             Update Profile
                                         </button>

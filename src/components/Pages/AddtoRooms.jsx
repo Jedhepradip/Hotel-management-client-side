@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FetchingUserData } from '../../App/UserSlice';
 import { fetchCardData } from '../../App/CardSlice';
+import { NavLink } from 'react-router-dom';
 
 const AddtoRooms = () => {
     const [roomsId, SetAddToCardRooms] = useState([]);
@@ -69,11 +70,13 @@ const AddtoRooms = () => {
                         key={room.id}
                         className="bg-white border-2 border-gray-300 rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl duration-300"
                     >
-                        <img
-                            src={room.thumbnail}
-                            alt={room.title}
-                            className="w-full h-56 object-cover rounded-t-xl transition-opacity duration-500 hover:opacity-90"
-                        />
+                        <NavLink to={`/RoomsAll/${room._id}`}>
+                            <img
+                                src={room.thumbnail}
+                                alt={room.title}
+                                className="w-full h-56 object-cover rounded-t-xl transition-opacity duration-500 hover:opacity-90"
+                            />
+                        </NavLink>
                         <div className="p-6">
                             <h2 className="text-2xl  mb-3 text-indigo-700 hover:text-indigo-900 transition-colors duration-300 font-serif font-medium">
                                 {room.title}
