@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-import "../component/SigIn.css"
 
 const SignIn = () => {
   const [file, setFile] = useState(String);
@@ -85,7 +84,7 @@ const SignIn = () => {
   return (
     <>
       <ToastContainer />
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-bg-gradient fixed inset-0 z-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-pink-500 via-red-500 to-purple-600 animate-bg-gradient fixed inset-0 z-50">
         <div className="px-6 bg-white shadow-lg rounded-lg max-w-lg">
           <h1 className="text-center font-medium font-serif text-[30px]">SignIn</h1>
           <form onSubmit={handleSubmit(onSubmit)}>
