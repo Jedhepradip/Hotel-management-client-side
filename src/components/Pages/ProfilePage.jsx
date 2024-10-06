@@ -18,7 +18,7 @@ const ProfilePage = () => {
 
     const navigate = useNavigate();
     const User = useSelector((state) => state?.Userdata.User)
-    const cardifData = useSelector((state) => state?.cardData?.Cardif);
+      useSelector((state) => state?.cardData?.Cardif);
 
     const { register, handleSubmit, reset } = useForm();
 

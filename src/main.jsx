@@ -73,7 +73,7 @@ const router = createBrowserRouter([
       {
         path: "/ForgotPassword",
         element: <ForgetPassword />
-      },  
+      },
       {
         path: "/Createpassword/:Id",
         element: <Createpassword />
@@ -81,12 +81,12 @@ const router = createBrowserRouter([
       {
         path: "/Wishlist",
         element: <Wishlist />
-      },
+      },     
       {
         path: "*",
         element: <PageNotFound />,
       },
-    ]
+    ],
   }
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(

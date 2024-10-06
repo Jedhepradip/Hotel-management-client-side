@@ -40,7 +40,7 @@ const Login = () => {
                 }, 1500);
             }
         } catch (error) {
-            console.error("Error during login:", error);
+            console.error("Error during login:", error);            
             if (error.response) {
                 console.error("Server Response:", error.response.data);
                 toast.error(<div className='font-serif text-black'>{error.response.data.message || "Something went wrong!"}</div>);

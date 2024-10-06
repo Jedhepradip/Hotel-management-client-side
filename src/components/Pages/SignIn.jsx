@@ -27,7 +27,6 @@ const SignIn = () => {
       setLoadingOTP(false);
       return;
     }
-    console.log();
 
     try {
       const response = await axios.post('http://localhost:3000/UserSendOtp', Fordata, {
