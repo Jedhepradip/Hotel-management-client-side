@@ -30,7 +30,7 @@ const SignIn = () => {
 
     try {
       const response = await axios.post('http://localhost:3000/UserSendOtp', Fordata, {
-        headers: {
+        headers: {                                                                  
           'Content-Type': 'application/json',
         },
       });

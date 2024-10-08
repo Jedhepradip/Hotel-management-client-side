@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'flowbite';
 import About from "./About"
 import { useSelector } from 'react-redux';
