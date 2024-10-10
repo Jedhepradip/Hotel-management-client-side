@@ -39,7 +39,8 @@ const SignIn = () => {
       SetOTP(OTP?.otp);
       SetOtpShow(true);
     } catch (error) {
-      toast.error('Unexpected error occurred.');
+      const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
+      toast.error(<div className="font-serif text-[15px] text-red-600">{errorMessage}</div>);
     } finally {
       setLoadingOTP(false);
     }

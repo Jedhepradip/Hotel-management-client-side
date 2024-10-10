@@ -39,7 +39,7 @@ const ProfilePage = () => {
     // Updata User Profile 
     const onSubmit = async (formData) => {
         const data = new FormData();
-        data.append("file", file)
+        data.append("ProfileImg", file)
         data.append("name", formData.name)
         data.append("email", formData.email)
         data.append("mobile", formData.mobile)

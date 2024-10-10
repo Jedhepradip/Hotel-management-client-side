@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FetchingUserData } from '../../App/UserSlice'
 import { FaFacebook, FaGoogle, FaInstagram, FaLinkedinIn } from 'react-icons/fa'
@@ -22,7 +22,7 @@ const Footer = () => {
     <>
       {(userData?.user?.isAdmin == false || null || " ") &&
         <>
-          <div className='bg-gray-800 text-white py-5 px-2'>
+          <div className='bg-gray-600 text-white py-5 px-2'>
             <div className='flex flex-wrap justify-around items-center mb-5  cursor-pointer'>
               <ul className='w-full md:w-auto mb-4 md:mb-0 md:mt-0 mt-5'>
                 <p className='text-2xl mb-3 font-serif uppercase'>Support</p>

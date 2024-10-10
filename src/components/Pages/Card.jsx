@@ -14,7 +14,7 @@ const Card = () => {
     const [show, setshow] = useState()
     const Navigate = useNavigate()
     const dispatch = useDispatch();
-    
+
     const cardifData = useSelector((state) => state.cardData.Cardif);
 
     useEffect(() => {
@@ -27,7 +27,7 @@ const Card = () => {
 
     useEffect(() => {
         if (cardifData) {
-            const locationset = cardifData.map(e => e.location);
+            const locationset = cardifData.map(e => e.location.toLowerCase());
             const uniqueLocations = [...new Set(locationset)];
             setLocation(uniqueLocations);
         }
@@ -74,7 +74,9 @@ const Card = () => {
 
     const filterlocation = (location) => {
         if (cardifData) {
-            const similterlocation = cardifData.filter((e) => e.location == location)
+            const similterlocation = cardifData.filter((e) =>
+                e.location.toLowerCase() === location.toLowerCase()
+            );
             setshow(similterlocation)
         }
     }
@@ -130,6 +132,9 @@ const Card = () => {
         }
     };
 
+    const handleBuyNow = async (RoomsId) => {
+        console.log(RoomsId);
+    }
 
     return (
 
@@ -156,7 +161,7 @@ const Card = () => {
                         <>
                             <div className='px-3' key={index}>
                                 <input type="radio" id={val} name='Location-Filter-Jobs' className='mr-2' onClick={() => filterlocation(val)} />
-                                <label htmlFor={val} className='font-medium cursor-pointer font-serif'>{val}</label>
+                                <label htmlFor={val} className='font-medium cursor-pointer font-serif'> {val.charAt(0).toUpperCase() + val.slice(1)}</label>
                             </div>
                         </>
                     ))}
@@ -218,39 +223,59 @@ const Card = () => {
 
                                                 {/* Card Content */}
                                                 <div className="p-4">
-                                                    {/* Price Section */}
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="text-xl font-semibold text-gray-900">${val.discountPrice}</div>
-                                                        <div className="text-sm text-gray-500 line-through">${val.price}</div>
-                                                    </div>
+                                                    {/* Title */}
+                                                    <h2 className="text-2xl font-medium font-serif text-gray-900 mb-2 transition-colors duration-300 hover:text-blue-700">
+                                                        {val.title}
+                                                    </h2>
 
-                                                    {/* Discount Badge */}
-                                                    <div className="mt-2 text-green-600 text-sm font-bold">
-                                                        % {val.discountPercentage}
+                                                    {/* Price Section */}
+                                                    <div className="flex items-center justify-between font-serif">
+                                                        <div className="text-xl font-semibold text-gray-900">${val.discountPrice}</div>
+                                                        <div className="text-green-600 text-sm font-bold">
+                                                            % {val.discountPercentage} Off
+                                                        </div>
+                                                        <div className=" text-gray-500 line-through">${val.price}</div>
                                                     </div>
 
                                                     {/* Description */}
-                                                    <p className="mt-2 text-gray-600 font-medium font-serif">
+                                                    <p className="mt-2 text-strat text-gray-600 font-medium font-serif">
                                                         {val.description}
                                                     </p>
-                                                    {/* Icon and Button */}
+
+                                                    {/* Icon and Location */}
                                                     <div className="flex items-center justify-between mt-4">
-                                                        <span>
-                                                            <FaRegHeart className="text-[22px] text-gray-900 hover:text-gray-500 cursor-pointer transition-colors duration-300" onClick={() => handellike(val._id)} />
-                                                            <h1 className='ml-[6px] font-serif text-[20px]'>
-                                                                {val?.likes?.length}
-                                                            </h1>
+                                                        <span className="flex items-center">
+                                                            <FaRegHeart
+                                                                className="text-[22px] text-gray-900 hover:text-red-500 cursor-pointer transition-transform duration-300 transform hover:scale-110"
+                                                                onClick={() => handellike(val._id)}
+                                                            />
+                                                            <h1 className="ml-2 font-serif text-[20px]">{val?.likes?.length}</h1>
                                                         </span>
-                                                        <span className='flex font-serif'>
-                                                            <IoLocationOutline className='text-[22px]' />
+                                                        <span className="flex items-center text-gray-600 font-serif">
+                                                            <IoLocationOutline className="text-[22px]" />
                                                             {val.location}
                                                         </span>
-                                                        {/* Add to Cart Button */}
-                                                        <button className="bg-blue-700 text-white px-4 py-1.5 rounded-lg hover:bg-blue-500 transition-colors duration-300 font-serif font-medium" onClick={() => AddToCard(val._id)}>
-                                                            Add to Cart
-                                                        </button>
                                                     </div>
 
+                                                    {/* Add to Cart and Buy Now Buttons */}
+                                                    <div className="flex items-center justify-between mt-4">
+                                                        {/* Add to Cart Button */}
+                                                        <button
+                                                            className="bg-blue-500 text-white font-serif font-medium rounded-lg py-1"
+                                                            onClick={() => AddToCard(val._id)}
+                                                        >
+                                                            <span className="px-4 py-2">Add to Cart</span>
+                                                        </button>
+
+                                                        <button
+                                                            className="rounded-lg relative py-1 bg-orange-500 text-white font-serif font-medium overflow-hidden"
+                                                            onClick={() => handleBuyNow(val._id)}
+                                                        >
+                                                            <span className="px-4 py-2">Buy Now</span>
+                                                        </button>
+                                                        {/* Buy Now Button */}
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </>
