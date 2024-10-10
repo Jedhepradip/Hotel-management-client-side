@@ -23,7 +23,7 @@ const Home = () => {
 
   return (
     <>
-      {userData?.user?.isAdmin ?
+      {(userData?.user?.isAdmin == false || null  || " ") &&
         <>
           <div className="w-full h-auto relative bg-white">
             {/* <div id="default-carousel" className="relative w-full" data-carousel="slide"> */}
@@ -104,7 +104,8 @@ const Home = () => {
           </div>
           <About />
         </>
-        :
+      }
+      {userData?.user?.isAdmin == true &&
         <>
           <div>
             <div className="flex min-h-screen bg-gray-100">

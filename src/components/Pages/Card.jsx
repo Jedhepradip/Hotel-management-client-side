@@ -163,35 +163,35 @@ const Card = () => {
 
                     <h2 className='text-xl font-medium mb-0 px-2 mt-4 font-serif'>Price</h2>
 
-                    <div className='px-3 font-serif ml-0'>
+                    <div className='px-3 ml-0'>
                         <input type="radio" id="salary1" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("2000")} />
                         <label htmlFor="salary1" className='font-medium cursor-pointer'>1k to 2k</label>
                     </div>
-                    <div className='px-3 font-serif ml-0'>
+                    <div className='px-3 ml-0'>
                         <input type="radio" id="salary2" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("3000")} />
                         <label htmlFor="salary2" className='font-medium cursor-pointer'>2k to 3k</label>
                     </div>
-                    <div className='px-3 font-serif ml-0'>
+                    <div className='px-3 ml-0'>
                         <input type="radio" id="salary3" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("4000")}
                         />
                         <label htmlFor="salary3" className='font-medium cursor-pointer'>3k to 4k</label>
                     </div>
-                    <div className='px-3 font-serif ml-0'>
+                    <div className='px-3 ml-0'>
                         <input type="radio" id="salary4" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("5000")}
                         />
                         <label htmlFor="salary4" className='font-medium cursor-pointer'>4k to 5k</label>
                     </div>
-                    <div className='px-3 font-serif ml-0'>
+                    <div className='px-3 ml-0'>
                         <input type="radio" id="salary5" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("6000")}
                         />
                         <label htmlFor="salary5" className='font-medium cursor-pointer'>5k to 6k</label>
                     </div>
-                    <div className='px-3 font-serif ml-0'>
+                    <div className='px-3 ml-0'>
                         <input type="radio" id="salary6" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("7000")}
                         />
                         <label htmlFor="salary6" className='font-medium cursor-pointer'>6k to 7k</label>
                     </div>
-                    <div className='px-3 font-serif ml-0'>
+                    <div className='px-3 ml-0'>
                         <input type="radio" id="salary7" name='Location-Filter-Jobs' className='mr-2' onClick={() => setPrice("8000")}
                         />
                         <label htmlFor="salary7" className='font-medium cursor-pointer'>7k to 8k</label>

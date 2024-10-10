@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaChartBar, FaCog, FaHome, FaSignOutAlt, FaUser } from 'react-icons/fa'
 
 const AdminUser = () => {
     return (

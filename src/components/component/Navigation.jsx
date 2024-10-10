@@ -266,12 +266,11 @@ const NavigationBar = () => {
 
   return (
     <>
-
-      {userData?.user?.isAdmin ?
+      {/* {userData?.user?.isAdmin == false ? */}
         <>
           <nav className="bg-white border-gray-200 fixed w-full z-50 font-serif text-[18px] px-5">
             <div className="max-w-screen-xl flex items-center justify-between mx-auto">
-              <a href="https://flowbite.com/" className="flex items-center space-x-3">
+              <a className="flex items-center space-x-3">
                 <h1 className='font-bold font-sans text-[25px] md:ml-[50px] ml-2'>Stay<span className='text-red-500'>Master</span></h1>
               </a>
               <button
@@ -373,11 +372,11 @@ const NavigationBar = () => {
             </div>
           </nav>
         </>
-        :
+        {/* :
         <>
           <h1>{null}</h1>
         </>
-      }
+      } */}
 
     </>
   );

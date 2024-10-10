@@ -30,7 +30,7 @@ const SignIn = () => {
 
     try {
       const response = await axios.post('http://localhost:3000/UserSendOtp', Fordata, {
-        headers: {                                                                  
+        headers: {
           'Content-Type': 'application/json',
         },
       });
@@ -104,7 +104,7 @@ const SignIn = () => {
                   </div>
                 )}
               </div>
-              
+
               <div>
                 <label className="block text-lg font-serif text-gray-700 mb-1">Full Name</label>
                 <input
