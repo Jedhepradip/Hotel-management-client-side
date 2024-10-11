@@ -6,6 +6,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 
 const Card = () => {
@@ -132,9 +133,34 @@ const Card = () => {
         }
     };
 
-    const handleBuyNow = async (RoomsId) => {
-        console.log(RoomsId);
-    }
+    const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24');
+
+    const handleBuyNow = async (productId, price) => {
+        console.log(productId,price);
+        
+        // Call your backend to create a Stripe session
+        const stripe = await stripePromise;
+
+        const response = await fetch('http://localhost:3000/create-checkout-session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ productId, price }),
+        });
+
+        const session = await response.json();
+
+        // Redirect to Stripe Checkout
+        const result = await stripe.redirectToCheckout({
+            sessionId: session.id,
+        });
+
+        if (result.error) {
+            console.error(result.error.message);
+        }
+    };
+
 
     return (
 
@@ -267,14 +293,13 @@ const Card = () => {
                                                             <span className="px-4 py-2">Add to Cart</span>
                                                         </button>
 
+                                                        {/* Buy Now Button */}
                                                         <button
                                                             className="rounded-lg relative py-1 bg-orange-500 text-white font-serif font-medium overflow-hidden"
-                                                            onClick={() => handleBuyNow(val._id)}
+                                                            onClick={() => handleBuyNow(val._id, val.discountPrice)}
                                                         >
                                                             <span className="px-4 py-2">Buy Now</span>
                                                         </button>
-                                                        {/* Buy Now Button */}
-
                                                     </div>
                                                 </div>
                                             </div>
