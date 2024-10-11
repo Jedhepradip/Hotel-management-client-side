@@ -437,3 +437,170 @@ const PaymentModal = ({ product, onClose }) => {
 // );
 
 // export default App;
+
+import { useEffect, useState } from 'react';
+import { useStripe, useElements, CardElement, Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+
+const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24'); // Your Stripe publishable key
+
+const ProductCard = () => {
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+  useEffect(() => {
+    // Simulating fetching multiple products
+    const fetchedProducts = [
+      {
+        id: '1',
+        title: 'Cool Product 1',
+        description: 'This is the first cool product for shopping online.',
+        price: 999,
+        image: 'https://via.placeholder.com/150',
+      },
+      {
+        id: '2',
+        title: 'Cool Product 2',
+        description: 'This is the second cool product for shopping online.',
+        price: 1999,
+        image: 'https://via.placeholder.com/150',
+      },
+      {
+        id: '3',
+        title: 'Cool Product 3',
+        description: 'This is the third cool product for shopping online.',
+        price: 2999,
+        image: 'https://via.placeholder.com/150',
+      },
+    ];
+    setProducts(fetchedProducts);
+  }, []);
+
+  const handleBuyNowClick = (product) => {
+    setSelectedProduct(product); // Set the clicked product
+    setShowPaymentModal(true);
+  };
+
+  const closePaymentModal = () => {
+    setShowPaymentModal(false);
+    setSelectedProduct(null); // Reset the selected product
+  };
+
+  return (
+    <div className="p-6 max-w-4xl mx-auto">
+      <ToastContainer />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="mb-12 bg-white shadow-xl rounded-lg overflow-hidden transform transition duration-500">
+            <img src={product.image} alt={product.title} className="w-full h-80 object-cover" />
+            <div className="p-6">
+              <h1 className="text-4xl font-extrabold mb-4 text-gray-800">{product.title}</h1>
+              <p className="text-lg text-gray-500 mb-4">{product.description}</p>
+              <p className="text-3xl font-semibold text-green-600 mb-4">₹{product.price}</p>
+              <button
+                className="bg-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-green-500 transform transition duration-300 hover:scale-105"
+                onClick={() => handleBuyNowClick(product)} // Pass the clicked product
+              >
+                Buy Now
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {showPaymentModal && selectedProduct && (
+        <PaymentModal product={selectedProduct} onClose={closePaymentModal} />
+      )}
+    </div>
+  );
+};
+
+export default ProductCard;
+
+const PaymentModal = ({ product, onClose }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+
+  const handlePayment = async (event) => {
+    event.preventDefault();
+    if (!stripe || !elements) return;
+
+    setLoading(true);
+
+    try {
+      const { data } = await axios.post('http://localhost:4000/payment/api/create-payment-intent', {
+        amount: product.price * 100, // Pass the product price for the specific product
+        productId: product.id, // Pass the product ID for the specific product
+      });
+
+      const clientSecret = data.clientSecret;
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      });
+
+      if (result.error) {
+        toast.error(result.error.message);
+      } else if (result.paymentIntent.status === 'succeeded') {
+        toast.success('Payment succeeded!');
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+    } finally {
+      setLoading(false);
+      onClose();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
+        <h2 className="text-xl font-bold mb-4 text-center">{product.title}</h2>
+        <p className="text-center mb-6">Price: ₹{product.price}</p>
+
+        <form onSubmit={handlePayment} className="space-y-6">
+          <div className="p-4 bg-gray-100 rounded-lg border border-gray-300">
+            <CardElement
+              className="p-2"
+              options={{
+                style: {
+                  base: {
+                    fontSize: '16px',
+                    color: '#424770',
+                    '::placeholder': { color: '#aab7c4' },
+                  },
+                  invalid: { color: '#9e2146' },
+                },
+              }}
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 px-4 rounded-lg text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'} transition duration-300`}
+          >
+            {loading ? 'Processing...' : 'Pay Now'}
+          </button>
+        </form>
+        <button onClick={onClose} className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 transition duration-300">
+          &times;
+        </button>
+      </div>
+    </div>
+  );
+};
+
+PaymentModal.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    price: PropTypes.number,
+  }),
+  onClose: PropTypes.func.isRequired,
+};

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCardData } from '../../App/CardSlice';
@@ -7,9 +8,15 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loadStripe } from '@stripe/stripe-js';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 
 const Card = () => {
+
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+
     const [location, setLocation] = useState()
     const [Country, SetCounty] = useState()
     const [show, setshow] = useState()
@@ -64,7 +71,6 @@ const Card = () => {
             console.log(error);
         }
     };
-
 
     const filterbyConuty = (country) => {
         if (cardifData) {
@@ -133,34 +139,44 @@ const Card = () => {
         }
     };
 
-    const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24');
+    loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24');
 
 
-    const handleBuyNow = async (productId, price) => {
-        console.log(productId, price);
-
-        // Call your backend to create a Stripe session
-        const stripe = await stripePromise;
-
-        const response = await fetch('http://localhost:3000/create-checkout-session', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ productId, price }),
-        });
-
-        const session = await response.json();
-
-        // Redirect to Stripe Checkout
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id,
-        });
-
-        if (result.error) {
-            console.error(result.error.message);
-        }
+    const handleBuyNowClick = (product) => {
+        setSelectedProduct(product); // Set the clicked product
+        setShowPaymentModal(true);
     };
+
+    const closePaymentModal = () => {
+        setShowPaymentModal(false);
+        setSelectedProduct(null); // Reset the selected product
+    };
+
+    // const handleBuyNow = async (productId, price) => {
+    //     console.log(productId, price);
+
+    //     // Call your backend to create a Stripe session
+    //     const stripe = await stripePromise;
+
+    //     const response = await fetch('http://localhost:3000/create-checkout-session', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({ productId, price }),
+    //     });
+
+    //     const session = await response.json();
+
+    //     // Redirect to Stripe Checkout
+    //     const result = await stripe.redirectToCheckout({
+    //         sessionId: session.id,
+    //     });
+
+    //     if (result.error) {
+    //         console.error(result.error.message);
+    //     }
+    // };
 
 
     return (
@@ -297,7 +313,7 @@ const Card = () => {
                                                         {/* Buy Now Button */}
                                                         <button
                                                             className="rounded-lg relative py-1 bg-orange-500 text-white font-serif font-medium overflow-hidden"
-                                                            onClick={() => handleBuyNow(val._id, val.discountPrice)}
+                                                            onClick={() => handleBuyNowClick(val)}
                                                         >
                                                             <span className="px-4 py-2">Buy Now</span>
                                                         </button>
@@ -318,8 +334,97 @@ const Card = () => {
                     </div>
                 </div>
             </div>
+            {showPaymentModal && selectedProduct && (
+                <PaymentModal product={selectedProduct} onClose={closePaymentModal} />
+            )}
         </div >
     );
 };
 
 export default Card;
+
+
+const PaymentModal = ({ product, onClose }) => {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [loading, setLoading] = useState(false);
+
+    const handlePayment = async (event) => {
+        event.preventDefault();
+        if (!stripe || !elements) return;
+
+        setLoading(true);
+
+        try {
+            const { data } = await axios.post('http://localhost:4000/payment/api/create-payment-intent', {
+                amount: product.price * 100, // Pass the product price for the specific product
+                productId: product.id, // Pass the product ID for the specific product
+            });
+
+            const clientSecret = data.clientSecret;
+
+            const result = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: elements.getElement(CardElement),
+                },
+            });
+
+            if (result.error) {
+                toast.error(result.error.message);
+            } else if (result.paymentIntent.status === 'succeeded') {
+                toast.success('Payment succeeded!');
+            }
+        } catch (error) {
+            console.error('Payment error:', error);
+        } finally {
+            setLoading(false);
+            onClose();
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
+                <h2 className="text-xl font-bold mb-4 text-center">{product.title}</h2>
+                <p className="text-center mb-6">Price: ₹{product.price}</p>
+
+                <form onSubmit={handlePayment} className="space-y-6">
+                    <div className="p-4 bg-gray-100 rounded-lg border border-gray-300">
+                        <CardElement
+                            className="p-2"
+                            options={{
+                                style: {
+                                    base: {
+                                        fontSize: '16px',
+                                        color: '#424770',
+                                        '::placeholder': { color: '#aab7c4' },
+                                    },
+                                    invalid: { color: '#9e2146' },
+                                },
+                            }}
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`w-full py-3 px-4 rounded-lg text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'} transition duration-300`}
+                    >
+                        {loading ? 'Processing...' : 'Pay Now'}
+                    </button>
+                </form>
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 transition duration-300">
+                    &times;
+                </button>
+            </div>
+        </div>
+    );
+};
+
+// PaymentModal.propTypes = {
+//     product: PropTypes.shape({
+//         id: PropTypes.string,
+//         title: PropTypes.string,
+//         price: PropTypes.number,
+//     }),
+//     onClose: PropTypes.func.isRequired,
+// };
