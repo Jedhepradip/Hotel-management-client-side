@@ -125,7 +125,7 @@ const Card = () => {
             if (response.status === 200) {
                 toast.success(<div className='font-serif font-medium text-black'>Item added to cart successfully!</div>)
             }
-
+            window.location.reload();
         } catch (error) {
             const errorMessage = error.response?.data?.message
             toast.error(<div className='font-serif font-medium text-red-600'>{errorMessage}</div>)
@@ -135,9 +135,10 @@ const Card = () => {
 
     const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24');
 
+
     const handleBuyNow = async (productId, price) => {
-        console.log(productId,price);
-        
+        console.log(productId, price);
+
         // Call your backend to create a Stripe session
         const stripe = await stripePromise;
 

@@ -20,6 +20,7 @@ import ForgetPassword from './components/Pages/ForgetPassword.jsx'
 import PageNotFound from './components/Pages/PageNotFound.jsx'
 import Createpassword from './components/Pages/Createpassword.jsx'
 import Wishlist from './components/Pages/Wishlist.jsx'
+import ProductCard from './components/Pages/ProductCard.jsx'
 
 const router = createBrowserRouter([
   {
@@ -81,7 +82,11 @@ const router = createBrowserRouter([
       {
         path: "/Wishlist",
         element: <Wishlist />
-      },     
+      },
+      {
+        path: "/ProductCard",
+        element: <ProductCard />
+      },
       {
         path: "*",
         element: <PageNotFound />,
@@ -91,6 +96,6 @@ const router = createBrowserRouter([
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />    
   </Provider>,
 )

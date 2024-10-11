@@ -104,14 +104,16 @@ const Login = () => {
                                     </div>
 
                                     <div className="flex items-center justify-between mb-6 mt-3">
-                                        <button type="submit" className="w-full bg-gradient-to-r from-purple-500 to-red-400 hover:from-purple-600 hover:to-red-600 text-white font-medium py-2.5 font-serif  px-4 rounded-lg shadow-lg transition-colors duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500">
+                                    {/* bg-gradient-to-r from-purple-500 to-red-400 hover:from-purple-600 hover:to-red-600 */}
+                                        <button type="submit" className="w-full bg-black text-white font-medium py-2.5 font-serif  px-4 rounded-lg shadow-lg transition-colors duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500">
                                             Login
                                         </button>
                                     </div>
 
                                     <div className="flex items-center justify-between mt-3">
                                         <NavLink to="/SignIn">
-                                            <button className="bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-500" type="button">
+                                        {/* bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 */}
+                                            <button className="bg-black font-serif text-white py-2 px-4 rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-500" type="button">
                                                 Sign In
                                             </button>
                                         </NavLink>
