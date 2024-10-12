@@ -26,18 +26,18 @@ const Footer = () => {
             <div className='flex flex-wrap justify-around items-center mb-5  cursor-pointer'>
               <ul className='w-full md:w-auto mb-4 md:mb-0 md:mt-0 mt-5'>
                 <p className='text-2xl mb-3 font-serif uppercase'>Support</p>
-                <li className='font-serif py-1 hover:font-bold'>Coronavirus (COVID 19)</li>
-                <li className='font-serif py-1 hover:font-bold'>Manage Your Trips</li>
-                <li className='font-serif py-1 hover:font-bold'>Contact Customer service</li>
-                <li className='font-serif py-1 hover:font-bold'>Safety resource center</li>
+                <li className='font-serif py-1'>Coronavirus (COVID 19)</li>
+                <li className='font-serif py-1'>Manage Your Trips</li>
+                <li className='font-serif py-1'>Contact Customer service</li>
+                <li className='font-serif py-1'>Safety resource center</li>
               </ul>
 
               <ul className='w-full md:w-auto mb-4 md:mb-0 md:mt-0 mt-5'>
                 <p className='text-2xl mb-3 font-serif uppercase'>Discover</p>
-                <li className='font-serif py-1 hover:font-bold'>Genius loyalty Programme</li>
-                <li className='font-serif py-1 hover:font-bold'>Seasonal and holiday deals</li>
-                <li className='font-serif py-1 hover:font-bold'>Travel articles</li>
-                <li className='font-serif py-1 hover:font-bold'>Traveller Review Awards</li>
+                <li className='font-serif py-1'>Genius loyalty Programme</li>
+                <li className='font-serif py-1'>Seasonal and holiday deals</li>
+                <li className='font-serif py-1'>Travel articles</li>
+                <li className='font-serif py-1'>Traveller Review Awards</li>
               </ul>
 
               {/* <ul className='w-full md:w-auto mb-4 md:mb-0'>
@@ -50,18 +50,18 @@ const Footer = () => {
 
               <ul className='w-full md:w-auto mb-4 md:mb-0 md:mt-0 mt-5'>
                 <p className='text-2xl mb-3 font-serif uppercase'>Partners</p>
-                <li className='font-serif py-1 hover:font-bold'>Extranet login</li>
-                <li className='font-serif py-1 hover:font-bold'>Partner help</li>
-                <li className='font-serif py-1 hover:font-bold'>List Your Property</li>
-                <li className='font-serif py-1 hover:font-bold'>Become an affiliate</li>
+                <li className='font-serif py-1'>Extranet login</li>
+                <li className='font-serif py-1'>Partner help</li>
+                <li className='font-serif py-1'>List Your Property</li>
+                <li className='font-serif py-1'>Become an affiliate</li>
               </ul>
 
               <ul className='w-full md:w-auto md:mt-0 mt-5'>
                 <p className='text-2xl mb-3 font-serif uppercase'>About</p>
-                <li className='font-serif py-1 hover:font-bold'>About Booking</li>
-                <li className='font-serif py-1 hover:font-bold'>How we work</li>
-                <li className='font-serif py-1 hover:font-bold'>Sustainability</li>
-                <li className='font-serif py-1 hover:font-bold'>Press Center</li>
+                <li className='font-serif py-1'>About Booking</li>
+                <li className='font-serif py-1'>How we work</li>
+                <li className='font-serif py-1'>Sustainability</li>
+                <li className='font-serif py-1'>Press Center</li>
               </ul>
 
               <ul className='w-full md:w-auto md:mt-0 mt-5'>

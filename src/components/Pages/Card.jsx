@@ -146,7 +146,6 @@ const Card = () => {
         }
     };
 
-
     // const handleBuyNow = async (productId, price) => {
     //     console.log(productId, price);
 
@@ -172,7 +171,6 @@ const Card = () => {
     //         console.error(result.error.message);
     //     }
     // };
-
 
     return (
 

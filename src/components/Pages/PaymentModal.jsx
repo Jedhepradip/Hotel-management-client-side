@@ -9,6 +9,11 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
     const elements = useElements();
     const [loading, setLoading] = useState(false);
 
+    console.log("selectedProduct :", selectedProduct.title);
+    console.log("selectedProduct :", selectedProduct.price);
+    console.log("closePaymentModal :", closePaymentModal);
+
+
     const handlePaymentSubmit = async (e) => {
         e.preventDefault();
 
@@ -16,13 +21,7 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
             return;
         }
 
-        console.log("selectedProduct :", selectedProduct);
-        console.log("closePaymentModal :", closePaymentModal);
-
-
-
         const cardElement = elements.getElement(CardElement);
-
         setLoading(true);
 
         try {
