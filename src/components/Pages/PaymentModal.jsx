@@ -16,6 +16,11 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
             return;
         }
 
+        console.log("selectedProduct :", selectedProduct);
+        console.log("closePaymentModal :", closePaymentModal);
+
+
+
         const cardElement = elements.getElement(CardElement);
 
         setLoading(true);

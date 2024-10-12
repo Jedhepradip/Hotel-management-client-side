@@ -334,6 +334,7 @@ const Card = () => {
             {showPaymentModal && selectedProduct && (
                 <PaymentModal selectedProduct={selectedProduct} closePaymentModal={closePaymentModal} />
             )}
+
         </div >
     );
 };
