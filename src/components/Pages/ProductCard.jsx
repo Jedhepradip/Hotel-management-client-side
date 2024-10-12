@@ -1,8 +1,298 @@
-// import React, { useEffect, useState } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { AppDispatch, RootState } from '../app/store/store';
-// import { fetchCourses } from '../app/store/features/coursesSlice';
+// // import React, { useEffect, useState } from 'react';
+// // import { useParams, useNavigate } from 'react-router-dom';
+// // import { useDispatch, useSelector } from 'react-redux';
+// // import { AppDispatch, RootState } from '../app/store/store';
+// // import { fetchCourses } from '../app/store/features/coursesSlice';
+// // import { useStripe, useElements, CardElement, Elements } from '@stripe/react-stripe-js';
+// // import { loadStripe } from '@stripe/stripe-js';
+// // import axios from 'axios';
+// // import { toast, ToastContainer } from 'react-toastify';
+
+// // const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24'); // Replace with your Stripe publishable key
+
+// // const DescOfCourse = () => {
+// //     // const { id } = useParams < { id: string } > ();
+// //     // const dispatch: AppDispatch = useDispatch();
+// //     // const navigate = useNavigate();
+// //     // const { courses } = useSelector((state: RootState) => state.coursesData);
+// //     // const [selectedCourseId, setSelectedCourseId] = useState(id); // State for selected course ID
+// //     // const [userRating, setUserRating] = useState < number > (0); // User rating
+// //     // const [showPaymentModal, setShowPaymentModal] = useState(false); // State to manage PaymentModal visibility
+
+// //     useEffect(() => {
+// //         dispatch(fetchCourses());
+// //     }, [dispatch]);
+
+// //     useEffect(() => {
+// //         setSelectedCourseId(id);
+// //     }, [id]);
+
+// //     const currentCourse = courses.find(course => course._id === selectedCourseId);
+
+// //     // Calculate the average rating of the course
+// //     const averageRating = currentCourse?.ratings?.length
+// //         ? currentCourse.ratings.reduce((acc, rating) => acc + rating.value, 0) / currentCourse.ratings.length
+// //         : 0;
+
+
+// //     const relatedCourses = courses.filter(course => {
+// //         return (
+// //             course.category?.trim() === currentCourse?.category?.trim() &&
+// //             course._id !== selectedCourseId
+// //         );
+// //     });
+
+// //     // Handle user star rating click
+// //     // const handleStarClick = async (rating: number, courseId: string) => {
+// //     //     try {
+// //     //         setUserRating(rating);
+
+// //     //         const authToken = localStorage.getItem("authToken");
+// //     //         if (!authToken) {
+// //     //             toast.warn("Please log in to submit a rating."); // Show warning for authentication
+// //     //             return navigate("/login");
+// //     //         }
+
+// //     //         await axios.post(
+// //     //             ${ import.meta.env.VITE_SERVER_API } / api / course / ${ courseId } / rate,
+// //     //             { rating },
+// //     //             {
+// //     //                 headers: {
+// //     //                     Authorization: Bearer ${ authToken },
+// //     //                 },
+// //     // }
+// //     //         );
+
+// //     // Show success message on successful submission
+// //     // toast.success("Thank you for your rating!");
+// //     //         } catch (error: any) {
+// //     //     // Show error message on failure
+// //     //     const errorMessage = error.response?.data?.msg || "An error occurred while submitting your rating.";
+// //     //     toast.error(errorMessage);
+// //     //     console.log(errorMessage);
+// //     // }
+// //     //     };
+
+// //     // const handleCourseClick = (courseId: string) => {
+// //     //     setSelectedCourseId(courseId); // Update the selected course ID
+// //     //     navigate(/description/course / ${ courseId }); // Navigate to the selected course page
+// //     // };
+
+// //     // const handleBuyNowClick = () => {
+// //     //     setShowPaymentModal(true); // Show PaymentModal
+// //     // };
+
+// //     // const closePaymentModal = () => {
+// //     //     setShowPaymentModal(false); // Hide PaymentModal
+// //     // };
+
+// //     return (
+// //         // <Elements stripe={stripePromise}>
+// //         //     <ToastContainer />
+// //         //     <div className="p-6 max-w-4xl mx-auto">
+// //         //         {currentCourse ? (
+// //         //             <div className="mb-12 bg-white shadow-xl rounded-lg overflow-hidden transform transition duration-500">
+// //         //                 {/* Course Thumbnail */}
+// //         //                 {currentCourse.thumbnail && (
+// //         //                     <img
+// //         //                         src={currentCourse.thumbnail}
+// //         //                         alt={currentCourse.title}
+// //         //                         className="w-full h-80 object-cover"
+// //         //                     />
+// //         //                 )}
+
+// //         //                 <div className="p-6">
+// //         //                     {/* Course Title */}
+// //         //                     <h1 className="text-4xl font-extrabold mb-4 text-gray-800">{currentCourse.title}</h1>
+
+// //         //                     {/* Instructor Name */}
+// //         //                     <p className="text-lg text-gray-500 mb-4">by {currentCourse.instructor.name}</p>
+// //         //                     <p className="text-lg text-gray-500 mb-4"> enrollments : {currentCourse.enrollments.length}</p>
+
+// //         //                     {/* Average Rating */}
+// //         //                     <div className="flex items-center mb-4">
+// //         //                         <span className="text-yellow-500 text-lg mr-2">
+// //         //                             {'★'.repeat(Math.round(averageRating))}
+// //         //                             {'☆'.repeat(5 - Math.round(averageRating))}
+// //         //                         </span>
+// //         //                         <span className="text-gray-500">
+// //         //                             ({currentCourse.ratings?.length || 0} ratings)
+// //         //                         </span>
+// //         //                     </div>
+
+// //         //                     {/* User Rating */}
+// //         //                     <div className="flex items-center mb-6">
+// //         //                         <span className="mr-4 text-gray-600">Rate this course:</span>
+// //         //                         {[1, 2, 3, 4, 5].map(star => (
+// //         //                             <button
+// //         //                                 key={star}
+// //         //                                 className={text - 2xl transition-colors duration-300 ${userRating >= star ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}}
+// //         //                         onClick={() => handleStarClick(star, currentCourse._id)}
+// //         //                                 >
+// //         //                         ★
+// //         //                     </button>
+// //         //                             ))}
+// //         //                 </div>
+
+// //         //                 {/* Course Price */}
+// //         //                 <p className="text-3xl font-semibold text-green-600 mb-4">₹{currentCourse.price}</p>
+
+// //         //                 {/* Course Description */}
+// //         //                 <p className="text-lg leading-relaxed text-gray-700 mb-6">
+// //         //                     {currentCourse.description}
+// //         //                 </p>
+
+// //         //                 {/* Action Buttons */}
+// //         //                 <div className="flex space-x-4">
+// //         //                     <button
+// //         //                         className="bg-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-green-500 transform transition duration-300 hover:scale-105"
+// //         //                         onClick={handleBuyNowClick}
+// //         //                     >
+// //         //                         Buy Now
+// //         //                     </button>
+// //         //                 </div>
+// //         //             </div>
+// //         //                 </div>
+// //         //     ) : (
+// //         //     <p className="text-center text-gray-500">Loading course details...</p>
+// //         //             )}
+
+// //         //     {/* Related Courses Section */}
+// //         //     <h2 className="text-2xl font-bold mb-6 text-gray-800">Related Courses</h2>
+// //         //     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+// //         //         {relatedCourses.map(course => (
+// //         //             <div
+// //         //                 key={course._id}
+// //         //                 className="p-4 border border-gray-200 rounded-lg shadow-lg bg-white hover:shadow-2xl transform transition duration-500 hover:scale-105 cursor-pointer"
+// //         //                 onClick={() => handleCourseClick(course._id)}
+// //         //             >
+// //         //                 {/* Thumbnail */}
+// //         //                 {course.thumbnail && (
+// //         //                     <img
+// //         //                         src={course.thumbnail}
+// //         //                         alt={course.title}
+// //         //                         className="w-full h-40 object-cover rounded-md mb-4"
+// //         //                     />
+// //         //                 )}
+// //         //                 <h3 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h3>
+// //         //                 <p className="text-sm text-gray-500 mb-2">by {course.instructor.name}</p>
+// //         //                 <p className="text-sm text-gray-600 mb-4">{course.description}</p>
+// //         //                 <p className="text-lg font-bold text-green-600">₹{course.price}</p>
+// //         //             </div>
+// //         //         ))}
+// //         //     </div>
+
+// //         //     {/* Payment Modal */}
+// //         //     {showPaymentModal && currentCourse && (
+// //         //         <PaymentModal course={currentCourse} onClose={closePaymentModal} />
+// //         //     )}
+// //         // </div>
+// //         //     </Elements >
+// //         // );
+// //         <>
+// //         </>
+// // };
+
+// // // Define the PaymentModal component inside the same file
+// // const PaymentModal: React.FC<{ course: any; onClose: () => void }> = ({ course, onClose }) => {
+// //     const stripe = useStripe();
+// //     const elements = useElements();
+// //     const [loading, setLoading] = useState(false);
+// //     const navigate = useNavigate();
+
+// //     const handlePayment = async (event) => {
+// //         event.preventDefault();
+// //         if (!stripe || !elements) return;
+
+// //         setLoading(true);
+
+// //         try {
+// //             const authToken = localStorage.getItem("authToken");
+// //             if (!authToken) {
+// //                 return navigate("/login");
+// //             }
+// //             const { data } = await axios.post('http://localhost:4000/payment/api/create-payment-intent', {
+// //                 amount: Number(course.price) * 100,
+// //                 courseId: course._id,
+// //             }, {
+// //                 headers: {
+// //                     Authorization: `Bearer ${authToken}`
+// //                 }
+// //             });
+
+// //             const clientSecret = data.clientSecret;
+
+// //             const result = await stripe.confirmCardPayment(clientSecret, {
+// //                 payment_method: {
+// //                     card: elements.getElement(CardElement)!,
+// //                 },
+// //             });
+
+// //             if (result.error) {
+// //                 console.error(result.error.message);
+// //                 toast.error(result.error.message);
+// //             } else if (result.paymentIntent?.status === 'succeeded') {
+// //                 toast.success('Payment succeeded!');
+// //                 console.log('Payment succeeded!');
+// //             }
+// //         } catch (error) {
+// //             console.error('Payment error:', error);
+// //         } finally {
+// //             setLoading(false);
+// //             onClose();
+// //         }
+// //     };
+
+// //     return (
+// //         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+// //             <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
+// //                 <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white text-center">{course.title}</h2>
+// //                 <p className="text-gray-700 dark:text-gray-300 mb-6 text-center">Price: ₹{course.price}</p>
+
+// //                 <form onSubmit={handlePayment} className="space-y-6">
+// //                     <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600">
+// //                         <CardElement
+// //                             className="p-2"
+// //                             options={{
+// //                                 style: {
+// //                                     base: {
+// //                                         fontSize: '16px',
+// //                                         color: '#424770',
+// //                                         '::placeholder': {
+// //                                             color: '#aab7c4',
+// //                                         },
+// //                                     },
+// //                                     invalid: {
+// //                                         color: '#9e2146',
+// //                                     },
+// //                                 },
+// //                             }}
+// //                         />
+// //                     </div>
+// //                     <button
+// //                         type="submit"
+// //                         disabled={loading}
+// //                         className={w - full py-3 px-4 rounded-lg text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'} transition duration-300}
+// //                     >
+// //                     {loading ? 'Processing...' : 'Pay Now'}
+// //                 </button>
+// //             </form>
+// //             <button
+// //                 onClick={onClose}
+// //                 className="absolute top-4 right-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition duration-300"
+// //             >
+// //                 &times;
+// //             </button>
+// //         </div>
+// //         </div >
+// //     );
+// // };
+
+// // export default DescOfCourse;
+
+
+
+// import { useEffect, useState } from 'react';
 // import { useStripe, useElements, CardElement, Elements } from '@stripe/react-stripe-js';
 // import { loadStripe } from '@stripe/stripe-js';
 // import axios from 'axios';
@@ -10,597 +300,307 @@
 
 // const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24'); // Replace with your Stripe publishable key
 
-// const DescOfCourse = () => {
-//     // const { id } = useParams < { id: string } > ();
-//     // const dispatch: AppDispatch = useDispatch();
-//     // const navigate = useNavigate();
-//     // const { courses } = useSelector((state: RootState) => state.coursesData);
-//     // const [selectedCourseId, setSelectedCourseId] = useState(id); // State for selected course ID
-//     // const [userRating, setUserRating] = useState < number > (0); // User rating
-//     // const [showPaymentModal, setShowPaymentModal] = useState(false); // State to manage PaymentModal visibility
+// const ProductCard = () => {
+//   const [product, setProduct] = useState(null);
+//   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-//     useEffect(() => {
-//         dispatch(fetchCourses());
-//     }, [dispatch]);
-
-//     useEffect(() => {
-//         setSelectedCourseId(id);
-//     }, [id]);
-
-//     const currentCourse = courses.find(course => course._id === selectedCourseId);
-
-//     // Calculate the average rating of the course
-//     const averageRating = currentCourse?.ratings?.length
-//         ? currentCourse.ratings.reduce((acc, rating) => acc + rating.value, 0) / currentCourse.ratings.length
-//         : 0;
-
-
-//     const relatedCourses = courses.filter(course => {
-//         return (
-//             course.category?.trim() === currentCourse?.category?.trim() &&
-//             course._id !== selectedCourseId
-//         );
-//     });
-
-//     // Handle user star rating click
-//     // const handleStarClick = async (rating: number, courseId: string) => {
-//     //     try {
-//     //         setUserRating(rating);
-
-//     //         const authToken = localStorage.getItem("authToken");
-//     //         if (!authToken) {
-//     //             toast.warn("Please log in to submit a rating."); // Show warning for authentication
-//     //             return navigate("/login");
-//     //         }
-
-//     //         await axios.post(
-//     //             ${ import.meta.env.VITE_SERVER_API } / api / course / ${ courseId } / rate,
-//     //             { rating },
-//     //             {
-//     //                 headers: {
-//     //                     Authorization: Bearer ${ authToken },
-//     //                 },
-//     // }
-//     //         );
-
-//     // Show success message on successful submission
-//     // toast.success("Thank you for your rating!");
-//     //         } catch (error: any) {
-//     //     // Show error message on failure
-//     //     const errorMessage = error.response?.data?.msg || "An error occurred while submitting your rating.";
-//     //     toast.error(errorMessage);
-//     //     console.log(errorMessage);
-//     // }
-//     //     };
-
-//     // const handleCourseClick = (courseId: string) => {
-//     //     setSelectedCourseId(courseId); // Update the selected course ID
-//     //     navigate(/description/course / ${ courseId }); // Navigate to the selected course page
-//     // };
-
-//     // const handleBuyNowClick = () => {
-//     //     setShowPaymentModal(true); // Show PaymentModal
-//     // };
-
-//     // const closePaymentModal = () => {
-//     //     setShowPaymentModal(false); // Hide PaymentModal
-//     // };
-
-//     return (
-//         // <Elements stripe={stripePromise}>
-//         //     <ToastContainer />
-//         //     <div className="p-6 max-w-4xl mx-auto">
-//         //         {currentCourse ? (
-//         //             <div className="mb-12 bg-white shadow-xl rounded-lg overflow-hidden transform transition duration-500">
-//         //                 {/* Course Thumbnail */}
-//         //                 {currentCourse.thumbnail && (
-//         //                     <img
-//         //                         src={currentCourse.thumbnail}
-//         //                         alt={currentCourse.title}
-//         //                         className="w-full h-80 object-cover"
-//         //                     />
-//         //                 )}
-
-//         //                 <div className="p-6">
-//         //                     {/* Course Title */}
-//         //                     <h1 className="text-4xl font-extrabold mb-4 text-gray-800">{currentCourse.title}</h1>
-
-//         //                     {/* Instructor Name */}
-//         //                     <p className="text-lg text-gray-500 mb-4">by {currentCourse.instructor.name}</p>
-//         //                     <p className="text-lg text-gray-500 mb-4"> enrollments : {currentCourse.enrollments.length}</p>
-
-//         //                     {/* Average Rating */}
-//         //                     <div className="flex items-center mb-4">
-//         //                         <span className="text-yellow-500 text-lg mr-2">
-//         //                             {'★'.repeat(Math.round(averageRating))}
-//         //                             {'☆'.repeat(5 - Math.round(averageRating))}
-//         //                         </span>
-//         //                         <span className="text-gray-500">
-//         //                             ({currentCourse.ratings?.length || 0} ratings)
-//         //                         </span>
-//         //                     </div>
-
-//         //                     {/* User Rating */}
-//         //                     <div className="flex items-center mb-6">
-//         //                         <span className="mr-4 text-gray-600">Rate this course:</span>
-//         //                         {[1, 2, 3, 4, 5].map(star => (
-//         //                             <button
-//         //                                 key={star}
-//         //                                 className={text - 2xl transition-colors duration-300 ${userRating >= star ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}}
-//         //                         onClick={() => handleStarClick(star, currentCourse._id)}
-//         //                                 >
-//         //                         ★
-//         //                     </button>
-//         //                             ))}
-//         //                 </div>
-
-//         //                 {/* Course Price */}
-//         //                 <p className="text-3xl font-semibold text-green-600 mb-4">₹{currentCourse.price}</p>
-
-//         //                 {/* Course Description */}
-//         //                 <p className="text-lg leading-relaxed text-gray-700 mb-6">
-//         //                     {currentCourse.description}
-//         //                 </p>
-
-//         //                 {/* Action Buttons */}
-//         //                 <div className="flex space-x-4">
-//         //                     <button
-//         //                         className="bg-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-green-500 transform transition duration-300 hover:scale-105"
-//         //                         onClick={handleBuyNowClick}
-//         //                     >
-//         //                         Buy Now
-//         //                     </button>
-//         //                 </div>
-//         //             </div>
-//         //                 </div>
-//         //     ) : (
-//         //     <p className="text-center text-gray-500">Loading course details...</p>
-//         //             )}
-
-//         //     {/* Related Courses Section */}
-//         //     <h2 className="text-2xl font-bold mb-6 text-gray-800">Related Courses</h2>
-//         //     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-//         //         {relatedCourses.map(course => (
-//         //             <div
-//         //                 key={course._id}
-//         //                 className="p-4 border border-gray-200 rounded-lg shadow-lg bg-white hover:shadow-2xl transform transition duration-500 hover:scale-105 cursor-pointer"
-//         //                 onClick={() => handleCourseClick(course._id)}
-//         //             >
-//         //                 {/* Thumbnail */}
-//         //                 {course.thumbnail && (
-//         //                     <img
-//         //                         src={course.thumbnail}
-//         //                         alt={course.title}
-//         //                         className="w-full h-40 object-cover rounded-md mb-4"
-//         //                     />
-//         //                 )}
-//         //                 <h3 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h3>
-//         //                 <p className="text-sm text-gray-500 mb-2">by {course.instructor.name}</p>
-//         //                 <p className="text-sm text-gray-600 mb-4">{course.description}</p>
-//         //                 <p className="text-lg font-bold text-green-600">₹{course.price}</p>
-//         //             </div>
-//         //         ))}
-//         //     </div>
-
-//         //     {/* Payment Modal */}
-//         //     {showPaymentModal && currentCourse && (
-//         //         <PaymentModal course={currentCourse} onClose={closePaymentModal} />
-//         //     )}
-//         // </div>
-//         //     </Elements >
-//         // );
-//         <>
-//         </>
-// };
-
-// // Define the PaymentModal component inside the same file
-// const PaymentModal: React.FC<{ course: any; onClose: () => void }> = ({ course, onClose }) => {
-//     const stripe = useStripe();
-//     const elements = useElements();
-//     const [loading, setLoading] = useState(false);
-//     const navigate = useNavigate();
-
-//     const handlePayment = async (event) => {
-//         event.preventDefault();
-//         if (!stripe || !elements) return;
-
-//         setLoading(true);
-
-//         try {
-//             const authToken = localStorage.getItem("authToken");
-//             if (!authToken) {
-//                 return navigate("/login");
-//             }
-//             const { data } = await axios.post('http://localhost:4000/payment/api/create-payment-intent', {
-//                 amount: Number(course.price) * 100,
-//                 courseId: course._id,
-//             }, {
-//                 headers: {
-//                     Authorization: `Bearer ${authToken}`
-//                 }
-//             });
-
-//             const clientSecret = data.clientSecret;
-
-//             const result = await stripe.confirmCardPayment(clientSecret, {
-//                 payment_method: {
-//                     card: elements.getElement(CardElement)!,
-//                 },
-//             });
-
-//             if (result.error) {
-//                 console.error(result.error.message);
-//                 toast.error(result.error.message);
-//             } else if (result.paymentIntent?.status === 'succeeded') {
-//                 toast.success('Payment succeeded!');
-//                 console.log('Payment succeeded!');
-//             }
-//         } catch (error) {
-//             console.error('Payment error:', error);
-//         } finally {
-//             setLoading(false);
-//             onClose();
-//         }
+//   useEffect(() => {
+//     // Simulating product fetch
+//     const fetchedProduct = {
+//       id: '1',
+//       title: 'Cool Product',
+//       description: 'This is a cool product for shopping online.',
+//       price: 999,
+//       image: 'https://via.placeholder.com/150', // Example image URL
 //     };
+//     setProduct(fetchedProduct);
+//   }, []);
 
-//     return (
-//         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-//             <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
-//                 <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white text-center">{course.title}</h2>
-//                 <p className="text-gray-700 dark:text-gray-300 mb-6 text-center">Price: ₹{course.price}</p>
+//   const handleBuyNowClick = () => {
+//     setShowPaymentModal(true);
+//   };
 
-//                 <form onSubmit={handlePayment} className="space-y-6">
-//                     <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600">
-//                         <CardElement
-//                             className="p-2"
-//                             options={{
-//                                 style: {
-//                                     base: {
-//                                         fontSize: '16px',
-//                                         color: '#424770',
-//                                         '::placeholder': {
-//                                             color: '#aab7c4',
-//                                         },
-//                                     },
-//                                     invalid: {
-//                                         color: '#9e2146',
-//                                     },
-//                                 },
-//                             }}
-//                         />
-//                     </div>
-//                     <button
-//                         type="submit"
-//                         disabled={loading}
-//                         className={w - full py-3 px-4 rounded-lg text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'} transition duration-300}
-//                     >
-//                     {loading ? 'Processing...' : 'Pay Now'}
-//                 </button>
-//             </form>
+//   const closePaymentModal = () => {
+//     setShowPaymentModal(false);
+//   };
+
+//   return (
+//     <div className="p-6 max-w-4xl mx-auto">
+//       <ToastContainer />
+//       {product && (
+//         <div className="mb-12 bg-white shadow-xl rounded-lg overflow-hidden transform transition duration-500">
+//           <img src={product.image} alt={product.title} className="w-full h-80 object-cover" />
+//           <div className="p-6">
+//             <h1 className="text-4xl font-extrabold mb-4 text-gray-800">{product.title}</h1>
+//             <p className="text-lg text-gray-500 mb-4">{product.description}</p>
+//             <p className="text-3xl font-semibold text-green-600 mb-4">₹{product.price}</p>
 //             <button
-//                 onClick={onClose}
-//                 className="absolute top-4 right-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition duration-300"
+//               className="bg-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-green-500 transform transition duration-300 hover:scale-105"
+//               onClick={handleBuyNowClick}
 //             >
-//                 &times;
+//               Buy Now
 //             </button>
+//           </div>
 //         </div>
-//         </div >
-//     );
+//       )}
+
+//       {showPaymentModal && product && <PaymentModal product={product} onClose={closePaymentModal} />}
+//     </div>
+//   );
 // };
 
-// export default DescOfCourse;
+// export default ProductCard;
 
+// // eslint-disable-next-line react/prop-types
+// const PaymentModal = ({ product, onClose }) => {
+//   const stripe = useStripe();
+//   const elements = useElements();
+//   const [loading, setLoading] = useState(false);
 
+//   const handlePayment = async (event) => {
+//     event.preventDefault();
+//     if (!stripe || !elements) return;
 
-import { useEffect, useState } from 'react';
-import { useStripe, useElements, CardElement, Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+//     setLoading(true);
 
-const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24'); // Replace with your Stripe publishable key
+//     try {
+//       const { data } = await axios.post('http://localhost:4000/payment/api/create-payment-intent', {
+//         // eslint-disable-next-line react/prop-types
+//         amount: product.price * 100,
+//         // eslint-disable-next-line react/prop-types
+//         productId: product.id,
+//       });
 
-const ProductCard = () => {
-  const [product, setProduct] = useState(null);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
+//       const clientSecret = data.clientSecret;
 
-  useEffect(() => {
-    // Simulating product fetch
-    const fetchedProduct = {
-      id: '1',
-      title: 'Cool Product',
-      description: 'This is a cool product for shopping online.',
-      price: 999,
-      image: 'https://via.placeholder.com/150', // Example image URL
-    };
-    setProduct(fetchedProduct);
-  }, []);
+//       const result = await stripe.confirmCardPayment(clientSecret, {
+//         payment_method: {
+//           card: elements.getElement(CardElement),
+//         },
+//       });
 
-  const handleBuyNowClick = () => {
-    setShowPaymentModal(true);
-  };
+//       if (result.error) {
+//         toast.error(result.error.message);
+//       } else if (result.paymentIntent.status === 'succeeded') {
+//         toast.success('Payment succeeded!');
+//       }
+//     } catch (error) {
+//       console.error('Payment error:', error);
+//     } finally {
+//       setLoading(false);
+//       onClose();
+//     }
+//   };
 
-  const closePaymentModal = () => {
-    setShowPaymentModal(false);
-  };
+//   return (
+//     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+//       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
+//         <h2 className="text-xl font-bold mb-4 text-center">{product?.title}</h2>
+//         <p className="text-center mb-6">Price: ₹{product?.price}</p>
 
-  return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <ToastContainer />
-      {product && (
-        <div className="mb-12 bg-white shadow-xl rounded-lg overflow-hidden transform transition duration-500">
-          <img src={product.image} alt={product.title} className="w-full h-80 object-cover" />
-          <div className="p-6">
-            <h1 className="text-4xl font-extrabold mb-4 text-gray-800">{product.title}</h1>
-            <p className="text-lg text-gray-500 mb-4">{product.description}</p>
-            <p className="text-3xl font-semibold text-green-600 mb-4">₹{product.price}</p>
-            <button
-              className="bg-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-green-500 transform transition duration-300 hover:scale-105"
-              onClick={handleBuyNowClick}
-            >
-              Buy Now
-            </button>
-          </div>
-        </div>
-      )}
+//         <form onSubmit={handlePayment} className="space-y-6">
+//           <div className="p-4 bg-gray-100 rounded-lg border border-gray-300">
+//             <CardElement
+//               className="p-2"
+//               options={{
+//                 style: {
+//                   base: {
+//                     fontSize: '16px',
+//                     color: '#424770',
+//                     '::placeholder': { color: '#aab7c4' },
+//                   },
+//                   invalid: { color: '#9e2146' },
+//                 },
+//               }}
+//             />
+//           </div>
+//           <button
+//             type="submit"
+//             disabled={loading}
+//             className={`w-full py-3 px-4 rounded-lg text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'} transition duration-300`}
+//           >
+//             {loading ? 'Processing...' : 'Pay Now'}
+//           </button>
+//         </form>
+//         <button onClick={onClose} className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 transition duration-300">
+//           &times;
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
 
-      {showPaymentModal && product && <PaymentModal product={product} onClose={closePaymentModal} />}
-    </div>
-  );
-};
+// // const App = () => (
+// //   <Elements stripe={stripePromise}>
+// //     <ProductCard />
+// //   </Elements>
+// // );
 
-export default ProductCard;
+// // export default App;
 
-// eslint-disable-next-line react/prop-types
-const PaymentModal = ({ product, onClose }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [loading, setLoading] = useState(false);
+// import { useEffect, useState } from 'react';
+// import { useStripe, useElements, CardElement, Elements } from '@stripe/react-stripe-js';
+// import { loadStripe } from '@stripe/stripe-js';
+// import axios from 'axios';
+// import { toast, ToastContainer } from 'react-toastify';
 
-  const handlePayment = async (event) => {
-    event.preventDefault();
-    if (!stripe || !elements) return;
+// const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24'); // Your Stripe publishable key
 
-    setLoading(true);
+// const ProductCard = () => {
+//   const [products, setProducts] = useState([]);
+//   const [selectedProduct, setSelectedProduct] = useState(null);
+//   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-    try {
-      const { data } = await axios.post('http://localhost:4000/payment/api/create-payment-intent', {
-        // eslint-disable-next-line react/prop-types
-        amount: product.price * 100,
-        // eslint-disable-next-line react/prop-types
-        productId: product.id,
-      });
+//   useEffect(() => {
+//     // Simulating fetching multiple products
+//     const fetchedProducts = [
+//       {
+//         id: '1',
+//         title: 'Cool Product 1',
+//         description: 'This is the first cool product for shopping online.',
+//         price: 999,
+//         image: 'https://via.placeholder.com/150',
+//       },
+//       {
+//         id: '2',
+//         title: 'Cool Product 2',
+//         description: 'This is the second cool product for shopping online.',
+//         price: 1999,
+//         image: 'https://via.placeholder.com/150',
+//       },
+//       {
+//         id: '3',
+//         title: 'Cool Product 3',
+//         description: 'This is the third cool product for shopping online.',
+//         price: 2999,
+//         image: 'https://via.placeholder.com/150',
+//       },
+//     ];
+//     setProducts(fetchedProducts);
+//   }, []);
 
-      const clientSecret = data.clientSecret;
+//   const handleBuyNowClick = (product) => {
+//     setSelectedProduct(product); // Set the clicked product
+//     setShowPaymentModal(true);
+//   };
 
-      const result = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardElement),
-        },
-      });
+//   const closePaymentModal = () => {
+//     setShowPaymentModal(false);
+//     setSelectedProduct(null); // Reset the selected product
+//   };
 
-      if (result.error) {
-        toast.error(result.error.message);
-      } else if (result.paymentIntent.status === 'succeeded') {
-        toast.success('Payment succeeded!');
-      }
-    } catch (error) {
-      console.error('Payment error:', error);
-    } finally {
-      setLoading(false);
-      onClose();
-    }
-  };
+//   return (
+//     <div className="p-6 max-w-4xl mx-auto">
+//       <ToastContainer />
+//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+//         {products.map((product) => (
+//           <div key={product.id} className="mb-12 bg-white shadow-xl rounded-lg overflow-hidden transform transition duration-500">
+//             <img src={product.image} alt={product.title} className="w-full h-80 object-cover" />
+//             <div className="p-6">
+//               <h1 className="text-4xl font-extrabold mb-4 text-gray-800">{product.title}</h1>
+//               <p className="text-lg text-gray-500 mb-4">{product.description}</p>
+//               <p className="text-3xl font-semibold text-green-600 mb-4">₹{product.price}</p>
+//               <button
+//                 className="bg-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-green-500 transform transition duration-300 hover:scale-105"
+//                 onClick={() => handleBuyNowClick(product)} // Pass the clicked product
+//               >
+//                 Buy Now
+//               </button>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
 
-  return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
-        <h2 className="text-xl font-bold mb-4 text-center">{product?.title}</h2>
-        <p className="text-center mb-6">Price: ₹{product?.price}</p>
+//       {showPaymentModal && selectedProduct && (
+//         <PaymentModal product={selectedProduct} onClose={closePaymentModal} />
+//       )}
+//     </div>
+//   );
+// };
 
-        <form onSubmit={handlePayment} className="space-y-6">
-          <div className="p-4 bg-gray-100 rounded-lg border border-gray-300">
-            <CardElement
-              className="p-2"
-              options={{
-                style: {
-                  base: {
-                    fontSize: '16px',
-                    color: '#424770',
-                    '::placeholder': { color: '#aab7c4' },
-                  },
-                  invalid: { color: '#9e2146' },
-                },
-              }}
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-3 px-4 rounded-lg text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'} transition duration-300`}
-          >
-            {loading ? 'Processing...' : 'Pay Now'}
-          </button>
-        </form>
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 transition duration-300">
-          &times;
-        </button>
-      </div>
-    </div>
-  );
-};
+// export default ProductCard;
 
-// const App = () => (
-//   <Elements stripe={stripePromise}>
-//     <ProductCard />
-//   </Elements>
-// );
+// const PaymentModal = ({ product, onClose }) => {
+//   const stripe = useStripe();
+//   const elements = useElements();
+//   const [loading, setLoading] = useState(false);
 
-// export default App;
+//   const handlePayment = async (event) => {
+//     event.preventDefault();
+//     if (!stripe || !elements) return;
 
-import { useEffect, useState } from 'react';
-import { useStripe, useElements, CardElement, Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+//     setLoading(true);
 
-const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24'); // Your Stripe publishable key
+//     try {
+//       const { data } = await axios.post('http://localhost:4000/payment/api/create-payment-intent', {
+//         amount: product.price * 100, // Pass the product price for the specific product
+//         productId: product.id, // Pass the product ID for the specific product
+//       });
 
-const ProductCard = () => {
-  const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
+//       const clientSecret = data.clientSecret;
 
-  useEffect(() => {
-    // Simulating fetching multiple products
-    const fetchedProducts = [
-      {
-        id: '1',
-        title: 'Cool Product 1',
-        description: 'This is the first cool product for shopping online.',
-        price: 999,
-        image: 'https://via.placeholder.com/150',
-      },
-      {
-        id: '2',
-        title: 'Cool Product 2',
-        description: 'This is the second cool product for shopping online.',
-        price: 1999,
-        image: 'https://via.placeholder.com/150',
-      },
-      {
-        id: '3',
-        title: 'Cool Product 3',
-        description: 'This is the third cool product for shopping online.',
-        price: 2999,
-        image: 'https://via.placeholder.com/150',
-      },
-    ];
-    setProducts(fetchedProducts);
-  }, []);
+//       const result = await stripe.confirmCardPayment(clientSecret, {
+//         payment_method: {
+//           card: elements.getElement(CardElement),
+//         },
+//       });
 
-  const handleBuyNowClick = (product) => {
-    setSelectedProduct(product); // Set the clicked product
-    setShowPaymentModal(true);
-  };
+//       if (result.error) {
+//         toast.error(result.error.message);
+//       } else if (result.paymentIntent.status === 'succeeded') {
+//         toast.success('Payment succeeded!');
+//       }
+//     } catch (error) {
+//       console.error('Payment error:', error);
+//     } finally {
+//       setLoading(false);
+//       onClose();
+//     }
+//   };
 
-  const closePaymentModal = () => {
-    setShowPaymentModal(false);
-    setSelectedProduct(null); // Reset the selected product
-  };
+//   return (
+//     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+//       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
+//         <h2 className="text-xl font-bold mb-4 text-center">{product.title}</h2>
+//         <p className="text-center mb-6">Price: ₹{product.price}</p>
 
-  return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <ToastContainer />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
-          <div key={product.id} className="mb-12 bg-white shadow-xl rounded-lg overflow-hidden transform transition duration-500">
-            <img src={product.image} alt={product.title} className="w-full h-80 object-cover" />
-            <div className="p-6">
-              <h1 className="text-4xl font-extrabold mb-4 text-gray-800">{product.title}</h1>
-              <p className="text-lg text-gray-500 mb-4">{product.description}</p>
-              <p className="text-3xl font-semibold text-green-600 mb-4">₹{product.price}</p>
-              <button
-                className="bg-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-green-500 transform transition duration-300 hover:scale-105"
-                onClick={() => handleBuyNowClick(product)} // Pass the clicked product
-              >
-                Buy Now
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+//         <form onSubmit={handlePayment} className="space-y-6">
+//           <div className="p-4 bg-gray-100 rounded-lg border border-gray-300">
+//             <CardElement
+//               className="p-2"
+//               options={{
+//                 style: {
+//                   base: {
+//                     fontSize: '16px',
+//                     color: '#424770',
+//                     '::placeholder': { color: '#aab7c4' },
+//                   },
+//                   invalid: { color: '#9e2146' },
+//                 },
+//               }}
+//             />
+//           </div>
+//           <button
+//             type="submit"
+//             disabled={loading}
+//             className={`w-full py-3 px-4 rounded-lg text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'} transition duration-300`}
+//           >
+//             {loading ? 'Processing...' : 'Pay Now'}
+//           </button>
+//         </form>
+//         <button onClick={onClose} className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 transition duration-300">
+//           &times;
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
 
-      {showPaymentModal && selectedProduct && (
-        <PaymentModal product={selectedProduct} onClose={closePaymentModal} />
-      )}
-    </div>
-  );
-};
-
-export default ProductCard;
-
-const PaymentModal = ({ product, onClose }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [loading, setLoading] = useState(false);
-
-  const handlePayment = async (event) => {
-    event.preventDefault();
-    if (!stripe || !elements) return;
-
-    setLoading(true);
-
-    try {
-      const { data } = await axios.post('http://localhost:4000/payment/api/create-payment-intent', {
-        amount: product.price * 100, // Pass the product price for the specific product
-        productId: product.id, // Pass the product ID for the specific product
-      });
-
-      const clientSecret = data.clientSecret;
-
-      const result = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardElement),
-        },
-      });
-
-      if (result.error) {
-        toast.error(result.error.message);
-      } else if (result.paymentIntent.status === 'succeeded') {
-        toast.success('Payment succeeded!');
-      }
-    } catch (error) {
-      console.error('Payment error:', error);
-    } finally {
-      setLoading(false);
-      onClose();
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl relative">
-        <h2 className="text-xl font-bold mb-4 text-center">{product.title}</h2>
-        <p className="text-center mb-6">Price: ₹{product.price}</p>
-
-        <form onSubmit={handlePayment} className="space-y-6">
-          <div className="p-4 bg-gray-100 rounded-lg border border-gray-300">
-            <CardElement
-              className="p-2"
-              options={{
-                style: {
-                  base: {
-                    fontSize: '16px',
-                    color: '#424770',
-                    '::placeholder': { color: '#aab7c4' },
-                  },
-                  invalid: { color: '#9e2146' },
-                },
-              }}
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-3 px-4 rounded-lg text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'} transition duration-300`}
-          >
-            {loading ? 'Processing...' : 'Pay Now'}
-          </button>
-        </form>
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 transition duration-300">
-          &times;
-        </button>
-      </div>
-    </div>
-  );
-};
-
-PaymentModal.propTypes = {
-  product: PropTypes.shape({
-    id: PropTypes.string,
-    title: PropTypes.string,
-    price: PropTypes.number,
-  }),
-  onClose: PropTypes.func.isRequired,
-};
+// PaymentModal.propTypes = {
+//   product: PropTypes.shape({
+//     id: PropTypes.string,
+//     title: PropTypes.string,
+//     price: PropTypes.number,
+//   }),
+//   onClose: PropTypes.func.isRequired,
+// };

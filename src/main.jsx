@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
@@ -20,7 +21,12 @@ import ForgetPassword from './components/Pages/ForgetPassword.jsx'
 import PageNotFound from './components/Pages/PageNotFound.jsx'
 import Createpassword from './components/Pages/Createpassword.jsx'
 import Wishlist from './components/Pages/Wishlist.jsx'
-import ProductCard from './components/Pages/ProductCard.jsx'
+import { loadStripe } from '@stripe/stripe-js'
+import PaymentModal from './components/Pages/PaymentModal.jsx'
+
+import { Elements } from '@stripe/react-stripe-js'
+
+const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24');
 
 const router = createBrowserRouter([
   {
@@ -84,8 +90,8 @@ const router = createBrowserRouter([
         element: <Wishlist />
       },
       {
-        path: "/ProductCard",
-        element: <ProductCard />
+        path: "/PaymentModal",
+        element: <PaymentModal />
       },
       {
         path: "*",
@@ -95,7 +101,10 @@ const router = createBrowserRouter([
   }
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-      <RouterProvider router={router} />    
-  </Provider>,
+  <Elements stripe={stripePromise}>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </Elements>
+  ,
 )
