@@ -146,35 +146,9 @@ const Card = () => {
         }
     };
 
-    // const handleBuyNow = async (productId, price) => {
-    //     console.log(productId, price);
-
-    //     // Call your backend to create a Stripe session
-    //     const stripe = await stripePromise;
-
-    //     const response = await fetch('http://localhost:3000/create-checkout-session', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ productId, price }),
-    //     });
-
-    //     const session = await response.json();
-
-    //     // Redirect to Stripe Checkout
-    //     const result = await stripe.redirectToCheckout({
-    //         sessionId: session.id,
-    //     });
-
-    //     if (result.error) {
-    //         console.error(result.error.message);
-    //     }
-    // };
-
     return (
 
-        <div className='bg-gray-300'>
+        <div className='bg-gray-300 relative'>
             <ToastContainer />
             <div className='grid grid-cols-12 gap-4 p-4'>
                 {/* Filter Section */}

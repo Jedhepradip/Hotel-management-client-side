@@ -63,17 +63,15 @@ const Home = () => {
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia dicta quidem, perspiciatis dolores, tempora neque.
               </p>
 
-              <div className="relative mt-6 w-full max-w-xl mx-auto">
-                <IoIosSearch className="absolute text-gray-500 w-6 h-6 ml-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+              <div className="relative mt-6 w-full px-20">
+                <IoIosSearch className="absolute text-gray-500 w-6 h-6 ml-3 top-1/2 transform -translate-y-1/2 transition-transform duration-200 hover:text-gray-700" />
                 <input
                   type="text"
                   placeholder="Search Location City"
-                  className="pl-12 py-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out 
-                 hover:border-blue-500 shadow-md hover:shadow-lg bg-gray-50 hover:bg-white text-gray-800
-                 placeholder-gray-500 focus:placeholder-gray-400"
+                  className="pl-12 py-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-4  transition-all 
+    shadow-md hover:shadow-lg bg-gray-50 hover:bg-white text-gray-800 placeholder-gray-400 placeholder-opacity-75  duration-200"
                   onChange={(e) => handleSearch(e.target.value)}
                 />
-                <div className="absolute inset-0 border-blue-500 border-opacity-20 rounded-lg transform scale-95 transition-all duration-300 group-hover:scale-100"></div>
               </div>
 
 

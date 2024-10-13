@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { json, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { IoLocationOutline } from 'react-icons/io5'
@@ -10,14 +10,12 @@ import Swal from 'sweetalert2'
 
 function BillAuth() {
     const [card, setcardinfo] = useState([])
-    const [message,setmessage] = useState([])
+    const [message, setmessage] = useState([])
     const { id } = useParams()
 
-    const cardinfo = useSelector(state => state.Cardif.Cardif)
+    console.log(message);
 
-
-    const notify = () => toast.success("Wow so easy!");
-
+    const cardinfo = useSelector((state) => state.cardData.Cardif);
 
     const navigate = useNavigate()
     const {
@@ -46,12 +44,12 @@ function BillAuth() {
                 console.log(response.status);
             }
             if (response.ok) {
-                 Swal.fire({
+                Swal.fire({
                     title: "Payment Successful...",
                     // text: "Payment successfully",
                     icon: "success"
-                  });
-                navigate("/")                
+                });
+                navigate("/")
                 setmessage(responsedata.Massage)
                 reset()
             }
@@ -63,20 +61,14 @@ function BillAuth() {
 
     useEffect(() => {
         if (cardinfo.length) {
-            let card = cardinfo[0].text
-            const cardfilter = card.filter(e => e._id == id)
-            setcardinfo(cardfilter)
-        } else {
-            let data = sessionStorage.getItem("Roomsdata")
-            let Card = JSON.parse(data)
-            const cardfilter = Card.filter(e => e._id == id)
+            const cardfilter = cardinfo.filter(e => e._id == id)
             setcardinfo(cardfilter)
         }
-    }, [message])
+    }, [cardinfo])
 
     return (
         <>
-            <div className='flex bg-white justify-around items-center '>           
+            <div className='flex bg-white justify-around items-center '>
                 <div className='flex  items-center flex-wrap '>
                     {card.map((val, index) => (
                         <div key={index} className='max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg transition-shadow duration-300 ease-in-out hover:shadow-2xl dark:bg-gray-800 dark:border-gray-700 p-0 mb-[30px] mt-5'
