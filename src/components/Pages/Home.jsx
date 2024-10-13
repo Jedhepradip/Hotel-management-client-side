@@ -9,8 +9,8 @@ import { fetchCardData } from '../../App/CardSlice';
 import { IoIosSearch } from 'react-icons/io';
 
 const Home = () => {
-  const [userData, setuserdata] = useState()
-  const [Search, setSearchShow] = useState()
+  const [userData, setuserdata] = useState([])
+  const [Search, setSearchShow] = useState([])
   const dispatch = useDispatch()
   const User = useSelector((state) => state?.Userdata.User)
   const cardifData = useSelector((state) => state.cardData.Cardif);
@@ -27,11 +27,21 @@ const Home = () => {
   }, [User])
 
   const handleSearch = (city) => {
-    if (!city) return setSearchShow([])
-    let filteredLocations = cardifData
-      .filter(e => e.location.toUpperCase().includes(city.toUpperCase()))
-    setSearchShow([...new Set(filteredLocations)]);
-  }
+    if (!city) return setSearchShow([]);
+
+    let filteredLocations = cardifData.filter(e =>
+      e.location.toUpperCase().includes(city.toUpperCase())
+    );
+
+    // Remove duplicate locations
+    let uniqueLocations = filteredLocations.filter(
+      (location, index, self) =>
+        index === self.findIndex((loc) => loc.location === location.location)
+    );
+
+    setSearchShow(uniqueLocations);
+  };
+
 
   const handleLocation = (location) => {
     const filteredLocations = cardifData.filter(e => e.location === location);
@@ -43,35 +53,47 @@ const Home = () => {
     <>
       {(userData?.user?.isAdmin == false || null || " ") &&
         <>
-          <div className="w-full h-auto relative bg-white py-20 px-20">
-            <h1 className='text-[30px] font-serif font-medium text-center'>Welcome To <span className='text-red-500'>Hotle Management</span></h1>
-            <div className='px-[300px]'>
+          <div className="w-full h-auto relative bg-white py-20 px-10 lg:px-20">
+            <h1 className='text-[30px] font-serif font-medium text-center'>
+              Welcome To <span className='text-red-500'>Hotel Management</span>
+            </h1>
+
+            <div className='max-w-3xl mx-auto mt-6'>
               <p className='text-center font-serif text-[19px] py-3'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Mollitia dicta quidem, perspiciatis dolores, tempora neque
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia dicta quidem, perspiciatis dolores, tempora neque.
               </p>
-              <li className="relative">
-                <IoIosSearch className="absolute text-black w-8 h-8 ml-2" />
+
+              <div className="relative mt-6 w-full max-w-xl mx-auto">
+                <IoIosSearch className="absolute text-gray-500 w-6 h-6 ml-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search Location City"
-                  className="pl-10 py-1 border border-gray-900 rounded-lg"
+                  className="pl-12 py-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out 
+                 hover:border-blue-500 shadow-md hover:shadow-lg bg-gray-50 hover:bg-white text-gray-800
+                 placeholder-gray-500 focus:placeholder-gray-400"
                   onChange={(e) => handleSearch(e.target.value)}
                 />
-              </li>
+                <div className="absolute inset-0 border-blue-500 border-opacity-20 rounded-lg transform scale-95 transition-all duration-300 group-hover:scale-100"></div>
+              </div>
+
+
             </div>
 
+            {Search?.length > 0 && (
+              <div className="bg-white shadow-lg rounded-lg p-4 mt-4 max-w-3xl mx-auto">
+                {Search.map((val, index) => (
+                  <div
+                    key={index}
+                    className="py-2 px-4 hover:bg-gray-100 cursor-pointer transition-all"
+                    onClick={() => handleLocation(val)}
+                  >
+                    <div className="text-lg font-semibold">{val.title}</div>
+                    <div className="text-sm text-gray-500">{val.location}</div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-
-          {Search?.length > 0 && (
-            <div className="bg-black shadow-lg rounded-lg p-4">
-              {Search.map((val, index) => (
-                <div key={index} className="py-1 cursor-pointer" onClick={() => handleLocation(val)}>
-                  {val}
-                </div>
-              ))}
-            </div>
-          )}
           <About />
         </>
       }

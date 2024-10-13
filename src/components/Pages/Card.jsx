@@ -100,25 +100,25 @@ const Card = () => {
         let setpricerange = [];  // Use 'let' instead of 'const' to allow reassignment
 
         if (price >= 1000 && price <= 2000) {
-            setpricerange = cardifData.filter((e) => e.price >= 1000 && e.price <= 2000); // Compare as numbers
+            setpricerange = cardifData.filter((e) => e.discountPrice >= 1000 && e.discountPrice <= 2000); // Compare as numbers
         }
         else if (price >= 2000 && price <= 3000) {
-            setpricerange = cardifData.filter((e) => e.price >= 2000 && e.price <= 3000);
+            setpricerange = cardifData.filter((e) => e.discountPrice >= 2000 && e.discountPrice <= 3000);
         }
         else if (price >= 3000 && price <= 4000) {
-            setpricerange = cardifData.filter((e) => e.price >= 3000 && e.price <= 4000);
+            setpricerange = cardifData.filter((e) => e.discountPrice >= 3000 && e.discountPrice <= 4000);
         }
         else if (price >= 4000 && price <= 5000) {
-            setpricerange = cardifData.filter((e) => e.price >= 4000 && e.price <= 5000);
+            setpricerange = cardifData.filter((e) => e.discountPrice >= 4000 && e.discountPrice <= 5000);
         }
         else if (price >= 5000 && price <= 6000) {
-            setpricerange = cardifData.filter((e) => e.price >= 5000 && e.price <= 6000);
+            setpricerange = cardifData.filter((e) => e.discountPrice >= 5000 && e.discountPrice <= 6000);
         }
         else if (price >= 6000 && price <= 7000) {
-            setpricerange = cardifData.filter((e) => e.price >= 6000 && e.price <= 7000);
+            setpricerange = cardifData.filter((e) => e.discountPrice >= 6000 && e.discountPrice <= 7000);
         }
         else if (price >= 7000 && price <= 8000) {
-            setpricerange = cardifData.filter((e) => e.price >= 7000 && e.price <= 8000);
+            setpricerange = cardifData.filter((e) => e.discountPrice >= 7000 && e.discountPrice <= 8000);
         }
         setshow(setpricerange);
     };
