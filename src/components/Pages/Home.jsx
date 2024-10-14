@@ -7,6 +7,7 @@ import { FaHome, FaUser, FaCog, FaChartBar, FaSignOutAlt } from 'react-icons/fa'
 import { FetchingUserData } from '../../App/UserSlice';
 import { fetchCardData } from '../../App/CardSlice';
 import { IoIosSearch } from 'react-icons/io';
+import { NavLink } from 'react-router-dom';
 
 const Home = () => {
   const [userData, setuserdata] = useState([])
@@ -54,44 +55,48 @@ const Home = () => {
       {(userData?.user?.isAdmin == false || null || " ") &&
         <>
           <div className="w-full h-auto relative bg-white py-20 px-10 lg:px-20">
-            <h1 className='text-[30px] font-serif font-medium text-center'>
-              Welcome To <span className='text-red-500'>Hotel Management</span>
+            <h1 className="text-[30px] lg:text-[36px] font-serif font-semibold text-center">
+              Welcome To <span className="text-red-500">Hotel Management</span>
             </h1>
 
-            <div className='max-w-3xl mx-auto mt-6'>
-              <p className='text-center font-serif text-[19px] py-3'>
+            <div className="max-w-3xl mx-auto mt-6">
+              <p className="text-center font-serif text-[19px] lg:text-[22px] py-3 text-gray-600">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia dicta quidem, perspiciatis dolores, tempora neque.
               </p>
 
-              <div className="relative mt-6 w-full px-20">
-                <IoIosSearch className="absolute text-gray-500 w-6 h-6 ml-3 top-1/2 transform -translate-y-1/2 transition-transform duration-200 hover:text-gray-700" />
+              <div className="relative mt-6 w-full px-10 lg:px-20">
+                <IoIosSearch className="absolute text-gray-500 w-6 h-6 ml-3 top-1/2 transform -translate-y-1/2 transition-transform duration-300 hover:text-red-500" />
                 <input
                   type="text"
                   placeholder="Search Location City"
-                  className="pl-12 py-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-4  transition-all 
-    shadow-md hover:shadow-lg bg-gray-50 hover:bg-white text-gray-800 placeholder-gray-400 placeholder-opacity-75  duration-200"
+                  className="pl-12 py-3 w-full border border-gray-300 rounded-full focus:outline-none focus:ring-4 focus:ring-red-200 transition-all shadow-md hover:shadow-xl bg-gray-50 hover:bg-white text-gray-800 placeholder-gray-400 placeholder-opacity-75 duration-300"
                   onChange={(e) => handleSearch(e.target.value)}
                 />
               </div>
-
-
             </div>
 
             {Search?.length > 0 && (
-              <div className="bg-white shadow-lg rounded-lg p-4 mt-4 max-w-3xl mx-auto">
+              <div className="bg-white shadow-lg rounded-lg p-4 mt-4 max-w-3xl mx-auto transition-all duration-300">
                 {Search.map((val, index) => (
-                  <div
-                    key={index}
-                    className="py-2 px-4 hover:bg-gray-100 cursor-pointer transition-all"
-                    onClick={() => handleLocation(val)}
-                  >
-                    <div className="text-lg font-semibold">{val.title}</div>
-                    <div className="text-sm text-gray-500">{val.location}</div>
-                  </div>
+                  <>
+                    <NavLink to={`/RoomsAll/${val._id}`}>
+                      <div
+                        key={index}
+                        className="py-3 px-5 hover:bg-gray-100 cursor-pointer transition-all duration-300 flex justify-between items-center rounded-lg"
+                        onClick={() => handleLocation(val)}
+                      >
+
+                        <div className="text-lg font-semibold text-gray-800">{val.title}</div>
+                        <div className="text-sm text-gray-500">{val.location}</div>
+
+                      </div>
+                    </NavLink>
+                  </>
                 ))}
               </div>
             )}
           </div>
+
           <About />
         </>
       }
