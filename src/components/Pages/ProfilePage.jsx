@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -15,10 +15,9 @@ const ProfilePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [BookingId, setBookingId] = useState([])
     const dispatch = useDispatch()
-
     const navigate = useNavigate();
     const User = useSelector((state) => state?.Userdata.User)
-      useSelector((state) => state?.cardData?.Cardif);
+    useSelector((state) => state?.cardData?.Cardif);
 
     const { register, handleSubmit, reset } = useForm();
 

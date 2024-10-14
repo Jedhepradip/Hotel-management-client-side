@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -59,7 +59,7 @@ const AddtoRooms = () => {
     return (
         <>
             <ToastContainer />
-            <h1 className='text-5xl font-extrabold text-center mt-5 text-gray-800'>Booking Rooms</h1>
+            <h1 className='text-5xl font-serif text-center mt-5 text-gray-800'>Add To Card Rooms</h1>
             <div className='mt-6 flex justify-between items-center bg-gray-50 p-6 rounded-lg shadow-md'>
                 <h2 className='text-2xl font-semibold text-gray-700'>Total Price: <span className='text-green-600'>₹{totalPrice}</span></h2>
             </div>
