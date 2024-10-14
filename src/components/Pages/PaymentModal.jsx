@@ -14,19 +14,12 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
     const [userEmail, setUserEmail] = useState("");
     const navigate = useNavigate();
 
-    console.log("selectedProduct search :", selectedProduct, closePaymentModal);
-
     const handlePayment = async (event) => {
         event.preventDefault();
         if (!stripe || !elements) return;
-
-        console.log(userName, userEmail);
-
         setLoading(true);
-
         try {
             const Token = localStorage.getItem("Token");
-
             // Check if the token exists, if not redirect to login page
             if (!Token) {
                 toast.error('You need to log in first.');
@@ -64,28 +57,32 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
 
             if (result.error) {
                 console.error('Payment failed:', result.error.message);
-                toast.error(`Payment failed: ${result.error.message}`);
+                toast.error(result.error.message);
+                toast.error(<div className='text-red-600 font-serif'>{result.error.message}</div>);
+
             } else if (result.paymentIntent?.status === 'succeeded') {
-                toast.success('Payment succeeded!');
+                toast.success(<div className='text-black font-serif'>Payment succeeded!</div>);
                 console.log('Payment succeeded:', result.paymentIntent);
             } else {
-                toast.error('Payment status is not successful.');
+                toast.error(<div className='font-serif text-red-600 '>Payment status is not successful.</div>);
             }
         } catch (error) {
             // Differentiating error types and messages
             if (error.response) {
                 console.error('API error:', error.response.data.message);
-                toast.error(`Payment error: ${error.response.data.message}`);
+                toast.error(<div className='font-serif text-red-600 '>{error.response.data.message}</div>);
             } else if (error.request) {
                 console.error('Network error:', error.request);
-                toast.error('Network error occurred. Please try again.');
+                toast.error(<div className='font-serif text-600'>Network error occurred. Please try again.</div>);
             } else {
                 console.error('General error:', error.message);
-                toast.error(`Payment error: ${error.message}`);
+                toast.error(<div className='font-serif text-red-600'>{error.message}</div>);
             }
         } finally {
             setLoading(false);
-            closePaymentModal();
+            setTimeout(() => {
+                closePaymentModal();
+            }, 2500);
         }
 
     };
@@ -93,8 +90,8 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
     return (
         <>
             <ToastContainer />
-            <div className=" inset-0 bg-gray-800 bg-opacity-75 md:flex md:items-center md:justify-center flex justify-center items-center z-50 absolute md:p-40">
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg md:p-6 md:w-[55%] w-[80%] p-7 max-w-2xl md:mt-44 relative mb-[2000px]">
+            <div className=" inset-0 bg-gray-800 bg-opacity-75 md:flex md:items-center md:justify-center pl-[60px] py-9 z-50 absolute md:p-40">
+                <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg md:p-6 md:w-[55%] w-[90%] p-7 max-w-2xl md:mt-44 relative md:mb-[2000px]">
                     <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white text-center">{selectedProduct.title}</h2>
                     <p className="text-gray-700 dark:text-gray-300 mb-6 text-center ">Price: ₹{selectedProduct.price}</p>
 
@@ -152,7 +149,7 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full py-3 px-4 rounded-lg text-white ${loading ? 'bg-blue-500' : 'bg-blue-500 hover:bg-blue-700'} transition duration-300`}
+                            className={`w-full py-3 px-4 rounded-lg text-white ${loading ? 'bg-blue-500' : ' bg-blue-500 hover:bg-blue-700'} transition duration-300`}
                         >
                             {loading ? 'Processing...' : `Pay ₹${selectedProduct.price}`}
                         </button>
