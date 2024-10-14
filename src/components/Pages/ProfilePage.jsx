@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -92,40 +92,40 @@ const ProfilePage = () => {
                             className="w-24 h-24 rounded-full border-2 border-black"
                         />
                         <div>
-                            <h2 className="text-2xl font-semibold text-gray-800">{userInfo?.name}</h2>
-                            {/* <p className="text-gray-600">email</p> */}
+                            <h2 className="text-2xl font-serif text-gray-800">{userInfo?.name}</h2>
+                            <p className="text-gray-600">{userInfo?.email}</p>
                         </div>
                     </div>
 
                     <div className="mt-6">
-                        <h3 className="text-xl font-semibold text-gray-700">Personal Information</h3>
+                        <h3 className="text-xl font-serif text-gray-700">Personal Information</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
-                                <h4 className="font-semibold text-gray-700">Name</h4>
+                                <h4 className="font-serfi text-black">Name</h4>
                                 <p className="text-gray-600">{userInfo?.name}</p>
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
-                                <h4 className="font-semibold text-gray-700">Email</h4>
+                                <h4 className="font-serfi text-black">Email</h4>
                                 <p className="text-gray-600">{userInfo?.email}</p>
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
-                                <h4 className="font-semibold text-gray-700">Phone</h4>
+                                <h4 className="font-serfi text-black">Phone</h4>
                                 <p className="text-gray-600">91+ {userInfo?.mobile}</p>
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
-                                <h4 className="font-semibold text-gray-700">Address</h4>
+                                <h4 className="font-serfi text-black">Address</h4>
                                 <p className="text-gray-600">123 Street Name, City, Country</p>
                             </div>
                         </div>
-                    </div>                   
+                    </div>
 
                     <div className="mt-6">
                         <h3 className="text-xl font-semibold text-gray-700">Account Settings</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 font-serif">
-                            <button className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md" onClick={toggleModal}>
+                            <button className="bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md" onClick={toggleModal}>
                                 Update
                             </button>
-                            <button className="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md" onClick={() => handelLogOut()}>
+                            <button className="bg-red-600 text-white py-2 px-4 rounded-lg shadow-md" onClick={() => handelLogOut()}>
                                 Logout
                             </button>
                         </div>

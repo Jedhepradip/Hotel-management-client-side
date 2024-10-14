@@ -12,9 +12,7 @@ import About from './components/Pages/About.jsx'
 import Contact from './components/Pages/Contact.jsx'
 import RoomsAll from './components/Pages/RoomsAll.jsx'
 import SignIn from './components/Pages/SignIn.jsx'
-import RoomsLocationShow from './components/Pages/RoomsLocationShow.jsx'
 import ProfilePage from './components/Pages/ProfilePage.jsx'
-import BillAuth from './components/BillAuth.jsx'
 import AddtoRooms from './components/Pages/AddtoRooms.jsx'
 import Login from './components/Pages/Login.jsx'
 import ForgetPassword from './components/Pages/ForgetPassword.jsx'
@@ -53,16 +51,8 @@ const router = createBrowserRouter([
         element: <SignIn />
       },
       {
-        path: "/RoomsLocationShow",
-        element: <RoomsLocationShow />
-      },
-      {
         path: "/ProfilePage",
         element: <ProfilePage />
-      },
-      {
-        path: "/BillAuth/:id",
-        element: <BillAuth />
       },
       {
         path: "/AddtoRooms",
