@@ -13,7 +13,6 @@ const ProfilePage = () => {
     const [userInfo, setUserInfo] = useState({});
     const [file, setFile] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [BookingId, setBookingId] = useState([])
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const User = useSelector((state) => state?.Userdata.User)
@@ -24,8 +23,6 @@ const ProfilePage = () => {
     useEffect(() => {
         if (User) {
             setUserInfo(User?.user);
-            let Rooms = User?.Orders?.Rooms
-            setBookingId(Rooms)
         }
     }, [User]);
 
@@ -120,22 +117,7 @@ const ProfilePage = () => {
                                 <p className="text-gray-600">123 Street Name, City, Country</p>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="mt-6">
-                        <h3 className="text-xl font-semibold text-gray-700">Booking History</h3>
-                        <div className="mt-4">
-                            {BookingId?.map((val, index) => (
-                                <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-md mb-4">
-                                    <h4 className="font-semibold text-gray-700">Booking Rooms Id :{val.roomsid}</h4>
-                                    <p className="text-gray-600">Owenr Name : {val.CARDHOLDERNAME}</p>
-                                    <p className="text-gray-600">Card Number : {val.CardNumber}</p>
-                                    <p className="text-gray-600">Card CVC : {val.CARDCVC}</p>
-                                    <p className="text-gray-600">Check-Out: {val.CARDEXPIRY}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                    </div>                   
 
                     <div className="mt-6">
                         <h3 className="text-xl font-semibold text-gray-700">Account Settings</h3>

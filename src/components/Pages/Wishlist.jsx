@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { FaRegHeart, FaStar, FaStarHalfAlt } from 'react-icons/fa'
 import { IoLocationOutline } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
@@ -13,13 +13,10 @@ const Wishlist = () => {
   const cardifData = useSelector((state) => state?.cardData?.Cardif);
   const User = useSelector((state) => state?.Userdata.User)
 
-
   useEffect(() => {
     dispatch(FetchingUserData())
     dispatch(fetchCardData())
   }, [dispatch,User?.user?.rooms?.length])
-
-  
 
   useEffect(() => {
     if (User?.user?.Rooms) {
