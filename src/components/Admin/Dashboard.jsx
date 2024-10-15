@@ -10,6 +10,8 @@ import { FaChartBar, FaCog, FaHome, FaRegHeart, FaSignOutAlt, FaUser } from 'rea
 import { IoLocationOutline } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
 import { useForm } from 'react-hook-form';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
     const [userdata, Setuserdata] = useState([])
@@ -172,12 +174,11 @@ const HomePage = () => {
 }
 
 const AllUser = () => {
-    const [file, setFile] = useState(null);
-    const Alluser = useSelector((state) => state?.Alluserdata?.AllUser);
+    const [userId, setUserId] = useState(null); // Store selected user ID
     const [dropdownOpen, setDropdownOpen] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [userInfo, setUserInfo] = useState(null); // Store the selected user info
-    const { register, handleSubmit } = useForm();
+
+    const Alluser = useSelector((state) => state?.Alluserdata?.AllUser);
 
     // Toggle dropdown for each user
     const toggleDropdown = (index) => {
@@ -186,43 +187,35 @@ const AllUser = () => {
 
     // Handle Edit user
     const handleEdit = (id) => {
-        const FilterUser = Alluser.find((e) => e._id === id);
-        setUserInfo(FilterUser); // Set the selected user info
+        setUserId(id);
         setIsModalOpen(true); // Open the modal
-        setDropdownOpen(11)
+        setDropdownOpen(null); // Close dropdown
     };
 
     // Handle Close Modal
     const handleCloseModal = () => {
         setIsModalOpen(false); // Close modal
-        setUserInfo(null); // Clear the user info
-    };
-
-    const onSubmit = (data) => {
-        // Handle form submission logic here
-        console.log('Updated Data:', data);
     };
 
     return (
-        <div className="mx-auto h-full relative">
-            {/* Table structure */}
-            {!isModalOpen && (
-                <>
-                    <h2 className="text-2xl font-bold mb-4">User List</h2>
-                    <div className="relative h-full overflow-x-auto">
-                        <table className="min-w-full bg-white border-collapse">
-                            <thead>
-                                <tr>
-                                    <th className="text-left py-2 px-4 border-b-2">Profile Image</th>
-                                    <th className="text-left py-2 px-4 border-b-2">Name</th>
-                                    <th className="text-left py-2 px-4 border-b-2">Email</th>
-                                    <th className="text-left py-2 px-4 border-b-2">Contact</th>
-                                    <th className="text-left py-2 px-4 border-b-2">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="relative">
-                                {Alluser?.map((user, index) => (
-                                    <tr key={index} className="hover:bg-gray-50 transition-colors duration-150">
+        <>
+            <div className="mx-auto h-full relative">
+                <h2 className="text-2xl font-bold mb-4">User List</h2>
+                <div className="relative h-full overflow-x-auto">
+                    <table className="min-w-full bg-white border-collapse">
+                        <thead>
+                            <tr>
+                                <th className="text-left py-2 px-4 border-b-2">Profile Image</th>
+                                <th className="text-left py-2 px-4 border-b-2">Name</th>
+                                <th className="text-left py-2 px-4 border-b-2">Email</th>
+                                <th className="text-left py-2 px-4 border-b-2">Contact</th>
+                                <th className="text-left py-2 px-4 border-b-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="relative">
+                            {Alluser?.map((user, index) => (
+                                <tr key={index} className="hover:bg-gray-50 transition-colors duration-150">
+                                    <NavLink to={"/ProfilePage"}>
                                         <td className="py-2 px-4 border-b">
                                             <img
                                                 src={`http://localhost:3000/${user?.ProfileImg}`}
@@ -230,111 +223,178 @@ const AllUser = () => {
                                                 className="w-12 h-12 rounded-full object-cover"
                                             />
                                         </td>
-                                        <td className="py-2 px-4 border-b">
-                                            {user?.name || 'N/A'}
-                                        </td>
-                                        <td className="py-2 px-4 border-b">
-                                            {user?.email || 'N/A'}
-                                        </td>
-                                        <td className="py-2 px-4 border-b">
-                                            {user?.mobile || 'N/A'}
-                                        </td>
-                                        <td className="py-2 px-2 border-b text-center text-[20px] relative">
-                                            <BsThreeDots
-                                                className="text-gray-600 hover:text-gray-800 cursor-pointer"
-                                                onClick={() => toggleDropdown(index)} // Toggle dropdown
-                                            />
-                                            {dropdownOpen === index && (
-                                                <div className="absolute top-[45px] right-0 w-36 bg-white shadow-lg rounded-lg z-50">
-                                                    <div className="text-left">
-                                                        <div
-                                                            className="px-4 py-2 rounded-lg hover:bg-black hover:text-white text-black font-serif cursor-pointer transition-colors duration-200"
-                                                            onClick={() => handleEdit(user._id)}
-                                                        >
-                                                            Edit
-                                                        </div>
-                                                        <div
-                                                            className="px-4 py-2 rounded-lg hover:bg-black hover:text-white text-red-500 transition-colors duration-200 font-serif cursor-pointer"
-                                                            onClick={() => console.log('Delete User', user?.name)}
-                                                        >
-                                                            Delete
-                                                        </div>
+                                    </NavLink>
+                                    <td className="py-2 px-4 border-b">
+                                        {user?.name || 'N/A'}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {user?.email || 'N/A'}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {user?.mobile || 'N/A'}
+                                    </td>
+                                    <td className="py-2 px-2 border-b text-center text-[20px] relative">
+                                        <BsThreeDots
+                                            className="text-gray-600 hover:text-gray-800 cursor-pointer"
+                                            onClick={() => toggleDropdown(index)} // Toggle dropdown
+                                        />
+                                        {dropdownOpen === index && (
+                                            <div className="absolute top-[45px] right-0 w-36 bg-white shadow-lg rounded-lg z-50">
+                                                <div className="text-left">
+                                                    <div
+                                                        className="px-4 py-2 rounded-lg hover:bg-black hover:text-white text-black font-serif cursor-pointer transition-colors duration-200"
+                                                        onClick={() => handleEdit(user._id)}
+                                                    >
+                                                        Edit
+                                                    </div>
+                                                    <div
+                                                        className="px-4 py-2 rounded-lg hover:bg-black hover:text-white text-red-500 transition-colors duration-200 font-serif cursor-pointer"
+                                                        onClick={() => console.log('Delete User', user?.name)}
+                                                    >
+                                                        Delete
                                                     </div>
                                                 </div>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </>
-            )}
+                                            </div>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                {/* Modal for Editing User */}
+                {isModalOpen && (
+                    <EditUserFrom
+                        userId={userId}
+                        handleCloseModal={handleCloseModal}
+                    />
+                )}
+            </div>
+        </>
+    );
+};
 
-            {/* Modal for Editing User */}
-            {isModalOpen && userInfo && (
-                <div className="fixed inset-0 bg-gray-300 p-5 flex items-center justify-center bg-opacity-50 z-50 mb-10">
-                    <div className="bg-white rounded-lg shadow-lg max-w-sm mx-auto p-3">
-                        <div className="flex justify-end p-1">
-                            <RxCross2
-                                className="text-2xl text-red-500 cursor-pointer"
-                                onClick={handleCloseModal}
-                            />
-                        </div>
-                        <div className="p-3">
-                            {/* <h2 className="text-2xl font-semibold text-center mb-5">Edit Profile</h2> */}
+// eslint-disable-next-line react/prop-types
+const EditUserFrom = ({ userId, handleCloseModal }) => {
+    const [userInfo, setUserinfo] = useState()
+    const [file, setFile] = useState(null);
+    const Alluser = useSelector((state) => state?.Alluserdata?.AllUser);
+    const { register, handleSubmit } = useForm({});
+
+    useEffect(() => {
+        const user = Alluser.filter((e) => e._id == userId)
+        setUserinfo(user[0])
+    }, [Alluser, userId])
+
+    console.log(file);
+
+    const onSubmit = async (formData) => {
+        const data = new FormData();
+        data.append("ProfileImg", file)
+        data.append("name", formData.name)
+        data.append("email", formData.email)
+        data.append("mobile", formData.mobile)
+
+        try {
+            // const response = await fetch("https://hotel-management-server-5drh.onrender.com/Eidit/User/Profile", {
+            const response = await fetch(`http://localhost:3000/Eidit/User/Profile/${userId}`, {
+                method: "PUT",
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem("Token")}`,
+                },
+                body: data,
+            });
+
+            if (!response.ok) {
+                let responseData = await response.json()
+                toast.error(`${responseData.Message}`)
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.ok) {
+                await response.json();
+                toast.success(`Profile Update Successfull..`)
+                setTimeout(() => {
+                    // navigate("/")
+                    handleCloseModal()
+                }, 2000)
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    return (
+        <>
+            <div id="timeline-modal" className="z-50 absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 mb-10">
+                <ToastContainer />
+                <div className="bg-white">
+                    <div className="max-w-sm rounded-lg overflow-hidden shadow-lg mx-auto">
+                        <RxCross2
+                            onClick={handleCloseModal}
+                            className="float-right text-2xl ml-5 text-red-500 font-extrabold"
+                        />
+                        <div className="py-5 px-10">
+                            <h2 className="text-[30px] font-serif font-medium text-gray-800 text-center mb-5">Edit Profile</h2>
                             <form onSubmit={handleSubmit(onSubmit)}>
-                                <div className="mb-2">
-                                    <label className="block text-gray-700 text-lg mb-2 font-serif" htmlFor="ProfileImg">
+
+                                <div className="mb-1">
+                                    <label className="block text-gray-700 text-[18px] mb-2 " htmlFor="ProfileImg">
                                         Upload Profile Picture
                                     </label>
                                     <input
                                         {...register("ProfileImg")}
                                         type="file"
-                                        className="w-full border rounded-lg font-serif"
+                                        id="ProfileImg"
+                                        name="ProfileImg"
+                                        className="shadow appearance-none border rounded w-full  text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
                                         onChange={(e) => setFile(e.target.files[0])}
                                     />
                                 </div>
-                                <div className="mb-2">
-                                    <label className="block text-gray-700 text-lg mb-2 font-serif" htmlFor="name">
+
+                                <div className="mb-1">
+                                    <label className="block text-gray-700 text-[18px] mb-1 font-serif" htmlFor="name">
                                         Username
                                     </label>
                                     <input
                                         {...register("name")}
+                                        className="shadow appearance-none border rounded w-full py-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-serif"
+                                        id="name"
                                         defaultValue={userInfo?.name}
-                                        className="w-full border rounded-lg p-2 font-serif"
                                         type="text"
-                                        placeholder="Username"
+                                        name="name"
                                     />
                                 </div>
-                                <div className="mb-2">
-                                    <label className="block text-gray-700 text-lg mb-2 font-serif" htmlFor="mobile">
+
+                                <div className="mb-1">
+                                    <label className="block text-gray-700 text-[18px] mb-1 font-serif" htmlFor="mobile">
                                         Phone
                                     </label>
                                     <input
                                         {...register("mobile")}
+                                        className="shadow appearance-none border rounded w-full font-serif py-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        name="mobile"
                                         defaultValue={userInfo?.mobile}
-                                        className="w-full border rounded-lg p-2 font-serif"
                                         type="number"
-                                        placeholder="Mobile"
                                     />
                                 </div>
-                                <div className="mb-2">
-                                    <label className="block text-gray-700 text-lg mb-2 font-serif" htmlFor="email">
+
+                                <div className="mb-1">
+                                    <label className="block text-gray-700 text-[18px] mb-1 font-serif" htmlFor="email">
                                         Email
                                     </label>
                                     <input
                                         {...register("email")}
+                                        className="shadow appearance-none border rounded w-full font-serif py-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        name="email"
                                         defaultValue={userInfo?.email}
-                                        className="w-full border rounded-lg p-2 font-serif"
                                         type="email"
-                                        placeholder="Email"
                                     />
                                 </div>
-                                <div className="flex justify-center font-serif">
+
+                                <div className="flex items-center justify-between font-serif">
                                     <button
                                         type="submit"
-                                        className="bg-blue-700 w-full py-2 text-white rounded-lg font-serif"
+                                        className="bg-blue-700 mt-1 w-full border hover:bg-blue-700 text-white text-[20px] py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                     >
                                         Update Profile
                                     </button>
@@ -343,14 +403,15 @@ const AllUser = () => {
                         </div>
                     </div>
                 </div>
-            )}
-        </div>
+            </div>
+
+        </>
     );
 };
 
 
-const AllRoomd = () => {
 
+const AllRoomd = () => {
     const cardifData = useSelector((state) => state?.cardData?.Cardif);
     console.log(cardifData);
 
