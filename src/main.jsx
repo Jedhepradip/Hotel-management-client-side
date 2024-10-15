@@ -20,6 +20,7 @@ import PageNotFound from './components/Pages/PageNotFound.jsx'
 import Createpassword from './components/Pages/Createpassword.jsx'
 import Wishlist from './components/Pages/Wishlist.jsx'
 import PaymentModal from './components/Pages/PaymentModal.jsx'
+import Dashboard from './components/Admin/Dashboard.jsx'
 
 const router = createBrowserRouter([
   {
@@ -78,6 +79,11 @@ const router = createBrowserRouter([
         path: "/PaymentModal",
         element: <PaymentModal />
       },
+      {
+        path: "/Dashboard",
+        element: <Dashboard />
+      },
+
       {
         path: "*",
         element: <PageNotFound />,

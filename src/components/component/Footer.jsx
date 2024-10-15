@@ -20,7 +20,7 @@ const Footer = () => {
 
   return (
     <>
-      {(userData?.user?.isAdmin == false || null || " ") &&
+      {(userData?.user?.isAdmin == "false" || userData?.length == 0) ?
         <>
           <div className='bg-gray-600 text-white py-5 px-2'>
             <div className='flex flex-wrap justify-around items-center mb-5  cursor-pointer'>
@@ -92,8 +92,9 @@ const Footer = () => {
             </div>
           </div>
         </>
+        :
+        <h1>{null}</h1>
       }
-      <h1>{null}</h1>
     </>
   )
 }

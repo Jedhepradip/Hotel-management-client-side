@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Initial state
 const initialState = {
-    Cardif: [],  
+    Cardif: [],
 };
 
 // Async function to fetch card data
@@ -12,8 +12,8 @@ export const fetchCardData = () => async (dispatch) => {
             method: 'GET',
         });
         const data = await response.json();
-        
-        dispatch(CardInformation(data)); 
+
+        dispatch(CardInformation(data));
     } catch (error) {
         console.error("Fetch error:", error);
     }
@@ -26,10 +26,10 @@ export const CardDataSlice = createSlice({
     reducers: {
         CardInformation: (state, action) => {
             state.Cardif = action.payload
-        },              
+        },
     },
 });
 
 // Export actions and reducer
-export const { CardInformation} = CardDataSlice.actions;
+export const { CardInformation } = CardDataSlice.actions;
 export default CardDataSlice.reducer;
