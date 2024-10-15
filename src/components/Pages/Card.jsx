@@ -306,6 +306,7 @@ const Card = () => {
                             </div >
                         </div>
                     </div>
+                    
                 </div>
 
                 {/* Show Payment Modal */}
