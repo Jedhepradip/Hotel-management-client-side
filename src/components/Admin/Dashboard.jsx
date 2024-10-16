@@ -6,18 +6,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BsThreeDots } from "react-icons/bs";
 import { NavLink } from 'react-router-dom';
-import { FaChartBar, FaCog, FaHome, FaRegHeart, FaSignOutAlt, FaUser } from 'react-icons/fa'
+import { MdAddBox } from "react-icons/md";
+import { FaChartBar, FaHome, FaRegHeart, FaSignOutAlt, FaUser } from 'react-icons/fa'
 import { IoLocationOutline } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const Dashboard = () => {
     const [userdata, Setuserdata] = useState([])
     const [Home, setHome] = useState(true)
     const [UserPage, setUser] = useState(false)
     const [Roomd, setRooms] = useState(false)
+    const [Product, setProduct] = useState(false)
     const User = useSelector((state) => state?.Userdata.User)
     const AdminUser = useSelector((state) => state?.Alluserdata?.AllUser);
     const Navigate = useNavigate()
@@ -45,6 +48,7 @@ const Dashboard = () => {
             setHome(true)
             setRooms(false)
             setUser(false)
+            setProduct(false)
         }
     }
     const ShowTheUserPage = (componentsName) => {
@@ -52,11 +56,22 @@ const Dashboard = () => {
             setUser(true)
             setHome(false)
             setRooms(false)
+            setProduct(false)
         }
     }
     const ShowTheRoomsPage = (componentsName) => {
         if (componentsName == "Rooms") {
             setRooms(true)
+            setHome(false)
+            setUser(false)
+            setProduct(false)
+        }
+    }
+
+    const ShowProductFormPage = (componentsName) => {
+        if (componentsName == "ProductForm") {
+            setProduct(true)
+            setRooms(false)
             setHome(false)
             setUser(false)
         }
@@ -95,10 +110,10 @@ const Dashboard = () => {
                                     <span>Roomd</span>
                                 </span>
                             </li>
-                            <li className="px-6 py-3 hover:bg-blue-700 transition-all">
+                            <li className="px-6 py-3 hover:bg-blue-700 transition-all" onClick={() => ShowProductFormPage("ProductForm")}>
                                 <a href="#" className="flex items-center">
-                                    <FaCog className="mr-2" />
-                                    <span>Settings</span>
+                                    <MdAddBox className="mr-2" />
+                                    <span>Add Rooms</span>
                                 </a>
                             </li>
                             <li className="px-6 py-3 mt-4 border-t border-blue-700 hover:bg-blue-700 transition-all" onClick={() => handelLogOut()}>
@@ -115,7 +130,7 @@ const Dashboard = () => {
                 <div className="flex flex-col flex-grow">
                     {/* Topbar */}
                     <header className="flex items-center justify-between h-20 px-6 bg-white shadow-md">
-                        <h2 className="text-2xl font-semibold text-gray-800">Dashboard</h2>
+                        <h2 className="text-2[18px] text-gray-800">Dashboard</h2>
                         <div className="flex items-center space-x-4">
                             <p className="text-gray-700">Admin User</p>
                             <div className="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
@@ -133,6 +148,9 @@ const Dashboard = () => {
                         </>}
                         {Roomd && <>
                             <AllRoomd />
+                        </>}
+                        {Product && <>
+                            <ProductForm />
                         </>}
                     </main>
                 </div>
@@ -177,7 +195,7 @@ const AllUser = () => {
     const [userId, setUserId] = useState(null); // Store selected user ID
     const [dropdownOpen, setDropdownOpen] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const Navigate = useNavigate()
     const Alluser = useSelector((state) => state?.Alluserdata?.AllUser);
 
     // Toggle dropdown for each user
@@ -197,9 +215,38 @@ const AllUser = () => {
         setIsModalOpen(false); // Close modal
     };
 
+    const handledelete = async (id) => {
+        const Token = localStorage.getItem("Token");
+        if (!Token) {
+            return Navigate("/Login");
+        }
+
+        try {
+            const response = await axios.delete(`http://localhost:3000/Admin/Delete/User/${id}`, {
+                headers: {
+                    authorization: `Bearer ${Token}`
+                }
+            });
+
+            if (response.status == 200) {
+                toast.success(<div className='text-black font-serif'>{response?.data?.message}</div>);
+                setTimeout(() => {
+                }, 2000);
+            } else {
+                toast.error(<div className='font-serif text-red-500'>{response?.data?.message || "Failed to delete profile."}</div>);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            // Show error message from the server response or a fallback message
+            toast.error(<div className='text-red-500 font-serif'>{error.response?.data?.message || "An error occurred while deleting the profile."}</div>);
+        }
+    };
+
+
     return (
         <>
             <div className="mx-auto h-full relative">
+                <ToastContainer />
                 <h2 className="text-2xl font-bold mb-4">User List</h2>
                 <div className="relative h-full overflow-x-auto">
                     <table className="min-w-full bg-white border-collapse">
@@ -249,7 +296,7 @@ const AllUser = () => {
                                                     </div>
                                                     <div
                                                         className="px-4 py-2 rounded-lg hover:bg-black hover:text-white text-red-500 transition-colors duration-200 font-serif cursor-pointer"
-                                                        onClick={() => console.log('Delete User', user?.name)}
+                                                        onClick={() => handledelete(user._id)}
                                                     >
                                                         Delete
                                                     </div>
@@ -286,42 +333,35 @@ const EditUserFrom = ({ userId, handleCloseModal }) => {
         setUserinfo(user[0])
     }, [Alluser, userId])
 
-    console.log(file);
-
     const onSubmit = async (formData) => {
         const data = new FormData();
-        data.append("ProfileImg", file)
-        data.append("name", formData.name)
-        data.append("email", formData.email)
-        data.append("mobile", formData.mobile)
+        data.append("ProfileImg", file);
+        data.append("name", formData.name);
+        data.append("email", formData.email);
+        data.append("mobile", formData.mobile);
 
         try {
-            // const response = await fetch("https://hotel-management-server-5drh.onrender.com/Eidit/User/Profile", {
-            const response = await fetch(`http://localhost:3000/Eidit/User/Profile/${userId}`, {
-                method: "PUT",
+            const response = await axios.put(`http://localhost:3000/Eidit/User/Profile/${userId}`, data, {
                 headers: {
-                    authorization: `Bearer ${localStorage.getItem("Token")}`,
+                    authorization: `Bearer ${localStorage.getItem("Token")}`
                 },
-                body: data,
             });
 
-            if (!response.ok) {
-                let responseData = await response.json()
-                toast.error(`${responseData.Message}`)
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.ok) {
-                await response.json();
-                toast.success(`Profile Update Successfull..`)
+            // Handle success response
+            if (response.status === 200) {
+                toast.success(<div className='text-black font-serif'>Profile Update Successful...</div>);
                 setTimeout(() => {
-                    // navigate("/")
-                    handleCloseModal()
-                }, 2000)
+                    handleCloseModal();
+                }, 2000);
+            } else {
+                toast.error(<div className='font-serif text-red-500'>{response.data.message || "Failed to update profile."}</div>);
             }
         } catch (error) {
             console.error("Error:", error);
+            toast.error(<div className='text-res-500 font-serif'>{error.response.data.message}</div>);
         }
     };
+
 
     return (
         <>
@@ -335,6 +375,8 @@ const EditUserFrom = ({ userId, handleCloseModal }) => {
                         />
                         <div className="py-5 px-10">
                             <h2 className="text-[30px] font-serif font-medium text-gray-800 text-center mb-5">Edit Profile</h2>
+
+                            {/* encType='multipart/form-data' */}
                             <form onSubmit={handleSubmit(onSubmit)}>
 
                                 <div className="mb-1">
@@ -501,5 +543,205 @@ const AllRoomd = () => {
         </div>
     )
 }
+
+
+const ProductForm = () => {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+
+    const [Thumbnail, setThumbnail] = useState()
+    const [selectedImages, setSelectedImages] = useState([]);
+
+    console.log(Thumbnail);
+    // title, description, price, DiscountPercentage, DiscountPrice, location, thumbnail, images, country
+
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        setSelectedImages(files);
+    };
+
+    const onSubmit = async (data) => {
+        const formdata = new FormData()
+        formdata.append("title", data.title)
+        formdata.append("description", data.description)
+        formdata.append("price", data.price)
+        formdata.append("DiscountPercentage", data.DiscountPercentage)
+        formdata.append("DiscountPrice", data.DiscountPrice)
+        formdata.append("location", data.location)
+        formdata.append("thumbnail", Thumbnail)
+        formdata.append("country", data.country)
+
+        Array.from(data.images).forEach((file) => {
+            formdata.append('images', file);
+        });
+
+        try {
+            const response = await axios.post('http://localhost:3000/api/products', formdata);
+            if (response.status === 201) {
+                toast.success('Product created successfully!');
+                reset(); // Reset the form after successful submission
+            }
+        } catch (error) {
+            toast.error(`Error: ${error.response?.data?.message || "Failed to create product."}`);
+        }
+    };
+
+    return (
+        // max-w-4xl
+        <div className="w-full mx-auto p-6 bg-white rounded shadow-md">
+            <h1 className="text-xl font-bold mb-4">Create Product</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <table className="table-auto w-full font-serif">
+                    {/* First Row */}
+                    <tr>
+                        <td className="p-2 w-[45%]">
+                            <label className="block text-[18px] mb-2">Title</label>
+                            <input
+                                type="text"
+                                {...register('title', { required: 'Title is required' })}
+                                placeholder="Enter product title"
+                                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
+                            />
+                            {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
+                        </td>
+                        <td className="p-2">
+                            <label className="block text-[18px] mb-2">Description</label>
+                            <textarea
+                                {...register('description', { required: 'Description is required' })}
+                                placeholder="Enter product description"
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            {errors.description && <span className="text-red-500 text-sm">{errors.description.message}</span>}
+                        </td>
+                    </tr>
+
+                    {/* Second Row */}
+                    <tr>
+                        <td className="p-2">
+                            <label className="block text-[18px] mb-2">Price</label>
+                            <input
+                                type="number"
+                                {...register('price', { required: 'Price is required' })}
+                                placeholder="Enter price"
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            {errors.price && <span className="text-red-500 text-sm">{errors.price.message}</span>}
+                        </td>
+                        <td className="p-2">
+                            <label className="block text-[18px] mb-2">Discount Percentage</label>
+                            <input
+                                type="number"
+                                {...register('DiscountPercentage', { required: 'Discount Percentage is required' })}
+                                placeholder="Enter discount percentage"
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            {errors.DiscountPercentage && <span className="text-red-500 text-sm">{errors.DiscountPercentage.message}</span>}
+                        </td>
+                    </tr>
+
+                    {/* Third Row */}
+                    <tr>
+                        <td className="p-2">
+                            <label className="block text-[18px] mb-2">Discount Price</label>
+                            <input
+                                type="number"
+                                {...register('DiscountPrice', { required: 'Discount Price is required' })}
+                                placeholder="Enter discount price"
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            {errors.DiscountPrice && <span className="text-red-500 text-sm">{errors.DiscountPrice.message}</span>}
+                        </td>
+                        <td className="p-2">
+                            <label className="block text-[18px] mb-2">Location</label>
+                            <input
+                                type="text"
+                                {...register('location', { required: 'Location is required' })}
+                                placeholder="Enter location"
+                                className="w-full px-3 py-2 border rounded border-black"
+                            />
+                            {errors.location && <span className="text-red-500 text-sm">{errors.location.message}</span>}
+                        </td>
+                    </tr>
+
+                    {/* Fourth Row */}
+                    <tr>
+                        <td className="p-2">
+                            <label className="block text-[18px] mb-2">Country</label>
+                            <input
+                                type="text"
+                                {...register('country', { required: 'Country is required' })}
+                                placeholder="Enter country"
+                                className="w-full px-3 py-2 border rounded"
+                            />
+                            {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
+                        </td>
+
+                        <td className="">
+                            <label className="block text-[18px] mb-2">Thumbnail</label>
+                            <input
+                                type="file"
+                                {...register('thumbnail', { required: 'Thumbnail is required' })}
+                                placeholder="Enter thumbnail URL"
+                                className="w-full px-3 border rounded"
+                                onChange={(e) => setThumbnail(e.target.files[0])}
+                            />
+                            {errors.thumbnail && <span className="text-red-500 text-sm">{errors.thumbnail.message}</span>}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colSpan="2">
+                            <label className="block text-[18px] mb-2">Images</label>
+                            <input
+                                type="file"
+                                {...register('images', { required: 'Images are required' })}
+                                multiple
+                                onChange={handleImageChange}
+                                className="w-full px-3 border rounded "
+                            />
+                            {errors.images && <span className="text-red-500 text-sm">{errors.images.message}</span>}
+
+                            {/* Image Preview */}
+                            {selectedImages.length > 0 && (
+                                <div className="mt-4 grid grid-cols-3 gap-4">
+                                    {selectedImages.map((image, index) => (
+                                        <div key={index} className="relative">
+                                            <img
+                                                src={URL.createObjectURL(image)}
+                                                alt={`preview-${index}`}
+                                                className="h-32 w-32 object-cover rounded"
+                                            />
+                                            <button
+                                                type="button"
+                                                className="absolute top-0 right-34 text-white bg-red-500 rounded-full px-2 py-1 text-xs"
+                                                onClick={() => {
+                                                    setSelectedImages(selectedImages.filter((_, i) => i !== index));
+                                                }}
+                                            >
+                                                X
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </td>
+                    </tr>
+
+                    {/* Submit Button */}
+                    <tr className=''>
+                        <td className="p-2" colSpan="2">
+                            <button
+                                type="submit"
+                                className="w-full bg-blue-500 text-2xl text-white py-1.5 px-4 rounded hover:bg-blue-600 transition duration-300"
+                            >
+                                Submit
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    );
+};
+
 
 export default Dashboard
