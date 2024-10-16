@@ -575,7 +575,7 @@ const ProductForm = () => {
         });
 
         try {
-            const response = await axios.post('http://localhost:3000/api/products', formdata);
+            const response = await axios.post('http://localhost:3000/rooms/data/owner', formdata);
             if (response.status === 201) {
                 toast.success('Product created successfully!');
                 reset(); // Reset the form after successful submission
@@ -599,6 +599,7 @@ const ProductForm = () => {
                                 type="text"
                                 {...register('title', { required: 'Title is required' })}
                                 placeholder="Enter product title"
+                                name='title'
                                 className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
                             />
                             {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
@@ -608,6 +609,7 @@ const ProductForm = () => {
                             <textarea
                                 {...register('description', { required: 'Description is required' })}
                                 placeholder="Enter product description"
+                                name='description'
                                 className="w-full px-3 py-2 border rounded"
                             />
                             {errors.description && <span className="text-red-500 text-sm">{errors.description.message}</span>}
@@ -622,6 +624,7 @@ const ProductForm = () => {
                                 type="number"
                                 {...register('price', { required: 'Price is required' })}
                                 placeholder="Enter price"
+                                name='price'
                                 className="w-full px-3 py-2 border rounded"
                             />
                             {errors.price && <span className="text-red-500 text-sm">{errors.price.message}</span>}
@@ -631,6 +634,7 @@ const ProductForm = () => {
                             <input
                                 type="number"
                                 {...register('DiscountPercentage', { required: 'Discount Percentage is required' })}
+                                name='DiscountPercentage'
                                 placeholder="Enter discount percentage"
                                 className="w-full px-3 py-2 border rounded"
                             />
@@ -646,6 +650,7 @@ const ProductForm = () => {
                                 type="number"
                                 {...register('DiscountPrice', { required: 'Discount Price is required' })}
                                 placeholder="Enter discount price"
+                                name='DiscountPrice'
                                 className="w-full px-3 py-2 border rounded"
                             />
                             {errors.DiscountPrice && <span className="text-red-500 text-sm">{errors.DiscountPrice.message}</span>}
@@ -656,6 +661,7 @@ const ProductForm = () => {
                                 type="text"
                                 {...register('location', { required: 'Location is required' })}
                                 placeholder="Enter location"
+                                name='location'
                                 className="w-full px-3 py-2 border rounded border-black"
                             />
                             {errors.location && <span className="text-red-500 text-sm">{errors.location.message}</span>}
@@ -670,6 +676,7 @@ const ProductForm = () => {
                                 type="text"
                                 {...register('country', { required: 'Country is required' })}
                                 placeholder="Enter country"
+                                name='country'
                                 className="w-full px-3 py-2 border rounded"
                             />
                             {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
@@ -681,6 +688,7 @@ const ProductForm = () => {
                                 type="file"
                                 {...register('thumbnail', { required: 'Thumbnail is required' })}
                                 placeholder="Enter thumbnail URL"
+                                name='thumbnail'
                                 className="w-full px-3 border rounded"
                                 onChange={(e) => setThumbnail(e.target.files[0])}
                             />
@@ -695,6 +703,7 @@ const ProductForm = () => {
                                 type="file"
                                 {...register('images', { required: 'Images are required' })}
                                 multiple
+                                name='images'
                                 onChange={handleImageChange}
                                 className="w-full px-3 border rounded "
                             />
