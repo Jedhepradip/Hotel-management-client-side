@@ -4,7 +4,8 @@ import { FetchingUserData } from '../../App/UserSlice';
 import { fetchCardData } from '../../App/CardSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { BsThreeDots } from "react-icons/bs";
+import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
+// import { BsThreeDotsVertical } from "react-icons/bs";
 import { NavLink } from 'react-router-dom';
 import { MdAddBox } from "react-icons/md";
 import { FaChartBar, FaHome, FaRegHeart, FaSignOutAlt, FaUser } from 'react-icons/fa'
@@ -86,7 +87,7 @@ const Dashboard = () => {
                         <h1 className="text-2xl font-bold text-gray-100">Admin Dashboard</h1>
                     </div>
 
-                    <nav className="mt-10">
+                    <nav className="mt-10 cursor-pointer">
                         <ul>
                             <li className="px-6 py-3 hover:bg-blue-700 transition-all" onClick={() => ShowThehotmePage("Home")}>
                                 <a href="#" className="flex items-center">
@@ -107,7 +108,7 @@ const Dashboard = () => {
                             <li className="px-6 py-3 hover:bg-blue-700 transition-all" onClick={() => ShowTheRoomsPage("Rooms")}>
                                 <span className="flex items-center">
                                     <FaChartBar className="mr-2" />
-                                    <span>Roomd</span>
+                                    <span>Room</span>
                                 </span>
                             </li>
                             <li className="px-6 py-3 hover:bg-blue-700 transition-all" onClick={() => ShowProductFormPage("ProductForm")}>
@@ -127,10 +128,11 @@ const Dashboard = () => {
                 </aside>
 
                 {/* Main Content */}
+
                 <div className="flex flex-col flex-grow">
                     {/* Topbar */}
                     <header className="flex items-center justify-between h-20 px-6 bg-white shadow-md">
-                        <h2 className="text-2[18px] text-gray-800">Dashboard</h2>
+                        <h2 className="text-2xl text-gray-800">Dashboard</h2>
                         <div className="flex items-center space-x-4">
                             <p className="text-gray-700">Admin User</p>
                             <div className="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
@@ -139,19 +141,11 @@ const Dashboard = () => {
                         </div>
                     </header>
                     {/* Dashboard Stats */}
-                    <main className="flex-grow bg-white p-10">
-                        {Home && <>
-                            <HomePage />
-                        </>}
-                        {UserPage && <>
-                            <AllUser />
-                        </>}
-                        {Roomd && <>
-                            <AllRoomd />
-                        </>}
-                        {Product && <>
-                            <ProductForm />
-                        </>}
+                    <main className="flex-grow bg-white p-10 overflow-auto max-h-[calc(100vh-80px)]"> {/* Adjust height based on your header */}
+                        {Home && <HomePage />}
+                        {UserPage && <AllUser />}
+                        {Roomd && <AllRoomd />}
+                        {Product && <ProductForm />}
                     </main>
                 </div>
             </div>
@@ -454,8 +448,21 @@ const EditUserFrom = ({ userId, handleCloseModal }) => {
 
 
 const AllRoomd = () => {
+
+    const [dropdownOpen, setDropdownOpen] = useState(null);
     const cardifData = useSelector((state) => state?.cardData?.Cardif);
-    console.log(cardifData);
+
+    const toggleDropdown = (index) => {
+        setDropdownOpen(dropdownOpen === index ? null : index);
+    };
+
+    const handelCardEdit = (id) => {
+        console.log(id);
+    }
+
+    const handelCardDelete = (id) => {
+        console.log(id);        
+    }
 
     return (
         <div className='md:col-span-9 col-span-12 bg-white shadow-gray-300 rounded-lg'>
@@ -467,6 +474,29 @@ const AllRoomd = () => {
                                 <>
                                     <div key={index} className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 mx-auto my-2">
                                         {/* Image */}
+                                        <div className="p-5">
+                                            <BsThreeDotsVertical className='float-right top-2 right-2 text-[23px] text-black hover:text-gray-900 cursor-pointer transition duration-300' onClick={() => toggleDropdown(index)} />
+                                        </div>
+
+                                        {dropdownOpen === index && (
+                                            <div className="absolute top-[45px] right-0 w-36 bg-white shadow-lg rounded-lg z-50">
+                                                <div className="text-left">
+                                                    <div
+                                                        className="px-4 py-2 rounded-lg hover:bg-black hover:text-white text-black font-serif cursor-pointer transition-colors duration-200"
+                                                        onClick={() => handelCardEdit(user._id)}
+                                                    >
+                                                        Edit
+                                                    </div>
+                                                    <div
+                                                        className="px-4 py-2 rounded-lg hover:bg-black hover:text-white text-red-500 transition-colors duration-200 font-serif cursor-pointer"
+                                                        onClick={() => handelCardDelete(user._id)}
+                                                    >
+                                                        Delete
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
                                         <NavLink to={`/RoomsAll/${val._id}`}>
                                             <img
                                                 className="w-full h-48 object-cover"
