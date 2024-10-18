@@ -18,6 +18,7 @@ import axios from 'axios';
 
 const Dashboard = () => {
     const [userdata, Setuserdata] = useState([])
+    const Payment,setPayment = useState()
     const [Home, setHome] = useState(true)
     const [UserPage, setUser] = useState(false)
     const [Roomd, setRooms] = useState(false)
@@ -52,6 +53,39 @@ const Dashboard = () => {
             setProduct(false)
         }
     }
+
+    useEffect(() => {
+        const PaymentData = async () => {
+            const Token = localStorage.getItem("Token")
+            if (!Token) {
+                return Navigate("Login")
+            }
+            try {
+                const response = axios.get("http://localhost:3000/Payment/AllGet/Admin", {
+                    headers: {
+                        authorization: `Bearer ${Token}`
+                    }
+                })
+                if ((await response).status == 200) {
+                    console.log("(await response).data :",(await response).data);
+                    setPayment((await response).data)
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error(<div>{error?.response?.data?.message}</div>)
+            }
+        }
+        PaymentData()
+    }, [])
+
+    useEffect(() => {
+     if(Payment?.length){
+        const CalcultedPayment = Payment.CardEditToAdmin
+     }
+    }, [])
+    
+
+
     const ShowTheUserPage = (componentsName) => {
         if (componentsName == "Users") {
             setUser(true)
@@ -134,7 +168,7 @@ const Dashboard = () => {
                     <header className="flex items-center justify-between h-20 px-6 bg-white shadow-md">
                         <h2 className="text-2xl text-gray-800">Dashboard</h2>
                         <div className="flex items-center space-x-4">
-                            <p className="text-gray-700">Admin User</p>
+                            <p className="text-black text-[20px] font-serif">{userdata?.user?.name}</p>
                             <div className="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
                                 <img src={`http://localhost:3000/${userdata?.user?.ProfileImg}`} alt="" className='object-cover' />
                             </div>
@@ -445,28 +479,55 @@ const EditUserFrom = ({ userId, handleCloseModal }) => {
     );
 };
 
-
-
 const AllRoomd = () => {
-
+    const [CardId, setUserId] = useState(null); // Store selected user ID
     const [dropdownOpen, setDropdownOpen] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const cardifData = useSelector((state) => state?.cardData?.Cardif);
+    const dispatch = useDispatch()
 
     const toggleDropdown = (index) => {
         setDropdownOpen(dropdownOpen === index ? null : index);
     };
 
     const handelCardEdit = (id) => {
-        console.log(id);
+        setUserId(id);
+        setIsModalOpen(true); // Open the modal
+        setDropdownOpen(null); // Close dropdown
+    };
+
+    // Handle Close Modal
+    const handleCloseModal = () => {
+        setIsModalOpen(false); // Close modal
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handelCardDelete = async (id) => {
+        try {
+            const response = axios.delete(`http://localhost:3000/Rooms/Delete/Admin/${id}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem("Token")}`
+                }
+            })
+
+            if (!(await response).status == 200) {
+                toast.error(<div className='font-serif text-red-500'>{(await response)?.data?.message}</div>)
+            }
+            toast.success(<div className='font-serif text-black'>{(await response)?.data?.message}</div>)
+        } catch (error) {
+            console.error("Error:", error);
+            toast.error(<div className='text-res-500 font-serif'>{error?.response?.data?.message}</div>);
+        }
     }
 
-    const handelCardDelete = (id) => {
-        console.log(id);        
-    }
+    useEffect(() => {
+        dispatch(fetchCardData())
+    }, [dispatch, handelCardDelete])
 
     return (
-        <div className='md:col-span-9 col-span-12 bg-white shadow-gray-300 rounded-lg'>
+        <div className='md:col-span-9 col-span-12 relative bg-white shadow-gray-300 rounded-lg'>
             <div className='grid grid-cols-12'>
+                <ToastContainer />
                 <div className='col-span-12 grid md:grid-cols-2 gap-4 cursor-pointer'>
                     {cardifData?.length ?
                         <>
@@ -476,26 +537,28 @@ const AllRoomd = () => {
                                         {/* Image */}
                                         <div className="p-5">
                                             <BsThreeDotsVertical className='float-right top-2 right-2 text-[23px] text-black hover:text-gray-900 cursor-pointer transition duration-300' onClick={() => toggleDropdown(index)} />
-                                        </div>
 
-                                        {dropdownOpen === index && (
-                                            <div className="absolute top-[45px] right-0 w-36 bg-white shadow-lg rounded-lg z-50">
-                                                <div className="text-left">
-                                                    <div
-                                                        className="px-4 py-2 rounded-lg hover:bg-black hover:text-white text-black font-serif cursor-pointer transition-colors duration-200"
-                                                        onClick={() => handelCardEdit(user._id)}
-                                                    >
-                                                        Edit
+                                            <div className='flex justify-end fixed'>
+                                                {dropdownOpen === index && (
+                                                    <div className=" w-[110px] bg-white shadow-lg rounded-lg z-50">
+                                                        <div className="text-left">
+                                                            <div
+                                                                className="px-4 py-1.5 rounded-lg hover:bg-black hover:text-white text-[20px] text-black font-serif cursor-pointer transition-colors duration-200"
+                                                                onClick={() => handelCardEdit(val._id)}
+                                                            >
+                                                                Edit
+                                                            </div>
+                                                            <div
+                                                                className="px-4 py-1.5 text-[20px] rounded-lg hover:bg-black hover:text-white text-red-500 transition-colors duration-200 font-serif cursor-pointer"
+                                                                onClick={() => handelCardDelete(val._id)}
+                                                            >
+                                                                Delete
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div
-                                                        className="px-4 py-2 rounded-lg hover:bg-black hover:text-white text-red-500 transition-colors duration-200 font-serif cursor-pointer"
-                                                        onClick={() => handelCardDelete(user._id)}
-                                                    >
-                                                        Delete
-                                                    </div>
-                                                </div>
+                                                )}
                                             </div>
-                                        )}
+                                        </div>
 
                                         <NavLink to={`/RoomsAll/${val._id}`}>
                                             <img
@@ -570,25 +633,269 @@ const AllRoomd = () => {
                     }
                 </div >
             </div>
+            {isModalOpen && (
+                <CardEditToAdmin
+                    CardId={CardId}
+                    handleCloseModal={handleCloseModal}
+                />
+            )}
         </div>
     )
 }
 
-
-const ProductForm = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
-
+// eslint-disable-next-line react/prop-types
+const CardEditToAdmin = ({ CardId, handleCloseModal }) => {
+    const [CardData, setCardData] = useState()
+    const { register, handleSubmit } = useForm();
     const [Thumbnail, setThumbnail] = useState()
     const [selectedImages, setSelectedImages] = useState([]);
+    const dispatch = useDispatch()
+    const Navigate = useNavigate()
+    const cardifData = useSelector((state) => state?.cardData?.Cardif);
 
-    console.log(Thumbnail);
-    // title, description, price, DiscountPercentage, DiscountPrice, location, thumbnail, images, country
+    useEffect(() => {
+        dispatch(fetchCardData())
+    }, [dispatch])
+
+    useEffect(() => {
+        if (cardifData) {
+            const Card = cardifData.filter((e) => e._id === CardId)
+            setCardData(Card[0])
+        }
+    }, [CardId, cardifData, setCardData])
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
         setSelectedImages(files);
     };
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const onSubmit = async (data) => {
+        const Token = localStorage.getItem("Token");
+
+        // Redirect to login if token is missing
+        if (!Token) {
+            return Navigate("/Login"); // Ensure Navigate is correctly imported from 'react-router-dom'
+        }
+
+        const formdata = new FormData();
+
+        // Append data fields to formdata
+        formdata.append("title", data.title);
+        formdata.append("description", data.description);
+        formdata.append("price", data.price);
+        formdata.append("DiscountPercentage", data.DiscountPercentage);
+        formdata.append("DiscountPrice", data.DiscountPrice);
+        formdata.append("location", data.location);
+        formdata.append("country", data.country);
+
+        // Check if Thumbnail exists before appending
+        if (Thumbnail) {
+            formdata.append("thumbnail", Thumbnail);
+        }
+
+        // Append images if available
+        if (data.images && data.images.length > 0) {
+            Array.from(data.images).forEach((file) => {
+                formdata.append('images', file);
+            });
+        }
+
+        try {
+            const response = await axios.put(`http://localhost:3000/Admin/Edit/Rooms/${CardId}`, formdata, {
+                headers: {
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+
+            if (response.status === 200) {
+                toast.success(<div className='font-serif text-black'>Product updated successfully!</div>);
+                setTimeout(() => {
+                    handleCloseModal()
+                }, 2000);
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || "Failed to update product.";
+            toast.error(`Error: ${errorMessage}`);
+        }
+    };
+
+
+    return (
+        <>
+            <div className="w-full absolute mx-auto p-6 top-0 right-0 h-full z-50  bg-gray-100 rounded shadow-md">
+                <ToastContainer />
+                <div onClick={handleCloseModal} className='float-right cursor-pointer text-[23px] font-bold font-serif'>
+                    X
+                </div>
+                <h1 className="text-xl font-bold mb-4">Edit Product</h1>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <table className="table-auto w-full font-serif">
+                        {/* First Row */}
+                        <tr>
+                            <td className="p-2 w-[45%]">
+                                <label className="block text-[18px] mb-2">Title</label>
+                                <input
+                                    type="text"
+                                    {...register('title')}
+                                    defaultValue={CardData?.title}
+                                    name='title'
+                                    className="w-full px-3 py-2 border rounded focus:outline-none focus:ring"
+                                />
+                            </td>
+                            <td className="p-2">
+                                <label className="block text-[18px] mb-2">Description</label>
+                                <textarea
+                                    {...register('description')}
+                                    defaultValue={CardData?.description}
+                                    name='description'
+                                    className="w-full px-3 py-2 border rounded"
+                                />
+                            </td>
+                        </tr>
+
+                        {/* Second Row */}
+                        <tr>
+                            <td className="p-2">
+                                <label className="block text-[18px] mb-2">Price</label>
+                                <input
+                                    type="number"
+                                    {...register('price')}
+                                    defaultValue={CardData?.price}
+                                    name='price'
+                                    className="w-full px-3 py-2 border rounded"
+                                />
+                            </td>
+                            <td className="p-2">
+                                <label className="block text-[18px] mb-2">Discount Percentage</label>
+                                <input
+                                    type="number"
+                                    {...register('DiscountPercentage')}
+                                    name='DiscountPercentage'
+                                    defaultValue={CardData?.discountPercentage}
+                                    className="w-full px-3 py-2 border rounded"
+                                />
+                            </td>
+                        </tr>
+
+                        {/* Third Row */}
+                        <tr>
+                            <td className="p-2">
+                                <label className="block text-[18px] mb-2">Discount Price</label>
+                                <input
+                                    type="number"
+                                    {...register('DiscountPrice')}
+                                    defaultValue={CardData?.discountPrice}
+                                    name='DiscountPrice'
+                                    className="w-full px-3 py-2 border rounded"
+                                />
+                            </td>
+                            <td className="p-2">
+                                <label className="block text-[18px] mb-2">Location</label>
+                                <input
+                                    type="text"
+                                    {...register('location')}
+                                    defaultValue={CardData?.location}
+                                    name='location'
+                                    className="w-full px-3 py-2 border rounded border-black"
+                                />
+                            </td>
+                        </tr>
+
+                        {/* Fourth Row */}
+                        <tr>
+                            <td className="p-2">
+                                <label className="block text-[18px] mb-2">Country</label>
+                                <input
+                                    type="text"
+                                    {...register('country')}
+                                    defaultValue={CardData?.country}
+                                    name='country'
+                                    className="w-full px-3 py-2 border rounded"
+                                />
+                            </td>
+
+                            <td className="">
+                                <label className="block text-[18px] mb-2">Thumbnail</label>
+                                <input
+                                    type="file"
+                                    {...register('thumbnail')}
+                                    placeholder="Enter thumbnail URL"
+                                    name='thumbnail'
+                                    className="w-full px-3 border rounded"
+                                    onChange={(e) => setThumbnail(e.target.files[0])}
+                                />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colSpan="2">
+                                <label className="block text-[18px] mb-2">Images</label>
+                                <input
+                                    type="file"
+                                    {...register('images')}
+                                    multiple
+                                    name='images'
+                                    onChange={handleImageChange}
+                                    className="w-full px-3 border rounded "
+                                />
+
+                                {/* Image Preview */}
+                                {selectedImages.length > 0 && (
+                                    <div className="mt-4 grid grid-cols-3 gap-4">
+                                        {selectedImages.map((image, index) => (
+                                            <div key={index} className="relative">
+                                                <img
+                                                    src={URL.createObjectURL(image)}
+                                                    alt={`preview-${index}`}
+                                                    className="h-32 w-32 object-cover rounded"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="absolute top-0 right-34 text-white bg-red-500 rounded-full px-2 py-1 text-xs"
+                                                    onClick={() => {
+                                                        setSelectedImages(selectedImages.filter((_, i) => i !== index));
+                                                    }}
+                                                >
+                                                    X
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </td>
+                        </tr>
+
+                        {/* Submit Button */}
+                        <tr className=''>
+                            <td className="p-2" colSpan="2">
+                                <button
+                                    type="submit"
+                                    className="w-full bg-blue-500 text-2xl text-white py-1.5 px-4 rounded hover:bg-blue-600 transition duration-300"
+                                >
+                                    Submit
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </>
+    )
+}
+
+const ProductForm = () => {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const [Thumbnail, setThumbnail] = useState()
+    const [selectedImages, setSelectedImages] = useState([]);
+    const dispatch = useDispatch()
+
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        setSelectedImages(files);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const onSubmit = async (data) => {
         const formdata = new FormData()
         formdata.append("title", data.title)
@@ -606,8 +913,8 @@ const ProductForm = () => {
 
         try {
             const response = await axios.post('http://localhost:3000/rooms/data/owner', formdata);
-            if (response.status === 201) {
-                toast.success('Product created successfully!');
+            if (response.status === 200) {
+                toast.success(<div className='font-serif text-black'>Product created successfully!</div>);
                 reset(); // Reset the form after successful submission
             }
         } catch (error) {
@@ -615,9 +922,14 @@ const ProductForm = () => {
         }
     };
 
+    useEffect(() => {
+        dispatch(fetchCardData())
+    }, [dispatch, onSubmit])
+
     return (
         // max-w-4xl
         <div className="w-full mx-auto p-6 bg-white rounded shadow-md">
+            <ToastContainer />
             <h1 className="text-xl font-bold mb-4">Create Product</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <table className="table-auto w-full font-serif">
