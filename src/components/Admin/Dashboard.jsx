@@ -18,7 +18,6 @@ import axios from 'axios';
 
 const Dashboard = () => {
     const [userdata, Setuserdata] = useState([])
-    const Payment,setPayment = useState()
     const [Home, setHome] = useState(true)
     const [UserPage, setUser] = useState(false)
     const [Roomd, setRooms] = useState(false)
@@ -26,8 +25,8 @@ const Dashboard = () => {
     const User = useSelector((state) => state?.Userdata.User)
     const AdminUser = useSelector((state) => state?.Alluserdata?.AllUser);
     const Navigate = useNavigate()
-
     const dispatch = useDispatch()
+
     useEffect(() => {
         dispatch(Fetchingadminuser())
         dispatch(FetchingUserData())
@@ -53,38 +52,6 @@ const Dashboard = () => {
             setProduct(false)
         }
     }
-
-    useEffect(() => {
-        const PaymentData = async () => {
-            const Token = localStorage.getItem("Token")
-            if (!Token) {
-                return Navigate("Login")
-            }
-            try {
-                const response = axios.get("http://localhost:3000/Payment/AllGet/Admin", {
-                    headers: {
-                        authorization: `Bearer ${Token}`
-                    }
-                })
-                if ((await response).status == 200) {
-                    console.log("(await response).data :",(await response).data);
-                    setPayment((await response).data)
-                }
-            } catch (error) {
-                console.log(error);
-                toast.error(<div>{error?.response?.data?.message}</div>)
-            }
-        }
-        PaymentData()
-    }, [])
-
-    useEffect(() => {
-     if(Payment?.length){
-        const CalcultedPayment = Payment.CardEditToAdmin
-     }
-    }, [])
-    
-
 
     const ShowTheUserPage = (componentsName) => {
         if (componentsName == "Users") {
@@ -188,8 +155,43 @@ const Dashboard = () => {
 }
 
 const HomePage = () => {
+
+    const [Payment, setPayment] = useState()
+    const [calculatePayment, setcalculatePayment] = useState()
+    const Navigate = useNavigate()
     const cardifData = useSelector((state) => state?.cardData?.Cardif);
     const AllUser = useSelector((state) => state?.Alluserdata?.AllUser);
+
+    useEffect(() => {
+        const PaymentData = async () => {
+            const Token = localStorage.getItem("Token")
+            if (!Token) {
+                return Navigate("Login")
+            }
+            try {
+                const response = axios.get("http://localhost:3000/Payment/AllGet/Admin", {
+                    headers: {
+                        authorization: `Bearer ${Token}`
+                    }
+                })
+                if ((await response).status == 200) {
+                    console.log("(await response).data :", (await response).data);
+                    setPayment((await response).data)
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error(<div>{error?.response?.data?.message}</div>)
+            }
+        }
+        PaymentData()
+    }, [Navigate])
+
+    useEffect(() => {
+        if (Payment) {
+            const totalPayment = Payment?.reduce((acc, payment) => acc + Number(payment.amount), 0);
+            setcalculatePayment(totalPayment)
+        }
+    }, [Payment])
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -208,12 +210,12 @@ const HomePage = () => {
 
             <div className="bg-white shadow-md rounded-lg p-6">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">Earnings</h3>
-                <p className="text-3xl font-bold text-blue-600">$12,345</p>
+                <p className="text-3xl font-bold text-blue-600">₹{calculatePayment}</p>
             </div>
 
             <div className="bg-white shadow-md rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Pending Reviews</h3>
-                <p className="text-3xl font-bold text-blue-600">15</p>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Total Payment List</h3>
+                <p className="text-3xl font-bold text-blue-600">{Payment?.length}</p>
             </div>
         </div>
     )

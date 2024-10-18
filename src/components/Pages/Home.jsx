@@ -13,7 +13,6 @@ const Home = () => {
   const [userData, setuserdata] = useState([])
   const [Search, setSearchShow] = useState([])
   const dispatch = useDispatch()
-
   const cardifData = useSelector((state) => state?.cardData?.Cardif);
   const User = useSelector((state) => state?.Userdata.User)
 
@@ -53,7 +52,7 @@ const Home = () => {
   };
   return (
     <>
-      {(userData?.user?.isAdmin == "false" || userData?.length == 0) &&
+      {(userData?.user?.isAdmin == "false" || userData?.length == 0 || (!localStorage.getItem("Token"))) &&
         <>
           <div className="w-full h-auto relative bg-white py-20 px-10 lg:px-20">
             <h1 className="text-[30px] lg:text-[36px] font-serif font-semibold text-center">

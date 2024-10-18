@@ -24,9 +24,11 @@ const NavigationBar = () => {
     }
   }, [User])
 
+  
+
   return (
     <>
-      {(userData?.user?.isAdmin == "false" || userData?.length == 0) ?
+      {(userData?.user?.isAdmin == "false" || userData?.length == 0 || (!localStorage.getItem("Token"))) ?
         <>
           <nav className="bg-white border-gray-200 fixed w-full z-50 font-serif text-[18px] px-5">
             <div className="max-w-screen-xl flex items-center justify-between mx-auto">
