@@ -52,8 +52,6 @@ const About = () => {
         },
     ]);
 
-    console.log(items);
-
     return (
         <>
             <h1 className='bg-white font-serif font-bold text-5xl text-center py-5 px-5 w-full'>

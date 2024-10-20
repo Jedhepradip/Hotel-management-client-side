@@ -23,7 +23,6 @@ const Card = () => {
     /* ...other states, effects, and functions... */
     const Navigate = useNavigate()
     const dispatch = useDispatch();
-
     const cardifData = useSelector((state) => state.cardData.Cardif);
 
     useEffect(() => {
@@ -35,13 +34,13 @@ const Card = () => {
     }, [cardifData])
 
     useEffect(() => {
-        if (cardifData) {
-            const locationset = cardifData.map(e => e.location.toLowerCase());
+        if (cardifData?.length) {
+            const locationset = cardifData?.map(e => e.location.toLowerCase());
             const uniqueLocations = [...new Set(locationset)];
             setLocation(uniqueLocations);
         }
-        if (cardifData) {
-            const countryset = cardifData.map(e => e.country);
+        if (cardifData?.length) {
+            const countryset = cardifData?.map(e => e.country.toLowerCase());
             const uniquecountry = [...new Set(countryset)];
             SetCounty(uniquecountry);
         }
@@ -74,15 +73,16 @@ const Card = () => {
     };
 
     const filterbyConuty = (country) => {
-        if (cardifData) {
-            const similtercountry = cardifData.filter((e) => e.country == country)
+        if (cardifData?.length) {
+            const similtercountry = cardifData?.filter((e) => e.country == country)
             setshow(similtercountry)
         }
     }
+    
 
     const filterlocation = (location) => {
-        if (cardifData) {
-            const similterlocation = cardifData.filter((e) =>
+        if (cardifData?.length) {
+            const similterlocation = cardifData?.filter((e) =>
                 e.location.toLowerCase() === location.toLowerCase()
             );
             setshow(similterlocation)
@@ -94,25 +94,25 @@ const Card = () => {
         let setpricerange = [];  // Use 'let' instead of 'const' to allow reassignment
 
         if (price >= 1000 && price <= 2000) {
-            setpricerange = cardifData.filter((e) => e.discountPrice >= 1000 && e.discountPrice <= 2000); // Compare as numbers
+            setpricerange = cardifData?.filter((e) => e.discountPrice >= 1000 && e.discountPrice <= 2000); // Compare as numbers
         }
         else if (price >= 2000 && price <= 3000) {
-            setpricerange = cardifData.filter((e) => e.discountPrice >= 2000 && e.discountPrice <= 3000);
+            setpricerange = cardifData?.filter((e) => e.discountPrice >= 2000 && e.discountPrice <= 3000);
         }
         else if (price >= 3000 && price <= 4000) {
-            setpricerange = cardifData.filter((e) => e.discountPrice >= 3000 && e.discountPrice <= 4000);
+            setpricerange = cardifData?.filter((e) => e.discountPrice >= 3000 && e.discountPrice <= 4000);
         }
         else if (price >= 4000 && price <= 5000) {
-            setpricerange = cardifData.filter((e) => e.discountPrice >= 4000 && e.discountPrice <= 5000);
+            setpricerange = cardifData?.filter((e) => e.discountPrice >= 4000 && e.discountPrice <= 5000);
         }
         else if (price >= 5000 && price <= 6000) {
-            setpricerange = cardifData.filter((e) => e.discountPrice >= 5000 && e.discountPrice <= 6000);
+            setpricerange = cardifData?.filter((e) => e.discountPrice >= 5000 && e.discountPrice <= 6000);
         }
         else if (price >= 6000 && price <= 7000) {
-            setpricerange = cardifData.filter((e) => e.discountPrice >= 6000 && e.discountPrice <= 7000);
+            setpricerange = cardifData?.filter((e) => e.discountPrice >= 6000 && e.discountPrice <= 7000);
         }
         else if (price >= 7000 && price <= 8000) {
-            setpricerange = cardifData.filter((e) => e.discountPrice >= 7000 && e.discountPrice <= 8000);
+            setpricerange = cardifData?.filter((e) => e.discountPrice >= 7000 && e.discountPrice <= 8000);
         }
         setshow(setpricerange);
     };
@@ -139,8 +139,6 @@ const Card = () => {
             console.log(error);
         }
     };
-
-
     // add the stripe code 
 
     const handleBuyNowClick = (product) => {

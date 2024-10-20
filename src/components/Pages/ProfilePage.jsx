@@ -17,16 +17,12 @@ const ProfilePage = () => {
     const navigate = useNavigate();
     const User = useSelector((state) => state?.Userdata.User)
     useSelector((state) => state?.cardData?.Cardif);
-
     const { register, handleSubmit, reset } = useForm();
-
     useEffect(() => {
         if (User) {
             setUserInfo(User?.user);
         }
     }, [User]);
-
-    console.log(userInfo);
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
@@ -133,7 +129,6 @@ const ProfilePage = () => {
                 </div>
             </div>
             }
-
 
             {isModalOpen && (
                 <div

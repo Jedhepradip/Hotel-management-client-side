@@ -84,7 +84,6 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
                 closePaymentModal();
             }, 2500);
         }
-
     };
 
     return (

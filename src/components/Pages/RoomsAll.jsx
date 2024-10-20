@@ -43,10 +43,10 @@ const RoomsAll = () => {
 
   useEffect(() => {
     if (cardInfo.length > 0) {
-      const card = cardInfo.filter((e) => e._id === id);
+      const card = cardInfo?.filter((e) => e._id === id);
       if (card.length > 0) {
         setCardData(card);
-        const relativeHotel = cardInfo.filter((e) => e?.location?.includes(card[0]?.location));
+        const relativeHotel = cardInfo?.filter((e) => e?.location?.includes(card[0]?.location));
         setRelativeHotels(relativeHotel);
       }
     }

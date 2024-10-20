@@ -27,8 +27,6 @@ const Login = () => {
             });
 
             const UserLogin = response.data;
-            console.log(UserLogin);
-
             if (response.status !== 200) {
                 toast.error(`${UserLogin.Message}`);
             } else {
@@ -49,7 +47,6 @@ const Login = () => {
             }
         }
     };
-
 
     return (
         <>

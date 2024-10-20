@@ -25,13 +25,11 @@ const Home = () => {
     if (User) {
       setuserdata(User)
     }
-
   }, [User])
 
   const handleSearch = (city) => {
     if (!city) return setSearchShow([]);
-
-    let filteredLocations = cardifData.filter(e =>
+    let filteredLocations = cardifData?.filter(e =>
       e.location.toUpperCase().includes(city.toUpperCase())
     );
 
@@ -40,10 +38,8 @@ const Home = () => {
       (location, index, self) =>
         index === self.findIndex((loc) => loc.location === location.location)
     );
-
     setSearchShow(uniqueLocations);
   };
-
 
   const handleLocation = (location) => {
     const filteredLocations = cardifData.filter(e => e.location === location);
@@ -86,8 +82,8 @@ const Home = () => {
                         onClick={() => handleLocation(val)}
                       >
 
-                        <div className="text-lg font-semibold text-gray-800">{val.title}</div>
-                        <div className="text-sm text-gray-500">{val.location}</div>
+                        <div className="text-lg font-semibold text-gray-800">{val?.title}</div>
+                        <div className="text-sm text-gray-500">{val?.location}</div>
 
                       </div>
                     </NavLink>
