@@ -8,16 +8,19 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FetchingUserData } from '../../App/UserSlice';
 import { fetchCardData } from '../../App/CardSlice';
+import axios from 'axios';
 
 const ProfilePage = () => {
     const [userInfo, setUserInfo] = useState({});
     const [file, setFile] = useState(null);
+    const [Payment, setPayment] = useState()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const User = useSelector((state) => state?.Userdata.User)
     useSelector((state) => state?.cardData?.Cardif);
     const { register, handleSubmit, reset } = useForm();
+
     useEffect(() => {
         if (User) {
             setUserInfo(User?.user);
@@ -76,6 +79,36 @@ const ProfilePage = () => {
         dispatch(FetchingUserData())
     }, [dispatch, isModalOpen]);
 
+    useEffect(() => {
+        const PaymentData = async () => {
+            const Token = localStorage.getItem("Token")
+            if (!Token) {
+                return navigate("Login")
+            }
+            try {
+                const response = axios.get("http://localhost:3000/Payment/AllGet/Admin", {
+                    headers: {
+                        authorization: `Bearer ${Token}`
+                    }
+                })
+                if ((await response).status == 200) {
+                    setPayment((await response).data)
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error(<div>{error?.response?.data?.message}</div>)
+            }
+        }
+        PaymentData()
+    }, [navigate])
+
+    useEffect(() => {
+        console.log(Payment);        
+        const PaymentRooms = Payment?.filter((e) =>console.log("pradip",e.userId?.include(userInfo[0]?._id)))
+        console.log("PaymentRooms :",PaymentRooms);
+    }, [Payment, userInfo])
+
+
     return (
         <div className="relative bg-white dark:bg-gray-800 flex flex-wrap items-center justify-center font-serif">
             <ToastContainer />
@@ -126,6 +159,10 @@ const ProfilePage = () => {
                             </button>
                         </div>
                     </div>
+                </div>
+
+                <div className='text-center mt-7 px-3 text-[28px]'>
+                    <h1>Your Pay Rooms Details</h1>
                 </div>
             </div>
             }
@@ -216,6 +253,7 @@ const ProfilePage = () => {
                     </div>
                 </div>
             )}
+
         </div>
     );
 };

@@ -11,7 +11,6 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import PropTypes from 'prop-types';
-
 const stripePromise = loadStripe('pk_test_51Q7VKrP6jlrB3RhjwiYFqR25TaT6c8SGVXjkatIkKyq7nmtGNt4zhAFKF3lbjDUfp4emprVclNUXi1uGni0Vufje006Hvc0x24');
 
 const Card = () => {
@@ -77,8 +76,7 @@ const Card = () => {
             const similtercountry = cardifData?.filter((e) => e.country == country)
             setshow(similtercountry)
         }
-    }
-    
+    }    
 
     const filterlocation = (location) => {
         if (cardifData?.length) {
