@@ -137,8 +137,8 @@ const Card = () => {
             console.log(error);
         }
     };
-    // add the stripe code 
 
+    // add the stripe code 
     const handleBuyNowClick = (product) => {
         setSelectedProduct(product);
         setShowPaymentModal(true);
