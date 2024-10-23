@@ -169,7 +169,9 @@ const HomePage = () => {
                 return Navigate("Login")
             }
             try {
-                const response = axios.get("http://localhost:3000/Payment/AllGet/Admin", {
+                // https://hotel-management-server-1-n9cs.onrender.com
+                const response = axios.get("https://hotel-management-server-1-n9cs.onrender.com/Payment/AllGet/Admin", {
+                    // const response = axios.get("http://localhost:3000/Payment/AllGet/Admin", {
                     headers: {
                         authorization: `Bearer ${Token}`
                     }
@@ -252,7 +254,9 @@ const AllUser = () => {
         }
 
         try {
-            const response = await axios.delete(`http://localhost:3000/Admin/Delete/User/${id}`, {
+            // https://hotel-management-server-1-n9cs.onrender.com
+            const response = await axios.delete(`https://hotel-management-server-1-n9cs.onrender.com/Admin/Delete/User/${id}`, {
+                // const response = await axios.delete(`http://localhost:3000/Admin/Delete/User/${id}`, {
                 headers: {
                     authorization: `Bearer ${Token}`
                 }
@@ -371,7 +375,8 @@ const EditUserFrom = ({ userId, handleCloseModal }) => {
         data.append("mobile", formData.mobile);
 
         try {
-            const response = await axios.put(`http://localhost:3000/Eidit/User/Profile/${userId}`, data, {
+            const response = await axios.put(`https://hotel-management-server-1-n9cs.onrender.com/Eidit/User/Profile/${userId}`, data, {
+                // const response = await axios.put(`http://localhost:3000/Eidit/User/Profile/${userId}`, data, {
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("Token")}`
                 },
@@ -476,7 +481,6 @@ const EditUserFrom = ({ userId, handleCloseModal }) => {
                     </div>
                 </div>
             </div>
-
         </>
     );
 };
@@ -506,7 +510,8 @@ const AllRoomd = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const handelCardDelete = async (id) => {
         try {
-            const response = axios.delete(`http://localhost:3000/Rooms/Delete/Admin/${id}`, {
+            const response = axios.delete(`https://hotel-management-server-1-n9cs.onrender.com/Rooms/Delete/Admin/${id}`, {
+                // const response = axios.delete(`http://localhost:3000/Rooms/Delete/Admin/${id}`, {
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("Token")}`
                 }
@@ -681,7 +686,6 @@ const CardEditToAdmin = ({ CardId, handleCloseModal }) => {
         }
 
         const formdata = new FormData();
-
         // Append data fields to formdata
         formdata.append("title", data.title);
         formdata.append("description", data.description);
@@ -704,7 +708,8 @@ const CardEditToAdmin = ({ CardId, handleCloseModal }) => {
         }
 
         try {
-            const response = await axios.put(`http://localhost:3000/Admin/Edit/Rooms/${CardId}`, formdata, {
+            const response = await axios.put(`https://hotel-management-server-1-n9cs.onrender.com/Admin/Edit/Rooms/${CardId}`, formdata, {
+                // const response = await axios.put(`http://localhost:3000/Admin/Edit/Rooms/${CardId}`, formdata, {
                 headers: {
                     Authorization: `Bearer ${Token}`,
                 },
@@ -914,7 +919,8 @@ const ProductForm = () => {
         });
 
         try {
-            const response = await axios.post('http://localhost:3000/rooms/data/owner', formdata);
+            const response = await axios.post('https://hotel-management-server-1-n9cs.onrender.com/rooms/data/owner', formdata);
+            // const response = await axios.post('http://localhost:3000/rooms/data/owner', formdata);
             if (response.status === 200) {
                 toast.success(<div className='font-serif text-black'>Product created successfully!</div>);
                 reset(); // Reset the form after successful submission

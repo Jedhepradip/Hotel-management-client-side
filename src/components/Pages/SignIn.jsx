@@ -29,7 +29,8 @@ const SignIn = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/UserSendOtp', Fordata, {
+      const response = await axios.post('https://hotel-management-server-1-n9cs.onrender.com/UserSendOtp', Fordata, {
+        // const response = await axios.post('http://localhost:3000/UserSendOtp', Fordata, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -61,7 +62,8 @@ const SignIn = () => {
       formData.append('password', data.password);
 
       try {
-        const response = await axios.post('http://localhost:3000/User/Registration', formData);
+        const response = await axios.post('https://hotel-management-server-1-n9cs.onrender.com/User/Registration', formData);
+        // const response = await axios.post('http://localhost:3000/User/Registration', formData);
         const UserResponse = response.data;
         toast.success(<div className="font-serif text-[15px] text-black">{UserResponse.message}</div>);
         setTimeout(() => {

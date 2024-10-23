@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -35,7 +35,8 @@ const AddtoRooms = () => {
 
     const handelRoomsId = async (removeroomsId) => {
         try {
-            const response = await fetch(`http://localhost:3000/Rooms/Removeto/AddtoCard/${removeroomsId}`, {
+            const response = await fetch(`https://hotel-management-server-1-n9cs.onrender.com/Rooms/Removeto/AddtoCard/${removeroomsId}`, {
+                // const response = await fetch(`http://localhost:3000/Rooms/Removeto/AddtoCard/${removeroomsId}`, {
                 method: "PUT",
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("Token")}`

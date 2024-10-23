@@ -22,7 +22,8 @@ const ForgetPassword = () => {
             return;
         }
         try {
-            const response = await axios.post("http://localhost:3000/ForgetPassword", { email });
+            const response = await axios.post("https://hotel-management-server-1-n9cs.onrender.com/ForgetPassword", { email });
+            // const response = await axios.post("http://localhost:3000/ForgetPassword", { email });
             const userResponse = response.data;
             if (response.status === 200) {
                 toast.success(<div className='font-serif text-[15px] text-black'>{userResponse.message}</div>);

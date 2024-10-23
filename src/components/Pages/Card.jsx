@@ -54,8 +54,8 @@ const Card = () => {
         }
 
         try {
-            // const response = await fetch(`https://hotel-management-server-5drh.onrender.com/Rooms/User/Like/${RoomsId}`, {
-            const response = await fetch(`http://localhost:3000/Rooms/User/Like/${RoomsId}`, {
+            const response = await fetch(`https://hotel-management-server-1-n9cs.onrender.com/Rooms/User/Like/${RoomsId}`, {
+                // const response = await fetch(`http://localhost:3000/Rooms/User/Like/${RoomsId}`, {
                 method: "PUT",
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -76,7 +76,7 @@ const Card = () => {
             const similtercountry = cardifData?.filter((e) => e.country == country)
             setshow(similtercountry)
         }
-    }    
+    }
 
     const filterlocation = (location) => {
         if (cardifData?.length) {
@@ -121,7 +121,8 @@ const Card = () => {
             return;
         }
         try {
-            const response = await axios.put(`http://localhost:3000/User/AddToCard/${RoomsId}`, {}, {
+            const response = await axios.put(`https://hotel-management-server-1-n9cs.onrender.com/User/AddToCard/${RoomsId}`, {}, {
+            // const response = await axios.put(`http://localhost:3000/User/AddToCard/${RoomsId}`, {}, {
                 headers: {
                     authorization: `Bearer ${token}`,
                 }
@@ -302,7 +303,7 @@ const Card = () => {
                             </div >
                         </div>
                     </div>
-                    
+
                 </div>
 
                 {/* Show Payment Modal */}
@@ -337,7 +338,9 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
             }
 
             // Initiating API call to create payment intent
-            const { data } = await axios.post('http://localhost:3000/Payment/api/create-payment-intent', {
+            
+            const { data } = await axios.post('https://hotel-management-server-1-n9cs.onrender.com/Payment/api/create-payment-intent', {
+            // const { data } = await axios.post('http://localhost:3000/Payment/api/create-payment-intent', {
                 amount: Number(selectedProduct.price),
                 // eslint-disable-next-line react/prop-types
                 RoomsId: selectedProduct._id,

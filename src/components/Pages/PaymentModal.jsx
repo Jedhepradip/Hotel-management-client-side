@@ -27,7 +27,9 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
             }
 
             // Initiating API call to create payment intent
-            const { data } = await axios.post('http://localhost:3000/Payment/api/create-payment-intent', {
+            
+            const { data } = await axios.post('https://hotel-management-server-1-n9cs.onrender.com/Payment/api/create-payment-intent', {
+            // const { data } = await axios.post('http://localhost:3000/Payment/api/create-payment-intent', {
                 amount: Number(selectedProduct.price),
                 // eslint-disable-next-line react/prop-types
                 RoomsId: selectedProduct._id,

@@ -1,4 +1,3 @@
-import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { ToastContainer, toast } from 'react-toastify';
@@ -20,7 +19,8 @@ const Login = () => {
         formdata.append("password", data.password);
 
         try {
-            const response = await axios.post("http://localhost:3000/User/Login", formdata, {
+            const response = await axios.post("https://hotel-management-server-1-n9cs.onrender.com/User/Login", formdata, {
+                // const response = await axios.post("http://localhost:3000/User/Login", formdata, {
                 headers: {
                     "Content-Type": "application/json"
                 }

@@ -41,8 +41,9 @@ const ProfilePage = () => {
         data.append("mobile", formData.mobile)
 
         try {
-            // const response = await fetch("https://hotel-management-server-5drh.onrender.com/Eidit/User/Profile", {
-            const response = await fetch(`http://localhost:3000/Eidit/User/Profile/${User?.user?._id}`, {
+
+            const response = await fetch(`https://hotel-management-server-1-n9cs.onrender.com/Eidit/User/Profile/${User?.user?._id}`, {
+                // const response = await fetch(`http://localhost:3000/Eidit/User/Profile/${User?.user?._id}`, {
                 method: "PUT",
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -87,7 +88,8 @@ const ProfilePage = () => {
                 return navigate("Login")
             }
             try {
-                const response = axios.get("http://localhost:3000/Payment/AllGet/Admin", {
+                const response = axios.get("https://hotel-management-server-1-n9cs.onrender.com/Payment/AllGet/Admin", {
+                    // const response = axios.get("http://localhost:3000/Payment/AllGet/Admin", {
                     headers: {
                         authorization: `Bearer ${Token}`
                     }
@@ -163,37 +165,37 @@ const ProfilePage = () => {
                     </div>
                 </div>
 
-              <div className="text-center mt-7 px-3">
+                <div className="text-center mt-7 px-3">
                     <h1 className="text-[28px]">Your Pay Rooms Details</h1>
 
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
                         {PayRooms?.map((val, index) => (
                             <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden mx-auto">
-                                
+
                                 <NavLink to={`/RoomsAll/${val._id}`}>
                                     <img className="w-full h-48 object-cover" src={val?.thumbnail} alt={val.title} />
                                 </NavLink>
 
-                                
+
                                 <div className="p-4">
-                                    
+
                                     <h3 className="text-lg font-semibold text-gray-800">{val?.title}</h3>
 
-                                    
+
                                     <p className="text-gray-600 text-sm mt-2">{val?.description}</p>
 
-                                    
+
                                     <div className="flex justify-between items-center mt-4">
                                         <div>
-                                            
+
                                             <span className="text-lg font-bold text-purple-600">${val?.discountPrice}</span>
 
-                                            
+
                                             <span className="text-sm text-gray-500 line-through ml-2">${val?.price}</span>
                                         </div>
 
-                                        
+
                                         <span className="text-sm text-green-500 bg-green-100 px-2 py-1 rounded-full">
                                             {val?.discountPercentage}% off
                                         </span>
@@ -209,14 +211,14 @@ const ProfilePage = () => {
                                             <span className="ml-2 text-gray-700 text-[20px]">{val?.likes?.length} Likes</span>
                                         </div>
 
-                                        
+
                                         <span className="text-sm font-bold text-green-600">Payment Successful</span>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
-                </div> 
+                </div>
 
             </div>
             }
