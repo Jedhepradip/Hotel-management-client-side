@@ -214,7 +214,6 @@ const Card = () => {
                             />
                             <label htmlFor="salary7" className='font-medium cursor-pointer'>7k to 8k</label>
                         </div>
-
                     </div>
 
                     {/* max-h-screen overflow-y-auto */}
