@@ -30,7 +30,7 @@ const NavigationBar = () => {
     <>
       {(userData?.user?.isAdmin == "false" || userData?.length == 0 || (!localStorage.getItem("Token"))) ?
         <>
-          <nav className="bg-white border-gray-500 fixed w-full z-50 font-serif text-[18px] px-5 md:pb-0 pb-4 shadow shadow-gray-600">
+          <nav className=" md:border-gray-500 w-full fixed z-50 font-serif text-[18px] px-5 md:pb-0 pb-4 md:shadow md:shadow-gray-600 bg-white ">
             <div className="max-w-screen-xl flex items-center justify-between mx-auto relative">
               {/* Logo */}
               <div className='md:pb-0 pb-10'>
@@ -55,7 +55,7 @@ const NavigationBar = () => {
               </button>
 
               {/* Navigation Links */}
-              <div className={`w-[50%] md:bg-white md:p-0 py-1 md:px-0 px-2 bg-gray-200 rounded-lg md:block md:w-auto ${isMenuOpen ? 'block' : 'hidden'}`}>
+              <div className={`w-[50%] flex justify-start items-center md:bg-white md:p-0 py-1 md:px-0 px-2 bg-gray-200 rounded-lg md:block md:w-auto ${isMenuOpen ? 'block' : 'hidden'}`}>
                 <ul className="flex flex-col md:flex-row md:space-x-8 py-3 bg-transparent border-gray-100 md:border-0">
                   <div className="md:flex gap-10">
                     <li>
@@ -116,7 +116,7 @@ const NavigationBar = () => {
                     <>
                       <li>
                         <NavLink to="/Login" onClick={() => setIsMenuOpen(false)}>
-                          <span className="py-2 px-3 md:mt-0 mt-1 text-gray-900 md:w-full w-20 rounded hover:bg-gray-100 md:hover:text-blue-700 flex justify-center items-center shadow shadow-gray-300">Login</span>
+                          <span className="py-1.5a px-3 md:mt-0 mt-1 text-gray-900 md:w-full w-20 rounded hover:bg-gray-100 md:hover:text-blue-700 flex justify-center items-center shadow shadow-gray-300">Login</span>
                         </NavLink>
                       </li>
                       <li>
