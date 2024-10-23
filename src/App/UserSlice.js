@@ -7,7 +7,8 @@ const initialState = {
 
 export const FetchingUserData = () => async (dispatch) => {
     try {
-        const response = await axios.get("http://localhost:3000/Profile/User/Data", {
+        const response = await axios.get("https://hotel-management-server-1-n9cs.onrender.com/Profile/User/Data", {
+            // const response = await axios.get("http://localhost:3000/Profile/User/Data", {
             headers: {
                 authorization: `Bearer ${localStorage.getItem("Token")}`
             }

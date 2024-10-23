@@ -8,7 +8,8 @@ const initialState = {
 // Async function to fetch card data
 export const fetchCardData = () => async (dispatch) => {
     try {
-        const response = await fetch('http://localhost:3000/Product/data', {
+        const response = await fetch('https://hotel-management-server-1-n9cs.onrender.com/Product/data', {
+            // const response = await fetch('http://localhost:3000/Product/data', {
             method: 'GET',
         });
         const data = await response.json();

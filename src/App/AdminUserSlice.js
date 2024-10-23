@@ -7,7 +7,8 @@ const initialState = {
 
 export const Fetchingadminuser = () => async (dispatch) => {
     try {
-        const response = await axios.get("http://localhost:3000/Admin/AllUser/Send", {
+        const response = await axios.get("https://hotel-management-server-1-n9cs.onrender.com/Admin/AllUser/Send", {
+            // const response = await axios.get("http://localhost:3000/Admin/AllUser/Send", {
             headers: {
                 authorization: `Bearer ${localStorage.getItem("Token")}`
             }
