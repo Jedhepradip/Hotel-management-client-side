@@ -30,7 +30,7 @@ const NavigationBar = () => {
     <>
       {(userData?.user?.isAdmin == "false" || userData?.length == 0 || (!localStorage.getItem("Token"))) ?
         <>
-          <nav className="bg-white border-gray-200 fixed w-full z-50 font-serif text-[18px] px-5">
+          <nav className="bg-white border-gray-500 fixed w-full z-50 font-serif text-[18px] px-5 shadow shadow-gray-600">
             <div className="max-w-screen-xl flex items-center justify-between mx-auto">
               <a className="flex items-center space-x-3">
                 <h1 className='font-bold font-sans text-[25px] md:ml-[50px] ml-2'>Stay<span className='text-red-500'>Master</span></h1>
@@ -50,26 +50,26 @@ const NavigationBar = () => {
                 <ul className="flex flex-col md:flex-row md:space-x-8 py-3 bg-transparent border-gray-100 md:border-0">
                   <div className="md:flex gap-10">
                     <li>
-                      <NavLink to={"/"}>
+                      <NavLink to={"/"} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <a href="#" className="block py-2 px-3 rounded md:bg-transparent text-black md:p-0 dark:text-white md:dark:text-blue-500 md:py-1 md:px-0" aria-current="page">Home</a></NavLink>
                     </li>
                     <li>
-                      <NavLink to={"/About"}>
+                      <NavLink to={"/About"} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:py-1 md:px-0">About</a></NavLink>
                     </li>
                     <li>
-                      <NavLink to={"/Card"}>
+                      <NavLink to={"/Card"} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:py-1 md:px-0">Card</a></NavLink>
                     </li>
                     <li>
-                      <NavLink to={"/Contact"}>
+                      <NavLink to={"/Contact"} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:py-1 md:px-0">Contact</a></NavLink>
                     </li>
                   </div>
 
                   {token ? (
                     <>
-                      <li className="relative">
+                      <li className="relative" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <NavLink to="/Wishlist" className="flex items-center space-x-1">
                           <FaRegHeart className="text-[30px] text-gray-700 hover:text-red-600 transition-colors duration-300" />
                           <div className="absolute -top-2 -right-3 flex items-center justify-center h-6 w-6 bg-red-600 text-white text-sm rounded-full">
@@ -78,7 +78,7 @@ const NavigationBar = () => {
                         </NavLink>
                       </li>
 
-                      <li className="relative">
+                      <li className="relative" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <NavLink to="/AddtoRooms">
                           <FaShoppingCart className="text-[30px] text-gray-700 hover:text-red-600 transition-colors duration-300" />
                           {/* Conditionally render the badge only if there are rooms */}
@@ -96,7 +96,7 @@ const NavigationBar = () => {
                       </li>
 
                       <li>
-                        <NavLink to="/ProfilePage">
+                        <NavLink to="/ProfilePage" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                           <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center">
                             <img src={`http://localhost:3000/${userData?.user?.ProfileImg}`} alt="Profile" className="h-full w-full rounded-full object-cover" />
                           </div>
@@ -106,11 +106,11 @@ const NavigationBar = () => {
                   ) : (
                     <>
                       <li>
-                        <NavLink to={"/Login"}>
+                        <NavLink to={"/Login"} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                           <a href="#" className="py-2 px-3 md:mt-0 mt-1 text-gray-900 md:w-full w-20 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:py-1 md:px-4 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent shadow shadow-gray-300 flex justify-center items-center">Login</a></NavLink>
                       </li>
                       <li>
-                        <NavLink to={'/SignIn'}>
+                        <NavLink to={'/SignIn'} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                           <a href="#" className="py-2 px-2 md:mt-0 mt-2 md:w-full w-20 rounded md:hover:bg-purple-600 md:hover:bg-transparent md:border-0 md:hover:text-black md:dark:hover:bg-transparent bg-purple-800 text-white md:py-1 md:px-4 flex justify-center items-center hover:shadow shadow-gray-300 hover:text-black">SignIn</a></NavLink>
                       </li>
                     </>
