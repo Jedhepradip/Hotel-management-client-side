@@ -122,7 +122,7 @@ const Card = () => {
         }
         try {
             const response = await axios.put(`https://hotel-management-server-1-n9cs.onrender.com/User/AddToCard/${RoomsId}`, {}, {
-            // const response = await axios.put(`http://localhost:3000/User/AddToCard/${RoomsId}`, {}, {
+                // const response = await axios.put(`http://localhost:3000/User/AddToCard/${RoomsId}`, {}, {
                 headers: {
                     authorization: `Bearer ${token}`,
                 }
@@ -157,7 +157,7 @@ const Card = () => {
                 <ToastContainer />
                 <div className='grid grid-cols-12 gap-4 p-4'>
                     {/* Filter Section */}
-                    <div className='md:col-span-3 col-span-12 bg-white p-6 rounded-lg'>
+                    <div className='md:col-span-3 col-span-12 bg-white p-6 rounded-lg overflow-auto'>
                         <h1 className='font-bold text-center text-[25px] cursor-pointer'>Filter Rooms</h1>
                         <hr />
 
@@ -217,7 +217,9 @@ const Card = () => {
 
                     </div>
 
-                    <div className='md:col-span-9 col-span-12 bg-white shadow-gray-300 p-5 rounded-lg'>
+                    {/* max-h-screen overflow-y-auto */}
+
+                    <div className='md:col-span-9 col-span-12 bg-white shadow-gray-300 p-5 rounded-lg '>
                         <div className='grid grid-cols-12'>
                             <div className='col-span-12 grid md:grid-cols-3 gap-5 cursor-pointer'>
                                 {show?.length ?
@@ -338,9 +340,9 @@ const PaymentModal = ({ selectedProduct, closePaymentModal }) => {
             }
 
             // Initiating API call to create payment intent
-            
+
             const { data } = await axios.post('https://hotel-management-server-1-n9cs.onrender.com/Payment/api/create-payment-intent', {
-            // const { data } = await axios.post('http://localhost:3000/Payment/api/create-payment-intent', {
+                // const { data } = await axios.post('http://localhost:3000/Payment/api/create-payment-intent', {
                 amount: Number(selectedProduct.price),
                 // eslint-disable-next-line react/prop-types
                 RoomsId: selectedProduct._id,

@@ -46,7 +46,7 @@ const NavigationBar = () => {
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
                 </svg>
               </button>
-              <div className={`w-full md:block md:w-auto ${isMenuOpen ? 'block' : 'hidden'}`}>
+              <div className={`w-[50%] md:bg-white md:p-0 py-1 md:px-0 px-2 bg-gray-200 rounded-lg md:block md:w-auto ${isMenuOpen ? 'block' : 'hidden'}`}>
                 <ul className="flex flex-col md:flex-row md:space-x-8 py-3 bg-transparent border-gray-100 md:border-0">
                   <div className="md:flex gap-10">
                     <li>
