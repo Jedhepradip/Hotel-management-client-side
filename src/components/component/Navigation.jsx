@@ -116,7 +116,7 @@ const NavigationBar = () => {
                     <>
                       <li>
                         <NavLink to="/Login" onClick={() => setIsMenuOpen(false)}>
-                          <span className="py-1.5a px-3 md:mt-0 mt-1 text-gray-900 md:w-full w-20 rounded hover:bg-gray-100 md:hover:text-blue-700 flex justify-center items-center shadow shadow-gray-300">Login</span>
+                          <span className="py-[5px] px-3 md:mt-0 mt-1 text-gray-900 md:w-full w-20 rounded hover:bg-gray-100 md:hover:text-blue-700 flex justify-center items-center shadow shadow-gray-300">Login</span>
                         </NavLink>
                       </li>
                       <li>

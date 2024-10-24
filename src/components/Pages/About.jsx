@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import  { useState, useEffect } from 'react'
 const About = () => {
 
     const [ImgAbout1, setImg] = useState([])
@@ -12,7 +12,7 @@ const About = () => {
     }, [])
 
 
-    const [items, setItems] = useState([
+    const [items] = useState([
 
         {
             id: 1,
@@ -105,7 +105,7 @@ const About = () => {
                     <div className=' h-full'>
                         <h1 className='font-bold font-serif text-[30px] text-black text-center'>Welcome to Hotel Management website</h1>
                         <p className='font-serif mt-1 text-[16px]'>
-                            Welcome to our Hotel Management website. Our mission is to provide the best possible experience for our guests through exceptional service, outstanding amenities, and a commitment to hospitality excellence. Whether you're traveling for business or pleasure, our dedicated team is here to ensure your stay is comfortable, convenient, and memorable.
+                            Welcome to our Hotel Management website. Our mission is to provide the best possible experience for our guests through exceptional service, outstanding amenities, and a commitment to hospitality excellence. Whether you re traveling for business or pleasure, our dedicated team is here to ensure your stay is comfortable, convenient, and memorable.
                             <br />
                             Established in 2025, our hotel management company has been at the forefront of the industry, setting standards for quality and innovation. We operate a diverse portfolio of properties, each offering unique experiences and tailored services to
                         </p>

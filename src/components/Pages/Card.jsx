@@ -153,7 +153,7 @@ const Card = () => {
     return (
 
         <Elements stripe={stripePromise}>
-            <div className='bg-gray-300 relative'>
+            <div className='bg-gray-100 relative mt-1'>
                 <ToastContainer />
                 <div className='grid grid-cols-12 gap-4 p-4'>
                     {/* Filter Section */}
